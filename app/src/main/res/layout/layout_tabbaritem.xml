@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:layout_weight="1"
+    android:layout_centerVertical="true"
+    android:layout_centerHorizontal="true"
+    android:orientation="horizontal"
+    >
+
+    <ImageButton
+        android:id="@+id/btn_tabbaritem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="register"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_vertical"
+        app:srcCompat="@android:drawable/ic_input_add" />
+
+    <TextView
+        android:id="@+id/text_tabbaritem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:text="tabbar"
+        android:textColor="@color/colorAccent" />
+
+</LinearLayout>
