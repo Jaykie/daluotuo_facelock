@@ -1,7 +1,10 @@
 <resources>
     <string name="app_name">daluotuo_face</string>
     <string name="pref_start_id">startID</string>
+    <string name="home">首页</string>
     <string name="register">注册</string>
     <string name="detect">识别</string>
     <string name="setting">设置</string>
+    <string name="company">深圳市宁远电子科技有限公司</string>
+    <string name="system">人脸识别系统</string>
 </resources>

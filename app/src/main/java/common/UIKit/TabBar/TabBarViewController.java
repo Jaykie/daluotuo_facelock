@@ -57,7 +57,7 @@ public class TabBarViewController extends UIViewController implements UITabBarIt
     }
 
     // Use this for initialization
-    public void addItem(TabBarItemInfo info) {
+    public void AddItem(TabBarItemInfo info) {
         if (listItem == null) {
             listItem = new ArrayList<TabBarItemInfo>();
         }
@@ -65,7 +65,7 @@ public class TabBarViewController extends UIViewController implements UITabBarIt
         uiTabBar.AddItem(info, listItem.size() - 1);
     }
 
-    public TabBarItemInfo getItem(int idx) {
+    public TabBarItemInfo GetItem(int idx) {
         if (listItem == null) {
             return null;
         }
@@ -82,7 +82,7 @@ public class TabBarViewController extends UIViewController implements UITabBarIt
             return;
         }
 
-        TabBarItemInfo info = getItem(selectIndex);
+        TabBarItemInfo info = GetItem(selectIndex);
         if (info == null) {
             //Debug.Log("DestroyController null,selectIndex=" + selectIndex);
             return;
@@ -93,12 +93,19 @@ public class TabBarViewController extends UIViewController implements UITabBarIt
 
     }
 
-    public void selectItem(int idx) {
+    public void ShowBar(boolean isShow)
+    {
+        if(uiTabBar!=null)
+        {
+            uiTabBar.content.setVisibility(isShow?View.VISIBLE:View.GONE);
+        }
+    }
+    public void SelectItem(int idx) {
         if (selectIndex == idx) {
             // Debug.Log("tabbar click the same item selectIndex=" + idx);
             return;
         }
-        TabBarItemInfo info = getItem(idx);
+        TabBarItemInfo info = GetItem(idx);
         if (info == null) {
             // Debug.Log("SelectItem null,idx=" + idx);
             return;
@@ -116,6 +123,6 @@ public class TabBarViewController extends UIViewController implements UITabBarIt
 
     @Override
     public void onClickTabBarItem(UITabBarItem item) {
-        selectItem(item.index);
+        SelectItem(item.index);
     }
 }

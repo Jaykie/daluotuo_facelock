@@ -33,6 +33,7 @@ import com.moonma.common.TabBarViewController;
 import com.daluotuo.facelock.RegisterViewController;
 import com.daluotuo.facelock.DetectViewController;
 import com.daluotuo.facelock.SettingViewController;
+import com.daluotuo.facelock.HomeViewController;
 
 import com.moonma.FaceSDK.FaceDBCommon;
 import com.moonma.FaceSDK.FaceSDKCommon;
@@ -81,7 +82,7 @@ public class MainActivity extends MainActivityBase {
         }
 
 
-        startDetector(0);
+        RunUI();
     }
 
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
@@ -97,12 +98,12 @@ public class MainActivity extends MainActivityBase {
                     }
                 }
             }
-            startDetector(0);
+            RunUI();
         }
     }
 
 
-    private void startDetector(int camera) {
+    private void RunUI() {
 
         LayoutInflater inflater = LayoutInflater.from(this);
 
@@ -135,29 +136,37 @@ public class MainActivity extends MainActivityBase {
         tab.resIdTabItemBtn = R.id.btn_tabbaritem;
         tab.resIdTabItemText = R.id.text_tabbaritem;
 
-        this.setRootViewController(tab);
+        this.SetRootViewController(tab);
+
+        {
+            TabBarItemInfo info = new TabBarItemInfo();
+            info.title = Common.stringFromResId(R.string.home);
+            info.controller = HomeViewController.main();
+            tab.AddItem(info);
+        }
+
         {
             TabBarItemInfo info = new TabBarItemInfo();
             info.title = Common.stringFromResId(R.string.register);
             info.controller = RegisterViewController.main();
-            tab.addItem(info);
+            tab.AddItem(info);
         }
 
         {
             TabBarItemInfo info = new TabBarItemInfo();
             info.title = Common.stringFromResId(R.string.detect);
             info.controller = DetectViewController.main();
-            tab.addItem(info);
+            tab.AddItem(info);
         }
 
         {
             TabBarItemInfo info = new TabBarItemInfo();
             info.title = Common.stringFromResId(R.string.setting);
             info.controller = SettingViewController.main();
-            tab.addItem(info);
+            tab.AddItem(info);
         }
 
-        tab.selectItem(0);
+        tab.SelectItem(0);
 
 //            startRegister();
 //            return;

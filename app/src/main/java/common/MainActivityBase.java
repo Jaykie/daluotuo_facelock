@@ -45,7 +45,7 @@ public class MainActivityBase extends AppCompatActivity {
         return  contentView;
     }
 
-    public void setRootViewController(UIViewController controller)
+    public void SetRootViewController(UIViewController controller)
     {
         float x = 0, y = 0;
         if (rootViewController != null)

@@ -2,17 +2,17 @@ package com.daluotuo.facelock;
 
 import com.moonma.common.UIViewController;
 
-public class RegisterViewController extends UIViewController
+public class HomeViewController extends UIViewController
 {
 
-    UIRegister ui;
+    UIHome ui;
    // UICamera  uiCamera;
     UICameraOpenAiLab  uiCamera;
-    static private RegisterViewController _main;
+    static private HomeViewController _main;
 
-    public static RegisterViewController main() {
+    public static HomeViewController main() {
         if(_main==null){
-            _main = new RegisterViewController();
+            _main = new HomeViewController();
         }
         return _main;
     }
@@ -27,7 +27,7 @@ public class RegisterViewController extends UIViewController
 
     public void createContent()
     {
-        int retId = R.layout.uiregister;
+        int retId = R.layout.uihome;
 
 //        string strPrefab = "Common/Prefab/TabBar/UITabBar";
 //        GameObject obj = (GameObject)Resources.Load(strPrefab);
@@ -39,7 +39,7 @@ public class RegisterViewController extends UIViewController
         uiCamera = new UICameraOpenAiLab(R.layout.layout_camera_openailab,this.view);
         view.addView(uiCamera);
 
-        ui = new UIRegister();
+        ui = new UIHome();
         ui.uiCamera = uiCamera;
         ui.CreateUI(retId,this.view);
         view.addView(ui);

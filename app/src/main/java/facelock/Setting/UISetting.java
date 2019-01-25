@@ -21,21 +21,41 @@ import android.widget.TextView;
 
 
 import com.moonma.common.UIView;
+import com.moonma.common.PopViewController;
 
 import com.moonma.FaceSDK.FaceSDKBase;
 import com.moonma.FaceSDK.IFaceSDKBaseListener;
 import com.moonma.FaceSDK.FaceSDKCommon;
 import com.moonma.FaceSDK.FaceDBCommon;
 import com.moonma.FaceSDK.IFaceDBBaseListener;
+
 /**
  * TODO: document your custom view class.
  */
-public class UISetting extends UIView
-{
+public class UISetting extends UIView implements View.OnClickListener{
+    ImageButton btnClose;
 
-    public UISetting(int layoutId,UIView parent) {
-        super(layoutId,parent);
+    public UISetting(int layoutId, UIView parent) {
+        super(layoutId, parent);
 
+        btnClose = (ImageButton) findViewById(R.id.BtnRegister);
+        btnClose.setOnClickListener(this);
+    }
+
+    void OnClickBtnClose() {
+       PopViewController p = (PopViewController)this.controller;
+       if(p!=null){
+           p.Close();
+       }
+    }
+
+
+    @Override
+    public void onClick(View view) {
+
+        if (view.getId() == R.id.BtnSetting) {
+            OnClickBtnClose();
+        }
 
     }
 }
