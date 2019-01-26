@@ -33,4 +33,7 @@
 
     <drawable name="yellow">#FFFF00</drawable>
 
+    <color name="home_text_company">#ffffff</color>
+    <color name="home_text_system">#f0f0f0</color>
+    <color name="home_text_date">#f0f0f0</color>
 </resources>

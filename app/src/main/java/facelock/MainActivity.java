@@ -64,17 +64,17 @@ public class MainActivity extends MainActivityBase {
         super.onCreate(savedInstanceState);
 
 //去除title
-      //  requestWindowFeature(Window.FEATURE_NO_TITLE);
+        //  requestWindowFeature(Window.FEATURE_NO_TITLE);
 //去掉Activity上面的状态栏
-       // getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        // getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         //
 
 //        Android 中AppCompatActivity和Activity中隐藏标题栏的方式
 //        https://blog.csdn.net/u010395948/article/details/52562607
-        if (getSupportActionBar() != null){
+        if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
         }
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.layout_main);
         // getWindow().setFlags(WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED, WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
 
         FaceDBCommon.main().createSDK(Source.FACE_OPENAILAB);
@@ -139,6 +139,7 @@ public class MainActivity extends MainActivityBase {
 //      //  tab.view.content.addView(content);
 
         this.SetRootViewController(HomeViewController.main());
+//this.SetRootViewController(SettingViewController.main());
 
 //        TabBarViewController tab = TabBarViewController.main();
 //

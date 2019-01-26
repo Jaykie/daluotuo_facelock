@@ -289,7 +289,10 @@ public class UICameraOpenAiLab extends UIView
 
 
         if (!setCalibrateFromFile()) {
-            gotoCalibrate();
+            if (!Device.isEmulator()) {
+                gotoCalibrate();
+            }
+
         }
         face.OpenDB();
         mainLoop = new Thread() {

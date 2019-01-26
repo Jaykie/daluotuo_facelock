@@ -36,7 +36,7 @@ public class HomeViewController extends UIViewController
 
 
      //   uiCamera = new UICamera(R.layout.layout_camera,this.view);
-        uiCamera = new UICameraOpenAiLab(R.layout.layout_camera_openailab,this.view);
+        uiCamera = new UICameraOpenAiLab(R.layout.uicamera_openailab,this.view);
         view.addView(uiCamera);
 
         ui = new UIHome();

@@ -3,6 +3,7 @@ package com.moonma.common;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 
 import com.moonma.common.UIView;
 
@@ -50,6 +51,9 @@ public class UIViewController {
         if (view == null) {
             CreateView();
         }
+
+       // view.removeSelfFromParent(view.content);
+       // ViewParent v_p = view.content.getParent();
         parent.addView(view.content);
     }
 

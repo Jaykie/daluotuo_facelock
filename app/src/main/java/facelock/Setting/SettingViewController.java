@@ -34,6 +34,7 @@ public class SettingViewController extends PopViewController {
         int retId = R.layout.uisetting;
 //
         ui = new UISetting(retId, view);
+        ui.SetController(this);
         view.addView(ui);
     }
 }

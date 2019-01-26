@@ -13,12 +13,13 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="0dp"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        >
 
         <ImageButton
             android:id="@+id/BtnSetting"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
             android:contentDescription="setting"
             app:srcCompat="@drawable/btn_setting" />
 
@@ -30,20 +31,18 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.54"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.51">
+        android:layout_marginTop="32dp"
+        >
 
         <TextView
             android:id="@+id/TextCompany"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="0dp"
             android:text="title"
             android:textAlignment="center"
-            android:textColor="@android:color/holo_red_light" />
+            android:textColor="@color/home_text_company"
+            android:textSize="24sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/TextSystem"
@@ -52,7 +51,7 @@
             android:contentDescription="detail"
             android:text="detail"
             android:textAlignment="center"
-            android:textColor="@android:color/holo_orange_light" />
+            android:textColor="@color/home_text_system" />
 
         <TextView
             android:id="@+id/TextDate"
@@ -61,7 +60,8 @@
             android:contentDescription="detail"
             android:text="detail"
             android:textAlignment="center"
-            android:textColor="@android:color/holo_orange_light" />
+            android:textColor="@color/home_text_date"
+            android:textSize="12sp" />
 
     </LinearLayout>
 

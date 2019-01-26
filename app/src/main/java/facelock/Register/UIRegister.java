@@ -46,7 +46,7 @@ import com.moonma.common.PopViewController;
  * TODO: document your custom view class.
  */
 public class UIRegister extends UIView implements View.OnClickListener, UICamera.OnUICameraListener {
-   // public UICamera uiCamera;
+    // public UICamera uiCamera;
     public UICameraOpenAiLab uiCamera;
 
     private ImageButton btnRegister;
@@ -54,15 +54,15 @@ public class UIRegister extends UIView implements View.OnClickListener, UICamera
     private ImageButton btnOpenImageLib;
     private ImageButton btnClose;
     private EditText mEditText;
-//    private ExtImageView com.daluotuo.facelock.;
+    //    private ExtImageView com.daluotuo.facelock.;
     private static final int REQUEST_CODE_OP = 3;
 
     public UIRegister() {
     }
 
     public void CreateUI(int layoutId, UIView parent) {
-       // LaodL(layoutId, parent);
-        LoadLayoutRes(layoutId,parent);
+        // LaodL(layoutId, parent);
+        LoadLayoutRes(layoutId, parent);
         btnRegister = (ImageButton) findViewById(R.id.BtnRegister);
         btnRegister.setOnClickListener(this);
         btnDelAll = (ImageButton) findViewById(R.id.BtnDelAll);
@@ -71,7 +71,7 @@ public class UIRegister extends UIView implements View.OnClickListener, UICamera
         btnOpenImageLib = (ImageButton) findViewById(R.id.BtnOpenImageLib);
         btnOpenImageLib.setOnClickListener(this);
 
-        btnClose = (ImageButton) findViewById(R.id.BtnOpenImageLib);
+        btnClose = (ImageButton) findViewById(R.id.btn_register_close);
         btnClose.setOnClickListener(this);
 
     }
@@ -83,8 +83,7 @@ public class UIRegister extends UIView implements View.OnClickListener, UICamera
 
     public void doRegister(Bitmap bmp) {
         Activity ac = Common.getMainActivity();
-        if(ac==null)
-        {
+        if (ac == null) {
             return;
         }
         if (uiCamera.faceSDKCommon != null) {
@@ -167,11 +166,12 @@ public class UIRegister extends UIView implements View.OnClickListener, UICamera
     }
 
     void OnClickBtnClose() {
-        com.moonma.common.PopViewController p = (com.moonma.common.PopViewController)this.controller;
-        if(p!=null){
+        PopViewController p = (PopViewController) this.controller;
+        if (p != null) {
             p.Close();
         }
     }
+
     @Override
     public void onClick(View view) {
 
@@ -186,6 +186,11 @@ public class UIRegister extends UIView implements View.OnClickListener, UICamera
         if (view.getId() == R.id.BtnOpenImageLib) {
             ImageUtil.OpenSystemImageLib();
         }
+
+        if (view.getId() == R.id.btn_register_close) {
+            OnClickBtnClose();
+        }
+
 
     }
 

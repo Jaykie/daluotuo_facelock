@@ -28,7 +28,12 @@ public class Device {
     public static boolean isEmulator() {
 //MODEL=BKL-AL20 FINGERPRINT= MANUFACTURER=HUAWEI BRAND=HUAWEI
         Log.d(TAG, "MODEL=" + Build.MODEL + " FINGERPRINT=" + " MANUFACTURER=" + Build.MANUFACTURER + " BRAND=" + Build.BRAND);
-       return false;
+        //  return false;
+
+        return (Build.MODEL.contains("Emulator")
+                || Build.MODEL.contains("BKL-AL20")
+                || Build.MODEL.contains("Android SDK built for x86"));
+
 //
 //        return Build.FINGERPRINT.startsWith("generic")
 //                || Build.FINGERPRINT.toLowerCase().contains("vbox")

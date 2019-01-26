@@ -1,6 +1,5 @@
 package com.daluotuo.facelock;
 
-import com.moonma.common.UIViewController;
 import com.moonma.common.PopViewController;
 
 public class RegisterViewController extends PopViewController
@@ -37,10 +36,11 @@ public class RegisterViewController extends PopViewController
 
 
      //   uiCamera = new UICamera(R.layout.layout_camera,this.view);
-        uiCamera = new UICameraOpenAiLab(R.layout.layout_camera_openailab,this.view);
+        uiCamera = new UICameraOpenAiLab(R.layout.uicamera_openailab,this.view);
         view.addView(uiCamera);
 
         ui = new UIRegister();
+        ui.SetController(this);
         ui.uiCamera = uiCamera;
         ui.CreateUI(retId,this.view);
         view.addView(ui);

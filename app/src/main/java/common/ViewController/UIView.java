@@ -44,7 +44,7 @@ public class UIView {
         // this.addView(v);
     }
 
-    public void setController(UIViewController con) {
+    public void SetController(UIViewController con) {
         controller = con;
 
     }
