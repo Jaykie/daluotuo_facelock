@@ -21,6 +21,7 @@ import android.support.constraint.ConstraintLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 
 import com.moonma.common.Common;
@@ -61,11 +62,20 @@ public class MainActivity extends MainActivityBase {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
+//去除title
+      //  requestWindowFeature(Window.FEATURE_NO_TITLE);
+//去掉Activity上面的状态栏
+       // getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         //
 
-       // getWindow().setFlags(WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED, WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
+//        Android 中AppCompatActivity和Activity中隐藏标题栏的方式
+//        https://blog.csdn.net/u010395948/article/details/52562607
+        if (getSupportActionBar() != null){
+            getSupportActionBar().hide();
+        }
+        setContentView(R.layout.activity_main);
+        // getWindow().setFlags(WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED, WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
 
         FaceDBCommon.main().createSDK(Source.FACE_OPENAILAB);
 
@@ -128,45 +138,46 @@ public class MainActivity extends MainActivityBase {
 //
 //      //  tab.view.content.addView(content);
 
+        this.SetRootViewController(HomeViewController.main());
 
-        TabBarViewController tab = TabBarViewController.main();
-
-        tab.resIdLayoutTabBar = R.layout.layout_tabbar;
-        tab.resIdLayoutTabItem = R.layout.layout_tabbaritem;
-        tab.resIdTabItemBtn = R.id.btn_tabbaritem;
-        tab.resIdTabItemText = R.id.text_tabbaritem;
-
-        this.SetRootViewController(tab);
-
-        {
-            TabBarItemInfo info = new TabBarItemInfo();
-            info.title = Common.stringFromResId(R.string.home);
-            info.controller = HomeViewController.main();
-            tab.AddItem(info);
-        }
-
-        {
-            TabBarItemInfo info = new TabBarItemInfo();
-            info.title = Common.stringFromResId(R.string.register);
-            info.controller = RegisterViewController.main();
-            tab.AddItem(info);
-        }
-
-        {
-            TabBarItemInfo info = new TabBarItemInfo();
-            info.title = Common.stringFromResId(R.string.detect);
-            info.controller = DetectViewController.main();
-            tab.AddItem(info);
-        }
-
-        {
-            TabBarItemInfo info = new TabBarItemInfo();
-            info.title = Common.stringFromResId(R.string.setting);
-            info.controller = SettingViewController.main();
-            tab.AddItem(info);
-        }
-
-        tab.SelectItem(0);
+//        TabBarViewController tab = TabBarViewController.main();
+//
+//        tab.resIdLayoutTabBar = R.layout.layout_tabbar;
+//        tab.resIdLayoutTabItem = R.layout.layout_tabbaritem;
+//        tab.resIdTabItemBtn = R.id.btn_tabbaritem;
+//        tab.resIdTabItemText = R.id.text_tabbaritem;
+//
+//        this.SetRootViewController(tab);
+//
+//        {
+//            TabBarItemInfo info = new TabBarItemInfo();
+//            info.title = Common.stringFromResId(R.string.home);
+//            info.controller = HomeViewController.main();
+//            tab.AddItem(info);
+//        }
+//
+//        {
+//            TabBarItemInfo info = new TabBarItemInfo();
+//            info.title = Common.stringFromResId(R.string.register);
+//            info.controller = RegisterViewController.main();
+//            tab.AddItem(info);
+//        }
+//
+//        {
+//            TabBarItemInfo info = new TabBarItemInfo();
+//            info.title = Common.stringFromResId(R.string.detect);
+//            info.controller = DetectViewController.main();
+//            tab.AddItem(info);
+//        }
+//
+//        {
+//            TabBarItemInfo info = new TabBarItemInfo();
+//            info.title = Common.stringFromResId(R.string.setting);
+//            info.controller = SettingViewController.main();
+//            tab.AddItem(info);
+//        }
+//
+//        tab.SelectItem(0);
 
 //            startRegister();
 //            return;

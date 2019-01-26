@@ -31,7 +31,7 @@ public class SettingViewController extends PopViewController {
     public void createContent() {
 
 
-        int retId = R.layout.layout_detect_view_controller;
+        int retId = R.layout.uisetting;
 //
         ui = new UISetting(retId, view);
         view.addView(ui);

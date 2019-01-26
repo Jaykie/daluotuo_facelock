@@ -1,8 +1,9 @@
 package com.daluotuo.facelock;
 
 import com.moonma.common.UIViewController;
+import com.moonma.common.PopViewController;
 
-public class RegisterViewController extends UIViewController
+public class RegisterViewController extends PopViewController
 {
 
     UIRegister ui;

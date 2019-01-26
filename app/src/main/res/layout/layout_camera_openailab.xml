@@ -38,23 +38,23 @@
             android:layout_marginTop="10dp"
             android:orientation="vertical">
 
-            <Button
-                android:id="@+id/calibrateBtn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="点击摄像头校准"
-                android:textColor="@color/blue_d"
-                android:textSize="30sp" />
+            <!--<Button-->
+                <!--android:id="@+id/calibrateBtn"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="点击摄像头校准"-->
+                <!--android:textColor="@color/blue_d"-->
+                <!--android:textSize="30sp" />-->
 
-            <TextView
-                android:id="@+id/tv_time"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:gravity="center"
-                android:text="点击图像人脸注册"
-                android:textColor="@color/blue"
-                android:textSize="40sp" />
+            <!--<TextView-->
+                <!--android:id="@+id/tv_time"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginTop="10dp"-->
+                <!--android:gravity="center"-->
+                <!--android:text="点击图像人脸注册"-->
+                <!--android:textColor="@color/blue"-->
+                <!--android:textSize="40sp" />-->
         </LinearLayout>
 
         <RelativeLayout

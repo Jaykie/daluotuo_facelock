@@ -13,6 +13,7 @@ import android.graphics.drawable.Drawable;
 import android.hardware.Camera;
 import android.text.InputFilter;
 import android.text.TextPaint;
+import android.text.format.Time;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,28 +40,34 @@ import com.moonma.FaceSDK.IFaceDBBaseListener;
 
 import com.daluotuo.facelock.UICamera;
 import com.daluotuo.facelock.UICameraOpenAiLab;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * TODO: document your custom view class.
  */
 public class UIHome extends UIView implements View.OnClickListener, UICamera.OnUICameraListener {
-   // public UICamera uiCamera;
+    // public UICamera uiCamera;
     public UICameraOpenAiLab uiCamera;
 
     private ImageButton btnSetting;
     TextView textCompany;
     TextView textSystem;
     TextView textDate;
+    String[] strWeekNum_cn = {"星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"};
+    String[] strWeekNum_ = {"日", "一", "二", "三", "四", "五", "六"};
 
-//    private ExtImageView com.daluotuo.facelock.;
+    //    private ExtImageView com.daluotuo.facelock.;
     private static final int REQUEST_CODE_OP = 3;
 
     public UIHome() {
     }
 
     public void CreateUI(int layoutId, UIView parent) {
-       // LaodL(layoutId, parent);
-        LoadLayoutRes(layoutId,parent);
-        btnSetting = (ImageButton) findViewById(R.id.BtnRegister);
+        // LaodL(layoutId, parent);
+        LoadLayoutRes(layoutId, parent);
+        btnSetting = (ImageButton) findViewById(R.id.BtnSetting);
         btnSetting.setOnClickListener(this);
 
         textCompany = (TextView) findViewById(R.id.TextCompany);
@@ -69,11 +76,27 @@ public class UIHome extends UIView implements View.OnClickListener, UICamera.OnU
 
         textCompany.setText(R.string.company);
         textSystem.setText(R.string.system);
-        textDate.setText(R.string.setting);
+//
+//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日 HH:mm");// HH:mm:ss
+////获取当前时间
+//        Date date = new Date(System.currentTimeMillis());
+//        textDate.setText("Date获取当前日期时间" + simpleDateFormat.format(date));
+
+        Time t = new Time(); // or Time t=new Time("GMT+8"); 加上Time Zone资料。
+        t.setToNow(); // 取得系统时间。
+        int year = t.year;
+        int month = t.month + 1;
+        int day = t.monthDay;
+        int hour = t.hour; // 0-23
+        int minute = t.minute;
+        int second = t.second;
+        int week = t.weekDay;
+
+        textDate.setText(year + "年" + month + "月" + day + "日 " + strWeekNum_cn[week] + " " + hour + ":" + minute);
     }
 
     void OnClickBtnSetting() {
-        SettingViewController.main().Show(null,null);
+        SettingViewController.main().Show(null, null);
     }
 
     public void doRegister(Bitmap bmp) {

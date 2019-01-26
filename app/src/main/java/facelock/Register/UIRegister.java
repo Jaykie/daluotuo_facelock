@@ -38,6 +38,10 @@ import com.moonma.FaceSDK.IFaceDBBaseListener;
 
 import com.daluotuo.facelock.UICamera;
 import com.daluotuo.facelock.UICameraOpenAiLab;
+
+
+import com.moonma.common.PopViewController;
+
 /**
  * TODO: document your custom view class.
  */
@@ -48,7 +52,7 @@ public class UIRegister extends UIView implements View.OnClickListener, UICamera
     private ImageButton btnRegister;
     private ImageButton btnDelAll;
     private ImageButton btnOpenImageLib;
-
+    private ImageButton btnClose;
     private EditText mEditText;
 //    private ExtImageView com.daluotuo.facelock.;
     private static final int REQUEST_CODE_OP = 3;
@@ -66,6 +70,10 @@ public class UIRegister extends UIView implements View.OnClickListener, UICamera
 
         btnOpenImageLib = (ImageButton) findViewById(R.id.BtnOpenImageLib);
         btnOpenImageLib.setOnClickListener(this);
+
+        btnClose = (ImageButton) findViewById(R.id.BtnOpenImageLib);
+        btnClose.setOnClickListener(this);
+
     }
 
     void OnFaceRegister() {
@@ -158,6 +166,12 @@ public class UIRegister extends UIView implements View.OnClickListener, UICamera
 
     }
 
+    void OnClickBtnClose() {
+        com.moonma.common.PopViewController p = (com.moonma.common.PopViewController)this.controller;
+        if(p!=null){
+            p.Close();
+        }
+    }
     @Override
     public void onClick(View view) {
 
