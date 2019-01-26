@@ -18,4 +18,9 @@ if __name__ == "__main__":
     if flag:
         shutil.rmtree(dir2)
 
+    dir2 = "app/release"
+    flag = os.path.exists(dir2)
+    if flag:
+        shutil.rmtree(dir2)
+
     print "clean sucess"
