@@ -729,16 +729,30 @@ public class UICameraOpenAiLab extends UIView
 
     @Override
     public void FaceDidDetect(String name, float score, Bitmap bmp) {
-        if (mListener != null) {
-            mListener.CameraDidDetect(name, score, bmp);
-        }
+        final Bitmap bmp_show = bmp;
+        final String strName = name;
+        final float f_score = score;
+        Common.getMainActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (mListener != null) {
+                    mListener.CameraDidDetect(strName, f_score, bmp_show);
+                }
+            }
+        });
     }
 
     @Override
     public void FaceDidFail(Bitmap bmp) {
-        if (mListener != null) {
-            mListener.CameraDetectFail(bmp);
-        }
+        final Bitmap bmp_show = bmp;
+        Common.getMainActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (mListener != null) {
+                    mListener.CameraDetectFail(bmp_show);
+                }
+            }
+        });
     }
 
     @Override

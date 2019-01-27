@@ -39,5 +39,7 @@ public class FaceSDKBase {
     public int CheckRegisterFace(Bitmap bmp) {
         return 0;
     }
+
+
 }
 

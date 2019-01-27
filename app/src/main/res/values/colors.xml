@@ -36,4 +36,8 @@
     <color name="home_text_company">#ffffff</color>
     <color name="home_text_system">#f0f0f0</color>
     <color name="home_text_date">#f0f0f0</color>
+
+    <color name="facetips_detect_success">#4ffff5</color>
+    <color name="facetips_unregister">#fbff68</color>
+    <color name="facetips_detail">#ffffff</color>
 </resources>

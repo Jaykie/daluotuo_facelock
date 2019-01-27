@@ -26,7 +26,7 @@ public class UIView {
 
     public UIView(int layoutId, UIView parent) {
         //  super(context);
-        LoadLayoutRes(layoutId,parent);
+        LoadLayoutRes(layoutId, parent);
     }
 
     public void LoadLayoutRes(int layoutId, UIView parent) {
@@ -68,5 +68,19 @@ public class UIView {
         return content.findViewById(id);
     }
 
+    public void Show(boolean isShow) {
+        if (content != null) {
+            content.setVisibility(isShow ? View.VISIBLE : View.GONE);
+        }
+    }
 
+    public boolean isVisibility() {
+        if (content != null) {
+            if(content.getVisibility()==View.VISIBLE)
+            {
+                return true;
+            }
+        }
+        return  false;
+    }
 }

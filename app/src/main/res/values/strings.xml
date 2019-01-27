@@ -7,4 +7,6 @@
     <string name="setting">设置</string>
     <string name="company">深圳市宁远电子科技有限公司</string>
     <string name="system">人脸识别系统</string>
+    <string name="facetips_success">对比成功</string>
+    <string name="facetips_unregister">未注册</string>
 </resources>

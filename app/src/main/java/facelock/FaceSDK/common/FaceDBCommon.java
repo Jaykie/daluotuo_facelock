@@ -35,7 +35,7 @@ public class FaceDBCommon implements IFaceDBBaseListener {
             return;
         }
         if (source.equals(Source.FACE_ARC)) {
-         //   faceDB = new FaceDBArc();
+            //   faceDB = new FaceDBArc();
         } else if (source.equals(Source.FACE_OPENAILAB)) {
 
         }
@@ -55,6 +55,13 @@ public class FaceDBCommon implements IFaceDBBaseListener {
         if (faceDB != null) {
             faceDB.deleteAllFace();
         }
+    }
+
+    public boolean isEmpty() {
+        if (faceDB != null) {
+            return faceDB.isEmpty();
+        }
+        return true;
     }
 
     public void setListener(IFaceDBBaseListener listener) {

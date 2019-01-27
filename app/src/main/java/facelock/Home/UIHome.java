@@ -26,6 +26,7 @@ import android.widget.Toast;
 
 //import com.guo.android_extend.GLES2Render;
 //import com.guo.android_extend.widget.ExtImageView;
+import com.daluotuo.facelock.UIFaceTips;
 import com.moonma.common.ImageUtil;
 import com.moonma.common.UIView;
 import com.moonma.common.Common;
@@ -50,7 +51,8 @@ import java.util.Date;
 public class UIHome extends UIView implements View.OnClickListener, UICamera.OnUICameraListener {
     // public UICamera uiCamera;
     public UICameraOpenAiLab uiCamera;
-
+    public UIFaceTips uiFaceTips;
+    ;
     private ImageButton btnSetting;
     TextView textCompany;
     TextView textSystem;
@@ -93,6 +95,8 @@ public class UIHome extends UIView implements View.OnClickListener, UICamera.OnU
         int week = t.weekDay;
 
         textDate.setText(year + "年" + month + "月" + day + "日 " + strWeekNum_cn[week] + " " + hour + ":" + minute);
+
+        uiCamera.setUICameraListener(this);
     }
 
     void OnClickBtnSetting() {
@@ -110,13 +114,19 @@ public class UIHome extends UIView implements View.OnClickListener, UICamera.OnU
 
     @Override
     public void CameraDidDetect(String name, float score, Bitmap bmp) {
-
-
+        if (uiFaceTips != null) {
+            if (!uiFaceTips.isVisibility()) {
+                uiFaceTips.Show(true);
+                uiFaceTips.UpdateType(UIFaceTips.Type.DETECT_SUCCESS);
+            }
+        }
     }
 
     @Override
     public void CameraDetectFail(Bitmap bmp) {
-
+        if (uiFaceTips != null) {
+            uiFaceTips.Show(false);
+        }
     }
 
     @Override

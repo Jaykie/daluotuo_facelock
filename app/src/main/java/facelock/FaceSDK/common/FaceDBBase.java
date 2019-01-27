@@ -24,5 +24,9 @@ public class FaceDBBase{
     {
 
     }
+
+    public boolean isEmpty() {
+        return true;
+    }
 }
 
