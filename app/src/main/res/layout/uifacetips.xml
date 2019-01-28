@@ -7,45 +7,58 @@
     tools:context=".MainActivity">
 
 
-    <android.support.constraint.ConstraintLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <ImageView
             android:id="@+id/bg_facetips"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="256dp"
+            android:layout_height="256dp"
             android:contentDescription="bg"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
             app:srcCompat="@drawable/bg_detect_success" />
 
         <ImageView
             android:id="@+id/icon_facetips"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
             android:contentDescription="bg"
+            android:scaleX="0.7"
+            android:scaleY="0.7"
             app:srcCompat="@drawable/icon_success" />
 
         <TextView
             android:id="@+id/text_facetips"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/bg_facetips"
             android:layout_marginBottom="32dp"
             android:text="title"
             android:textAlignment="center"
             android:textColor="@color/home_text_company"
             android:textSize="24sp"
+            android:layout_centerHorizontal="true"
             app:layout_constraintBottom_toBottomOf="parent"
 
             />
 
         <Button
             android:id="@+id/btn_facetips_register"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Button" />
+            android:layout_width="64dp"
+            android:layout_height="32dp"
+            android:layout_alignBottom="@id/bg_facetips"
+            android:layout_marginBottom="0dp"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/bg_btn"
+            android:text="Button"
+            android:textColor="@color/home_text_company"
+            android:textSize="10sp" />
 
-    </android.support.constraint.ConstraintLayout>
+    </RelativeLayout>
 
 
 </android.support.constraint.ConstraintLayout>

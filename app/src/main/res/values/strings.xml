@@ -9,4 +9,6 @@
     <string name="system">人脸识别系统</string>
     <string name="facetips_success">对比成功</string>
     <string name="facetips_unregister">未注册</string>
+    <string name="facetips_register_success">注册成功</string>
+    <string name="facetips_register_redo">已经注册过了</string>
 </resources>

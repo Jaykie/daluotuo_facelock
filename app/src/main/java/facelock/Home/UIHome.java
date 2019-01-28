@@ -51,7 +51,7 @@ import java.util.Date;
 public class UIHome extends UIView implements View.OnClickListener, UICamera.OnUICameraListener {
     // public UICamera uiCamera;
     public UICameraOpenAiLab uiCamera;
-    public UIFaceTips uiFaceTips;
+
     ;
     private ImageButton btnSetting;
     TextView textCompany;
@@ -97,6 +97,7 @@ public class UIHome extends UIView implements View.OnClickListener, UICamera.OnU
         textDate.setText(year + "年" + month + "月" + day + "日 " + strWeekNum_cn[week] + " " + hour + ":" + minute);
 
         uiCamera.setUICameraListener(this);
+        uiCamera.setMode(FaceSDKBase.MODE_DETECT);
     }
 
     void OnClickBtnSetting() {
@@ -114,19 +115,19 @@ public class UIHome extends UIView implements View.OnClickListener, UICamera.OnU
 
     @Override
     public void CameraDidDetect(String name, float score, Bitmap bmp) {
-        if (uiFaceTips != null) {
-            if (!uiFaceTips.isVisibility()) {
-                uiFaceTips.Show(true);
-                uiFaceTips.UpdateType(UIFaceTips.Type.DETECT_SUCCESS);
-            }
-        }
+//        if (uiFaceTips != null) {
+//            if (!uiFaceTips.isVisibility()) {
+//                uiFaceTips.Show(true);
+//                uiFaceTips.UpdateType(UIFaceTips.Type.DETECT_SUCCESS);
+//            }
+//        }
     }
 
     @Override
     public void CameraDetectFail(Bitmap bmp) {
-        if (uiFaceTips != null) {
-            uiFaceTips.Show(false);
-        }
+//        if (uiFaceTips != null) {
+//            uiFaceTips.Show(false);
+//        }
     }
 
     @Override

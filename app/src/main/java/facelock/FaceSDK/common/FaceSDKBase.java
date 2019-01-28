@@ -18,7 +18,7 @@ public class FaceSDKBase {
     public final static int MSG_EVENT_FR_ERROR = 0x1005;
     public final static int MSG_EVENT_IMG_ERROR = 0x1006;
 
-    public static int faceMode = MODE_REGISTR;
+    public  int faceMode = MODE_REGISTR;
     public IFaceSDKBaseListener iListener;
     public  int width;
     public  int height;

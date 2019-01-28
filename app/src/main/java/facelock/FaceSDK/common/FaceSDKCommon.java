@@ -45,7 +45,7 @@ public class FaceSDKCommon implements IFaceSDKBaseListener {
 
     public void SetSize(int w, int h) {
         width = w;
-        height =h;
+        height = h;
         if (faceSDK != null) {
             faceSDK.width = w;
             faceSDK.height = h;
@@ -53,13 +53,22 @@ public class FaceSDKCommon implements IFaceSDKBaseListener {
     }
 
     public void setMode(int mode) {
-        FaceSDKBase.faceMode = mode;
+        if (faceSDK != null) {
+            faceSDK.faceMode = mode;
+        }
+    }
+
+    public int getMode() {
+        if (faceSDK != null) {
+            return faceSDK.faceMode;
+        }
+        return FaceSDKBase.MODE_PREVIEW;
     }
 
     public void createSDK(String source) {
 
         if (source.equals(Source.FACE_ARC)) {
-         //   faceSDK = new FaceSDKArc();
+            //   faceSDK = new FaceSDKArc();
         } else if (source.equals(Source.FACE_OPENAILAB)) {
             faceSDK = new FaceSDKOpenAiLab();
         }
@@ -76,7 +85,8 @@ public class FaceSDKCommon implements IFaceSDKBaseListener {
         iListener = listener;
     }
 
-    public Object onPreview(Camera cam, byte[] data, int width, int height, int format, long timestamp) {
+    public Object onPreview(Camera cam, byte[] data, int width, int height, int format,
+                            long timestamp) {
         return faceSDK.onPreview(cam, data, width, height, format, timestamp);
     }
 
@@ -99,9 +109,9 @@ public class FaceSDKCommon implements IFaceSDKBaseListener {
     }
 
     @Override
-    public void FaceDidRegister(Bitmap bmp) {
+    public void FaceDidRegister(Bitmap bmp,boolean isRedo) {
         if (iListener != null) {
-            iListener.FaceDidRegister(bmp);
+            iListener.FaceDidRegister(bmp, isRedo);
         }
     }
 }

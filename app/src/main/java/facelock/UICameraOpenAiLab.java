@@ -65,6 +65,8 @@ import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+import com.daluotuo.facelock.UIFaceTips;
+
 public class UICameraOpenAiLab extends UIView
         implements View.OnClickListener,
         IFaceSDKBaseListener {
@@ -87,7 +89,7 @@ public class UICameraOpenAiLab extends UIView
 
     //ui
     ImageButton btnCamSelect;
-
+    UIFaceTips uiFaceTips;
     //FACESDK
     public FaceSDKCommon faceSDKCommon;
     public UICamera.OnUICameraListener mListener;
@@ -182,28 +184,39 @@ public class UICameraOpenAiLab extends UIView
                 case SHOWTOAST: {
                     //    Log.d("zheng", "注册");
                     Activity ac = Common.getMainActivity();
-                    if (msg.arg1 == 1) {
-                        tv_time.setText("注册成功");
-                        //  Toast.makeText(ac, "注册成功", Toast.LENGTH_SHORT).show();
-                    } else if (msg.arg1 == 0) {
-                        tv_time.setText("你是:" + showName);
-                        Log.d("zheng", "toast:\"你是:\" + showName" + showName);
+                    //if (tv_time != null)
+                    {
 
-                        // Toast.makeText(ac, "你是:" + showName, Toast.LENGTH_SHORT).show();
-                        showName = "点击人脸注册";
-                    } else if (msg.arg1 == 2) {
-                        tv_time.setText("已经注册超过" + MAX_REGISTER + "人");
+                        if (msg.arg1 == 1) {
+                            // tv_time.setText("注册成功");
+                            //  Toast.makeText(ac, "注册成功", Toast.LENGTH_SHORT).show();
+                            FaceDidRegister(null,false);
 
-                        // Toast.makeText(ac, "已经注册超过" + MAX_REGISTER + "人", Toast.LENGTH_SHORT).show();
-                    } else if (msg.arg1 == 3) {
-                        tv_time.setText("点击图像人脸注册");
-                        //  Toast.makeText(ac, "点击图像人脸注册", Toast.LENGTH_SHORT).show();
-                    } else if (msg.arg1 == 5) {
-                        tv_time.setText("注册请输入名称");
-                        // Toast.makeText(ac, "注册请输入名称", Toast.LENGTH_SHORT).show();
-                    } else if (msg.arg1 == 6) {
-                        tv_time.setText(msg.obj + "已注册过了");
-                        // Toast.makeText(ac, msg.obj + "已注册过了", Toast.LENGTH_SHORT).show();
+                        } else if (msg.arg1 == 0) {
+                            //   tv_time.setText("你是:" + showName);
+                            Log.d("zheng", "toast:\"你是:\" + showName" + showName);
+                            FaceDidDetect(showName, 1f, null);
+
+                            // Toast.makeText(ac, "你是:" + showName, Toast.LENGTH_SHORT).show();
+                            showName = "点击人脸注册";
+                        } else if (msg.arg1 == 2) {
+                            //   tv_time.setText("已经注册超过" + MAX_REGISTER + "人");
+//
+                            // Toast.makeText(ac, "已经注册超过" + MAX_REGISTER + "人", Toast.LENGTH_SHORT).show();
+                        } else if (msg.arg1 == 3) {
+                            //  tv_time.setText("点击图像人脸注册");
+                            //  Toast.makeText(ac, "点击图像人脸注册", Toast.LENGTH_SHORT).show();
+                            FaceDidFail(null);
+
+                        } else if (msg.arg1 == 5) {
+                            //    tv_time.setText("注册请输入名称");
+                            // Toast.makeText(ac, "注册请输入名称", Toast.LENGTH_SHORT).show();
+                        } else if (msg.arg1 == 6) {
+                            //  tv_time.setText(msg.obj + "已注册过了");
+                            FaceDidRegister(null,true);
+                            // Toast.makeText(ac, msg.obj + "已注册过了", Toast.LENGTH_SHORT).show();
+                        }
+
                     }
                     break;
                 }
@@ -211,9 +224,12 @@ public class UICameraOpenAiLab extends UIView
         }
     }
 
+    public UICameraOpenAiLab() {
+    }
 
-    public UICameraOpenAiLab(int layoutId, UIView parent) {
-        super(layoutId, parent);
+
+    public void CreateUI(int layoutId, UIView parent) {
+        LoadLayoutRes(layoutId, parent);
 
         Activity ac = Common.getMainActivity();
 
@@ -229,13 +245,18 @@ public class UICameraOpenAiLab extends UIView
         mFormat = ImageFormat.NV21;
 
         if (!Device.isEmulator()) {
-            faceSDKCommon = new FaceSDKCommon();
+            faceSDKCommon = FaceSDKCommon.main();
             faceSDKCommon.SetSize(mWidth, mHeight);
             faceSDKCommon.setMode(FaceSDKBase.MODE_PREVIEW);
             faceSDKCommon.createSDK(Source.FACE_OPENAILAB);
             faceSDKCommon.setListener(this);
         }
 
+        uiFaceTips = new UIFaceTips();
+        uiFaceTips.CreateUI(R.layout.uifacetips, this);
+        this.addView(uiFaceTips);
+        uiFaceTips.UpdateType(UIFaceTips.Type.DETECT_SUCCESS, null);
+        uiFaceTips.Show(false);
 
 //        btnCamSelect = (ImageButton) findViewById(R.id.BtnCameraSelect);
 //        btnCamSelect.setOnClickListener(this);
@@ -634,6 +655,12 @@ public class UICameraOpenAiLab extends UIView
             isDialogShow = true;
         }
 
+        setMode(FaceSDKBase.MODE_REGISTR);
+
+        if (uiFaceTips != null) {
+            uiFaceTips.Show(false);
+        }
+
         long currentTime = System.currentTimeMillis();
         if (currentTime - lastClickTime > MIN_CLICK_DELAY_TIME) {
             lastClickTime = currentTime;
@@ -735,8 +762,18 @@ public class UICameraOpenAiLab extends UIView
         Common.getMainActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if (mListener != null) {
-                    mListener.CameraDidDetect(strName, f_score, bmp_show);
+
+                if (faceSDKCommon.getMode() == FaceSDKBase.MODE_DETECT) {
+                    if (mListener != null) {
+                        mListener.CameraDidDetect(strName, f_score, bmp_show);
+                    }
+
+                    if (uiFaceTips != null) {
+                        if (!uiFaceTips.isVisibility()) {
+                            uiFaceTips.Show(true);
+                            uiFaceTips.UpdateType(UIFaceTips.Type.DETECT_SUCCESS, strName);
+                        }
+                    }
                 }
             }
         });
@@ -748,24 +785,38 @@ public class UICameraOpenAiLab extends UIView
         Common.getMainActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if (mListener != null) {
-                    mListener.CameraDetectFail(bmp_show);
+                if (faceSDKCommon.getMode() == FaceSDKBase.MODE_DETECT) {
+                    if (mListener != null) {
+                        mListener.CameraDetectFail(bmp_show);
+                    }
+                    if (uiFaceTips != null) {
+                        uiFaceTips.Show(false);
+                    }
                 }
             }
         });
     }
 
     @Override
-    public void FaceDidRegister(Bitmap bmp) {
+    public void FaceDidRegister(Bitmap bmp, final boolean isRedo) {
         final Bitmap bmp_show = bmp;
         final UIView ui = this;
         Common.getMainActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                if (faceSDKCommon.getMode() == FaceSDKBase.MODE_REGISTR) {
+                    // doRegister(bmp_show);
+                    if (mListener != null) {
+                        mListener.CameraDidRegisterFace(ui, bmp_show);
+                    }
 
-                // doRegister(bmp_show);
-                if (mListener != null) {
-                    mListener.CameraDidRegisterFace(ui, bmp_show);
+                    if (uiFaceTips != null) {
+                        //   if (!uiFaceTips.isVisibility())
+                        {
+                            uiFaceTips.Show(true);
+                            uiFaceTips.UpdateType(isRedo?UIFaceTips.Type.REGISTER_REDO:UIFaceTips.Type.REGISTER_SUCCESS, null);
+                        }
+                    }
                 }
             }
         });

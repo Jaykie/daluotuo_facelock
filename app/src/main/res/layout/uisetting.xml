@@ -6,13 +6,22 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <ImageView
-        android:id="@+id/setting_bg"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="bg"
-        android:scaleType="fitXY"
-        app:srcCompat="@drawable/setting_bg" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/setting_bg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:contentDescription="bg"
+            android:scaleType="fitXY"
+            app:srcCompat="@drawable/setting_bg" />
+
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"

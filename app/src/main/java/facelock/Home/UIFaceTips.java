@@ -11,10 +11,12 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.hardware.Camera;
+import android.os.Handler;
 import android.text.InputFilter;
 import android.text.TextPaint;
 import android.text.format.Time;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,7 +56,9 @@ public class UIFaceTips extends UIView implements View.OnClickListener {
 
     public enum Type {
         DETECT_SUCCESS,
-        UNREGISTER
+        UNREGISTER,
+        REGISTER_SUCCESS,
+        REGISTER_REDO,//已经注册
     }
 
     TextView textTitle;
@@ -80,12 +84,17 @@ public class UIFaceTips extends UIView implements View.OnClickListener {
 
         btnRegister = (Button) findViewById(R.id.btn_facetips_register);
         btnRegister.setOnClickListener(this);
+        btnRegister.setText(R.string.register);
     }
 
-    public void UpdateType(Type ty) {
+    public void UpdateType(Type ty, String name) {
         Activity ac = Common.getMainActivity();
         if (ty == Type.DETECT_SUCCESS) {
-            textTitle.setText(R.string.facetips_success);
+            if (name != null) {
+                String str = Common.stringFromResId(R.string.facetips_success) + ":" + name;
+                textTitle.setText(str);//R.string.facetips_success
+            }
+
             imageBg.setImageResource(R.drawable.bg_detect_success);
             imageIcon.setImageResource(R.drawable.icon_success);
             btnRegister.setVisibility(View.GONE);
@@ -98,7 +107,36 @@ public class UIFaceTips extends UIView implements View.OnClickListener {
             btnRegister.setVisibility(View.VISIBLE);
             textTitle.setTextColor(ac.getResources().getColor(R.color.facetips_unregister));
         }
+        if ((ty == Type.REGISTER_SUCCESS)||(ty == Type.REGISTER_REDO))
+        {
+            if (ty == Type.REGISTER_SUCCESS)
+            {
+                textTitle.setText(R.string.facetips_register_success);
+            }else {
+                textTitle.setText(R.string.facetips_register_redo);
+            }
+            imageBg.setImageResource(R.drawable.bg_unregister);
+            imageIcon.setImageResource(R.drawable.icon_warning);
+            btnRegister.setVisibility(View.GONE);
+            textTitle.setTextColor(ac.getResources().getColor(R.color.facetips_unregister));
+            OnHideDelay();
+        }
+    }
 
+
+    void OnHideDelay() {
+        long time = 2000;//ms
+        //定时更新
+        Handler handler = new Handler();
+        Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                Show(false);
+                FaceSDKCommon.main().setMode(FaceSDKBase.MODE_DETECT);
+            }
+        };
+
+        handler.postDelayed(r, time);//延时毫秒
     }
 
     void OnClickBtnRegister() {

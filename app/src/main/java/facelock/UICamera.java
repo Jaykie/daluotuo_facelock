@@ -56,6 +56,8 @@ public class UICamera extends UIView
     public FaceSDKCommon faceSDKCommon;
     public OnUICameraListener mListener;
 
+
+
     public interface OnUICameraListener {
         public void CameraDidRegisterFace(UIView ui, Bitmap bmp);
         public void CameraDidDetect(String name, float score , Bitmap bmp);
@@ -251,7 +253,7 @@ public class UICamera extends UIView
     }
 
     @Override
-    public void FaceDidRegister(Bitmap bmp) {
+    public void FaceDidRegister(Bitmap bmp,boolean isRedo) {
         final Bitmap bmp_show = bmp;
         final UICamera ui = this;
         Common.getMainActivity().runOnUiThread(new Runnable() {
