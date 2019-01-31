@@ -77,7 +77,7 @@ public class MainActivity extends MainActivityBase {
         setContentView(R.layout.layout_main);
         // getWindow().setFlags(WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED, WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
 
-        FaceDBCommon.main().createSDK(Source.FACE_OPENAILAB);
+        FaceDBCommon.main().CreateSDK(Source.FACE_OPENAILAB);
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
             for (String one : mPermission) {

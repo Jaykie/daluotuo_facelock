@@ -5,8 +5,9 @@ import com.moonma.common.Device;
 import com.moonma.common.Source;
 import com.moonma.FaceSDK.IFaceDBBaseListener;
 //import com.moonma.FaceSDK.FaceDBArc;
-import com.moonma.FaceSDK.FaceSDKOpenAiLab;
+import com.moonma.FaceSDK.FaceDBOpenAiLab;
 import com.moonma.FaceSDK.FaceDBBase;
+import com.moonma.FaceSDK.FaceInfo;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -29,7 +30,7 @@ public class FaceDBCommon implements IFaceDBBaseListener {
         return _main;
     }
 
-    public void createSDK(String source) {
+    public void CreateSDK(String source) {
 
         if (Device.isEmulator()) {
             return;
@@ -37,23 +38,29 @@ public class FaceDBCommon implements IFaceDBBaseListener {
         if (source.equals(Source.FACE_ARC)) {
             //   faceDB = new FaceDBArc();
         } else if (source.equals(Source.FACE_OPENAILAB)) {
-
+            faceDB = new FaceDBOpenAiLab();
         }
         if (faceDB != null) {
-            faceDB.init();
-            faceDB.setListener(this);
-        }
-    }
-
-    public void registerFace(String name, Bitmap bmp) {
-        if (faceDB != null) {
-            faceDB.registerFace(name, bmp);
+            faceDB.Init();
+            faceDB.SetListener(this);
         }
     }
 
-    public void deleteAllFace() {
+
+    public void AddFace(FaceInfo info) {
         if (faceDB != null) {
-            faceDB.deleteAllFace();
+            faceDB.AddFace(info);
+        }
+    }
+    public void DeleteFace(FaceInfo info) {
+        if (faceDB != null) {
+            faceDB.DeleteFace(info);
+        }
+    }
+
+    public void DeleteAllFace() {
+        if (faceDB != null) {
+            faceDB.DeleteAllFace();
         }
     }
 
@@ -64,7 +71,7 @@ public class FaceDBCommon implements IFaceDBBaseListener {
         return true;
     }
 
-    public void setListener(IFaceDBBaseListener listener) {
+    public void SetListener(IFaceDBBaseListener listener) {
         iListener = listener;
     }
 

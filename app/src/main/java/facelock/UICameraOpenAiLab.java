@@ -262,6 +262,13 @@ public class UICameraOpenAiLab extends UIView
 //        btnCamSelect.setOnClickListener(this);
 
         InitCamera();
+
+
+        if(FaceDBCommon.main().isEmpty())
+        {
+            uiFaceTips.UpdateType(UIFaceTips.Type.UNREGISTER, null);
+            uiFaceTips.Show(true);
+        }
     }
 
     void InitCamera() {
@@ -413,6 +420,7 @@ public class UICameraOpenAiLab extends UIView
 
 
                                 int res = face.AddDB(feature, editTextString);
+
                                 Log.d("zheng", "register res:" + res);
                                 if (res == FaceAPP.SUCCESS) {
                                     tempMsg.arg1 = 1;
@@ -817,6 +825,10 @@ public class UICameraOpenAiLab extends UIView
                             uiFaceTips.UpdateType(isRedo?UIFaceTips.Type.REGISTER_REDO:UIFaceTips.Type.REGISTER_SUCCESS, null);
                         }
                     }
+                    com.moonma.FaceSDK.FaceInfo info = new com.moonma.FaceSDK.FaceInfo();
+                    info.name = editTextString;
+                    info.bmp = bmp_show;
+                    FaceDBCommon.main().AddFace(info);
                 }
             }
         });

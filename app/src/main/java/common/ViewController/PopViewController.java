@@ -10,7 +10,7 @@ import com.moonma.common.UIView;
 import com.moonma.common.UIViewController;
 import com.moonma.common.MainActivityBase;
 
-public class PopViewController extends UIViewController {
+public class PopViewController extends UIViewController implements View.OnClickListener {
 
     IPopViewControllerDelegate iDelegate;
 
@@ -31,6 +31,8 @@ public class PopViewController extends UIViewController {
             SetViewParent(root.view.content);
         }
 
+        //屏蔽PopViewController底下ViewController的触模点击
+        this.view.content.setOnClickListener(this);
     }
 
     public void Close() {
@@ -38,5 +40,10 @@ public class PopViewController extends UIViewController {
             iDelegate.OnPopViewControllerDidClose(this);
         }
         DestroyView();
+    }
+
+    @Override
+    public void onClick(View view) {
+
     }
 }

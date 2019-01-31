@@ -3,24 +3,26 @@ import android.graphics.Bitmap;
 import android.graphics.Rect;
 
 import com.moonma.FaceSDK.IFaceDBBaseListener;
+import com.moonma.FaceSDK.FaceInfo;
 
 public class FaceDBBase{
 
     public IFaceDBBaseListener iListener;
-    public void init()
-    {
-
-    }
-
-    public void setListener(IFaceDBBaseListener listener)
+    public void SetListener(IFaceDBBaseListener listener)
     {
         iListener = listener;
     }
-
-    public  void registerFace(String name,Bitmap bmp)
+    public void Init()
     {
+
     }
-    public  void deleteAllFace()
+    public void AddFace(FaceInfo info) {
+    }
+
+    public void DeleteFace(FaceInfo info) {
+    }
+
+    public  void DeleteAllFace()
     {
 
     }
