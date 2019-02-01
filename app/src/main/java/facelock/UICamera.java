@@ -29,7 +29,7 @@ import com.moonma.FaceSDK.FaceDBCommon;
 import com.moonma.FaceSDK.IFaceDBBaseListener;
 
 import java.util.List;
-
+import com.moonma.FaceSDK.FaceInfo;
 public class UICamera extends UIView
         implements
 //        CameraSurfaceView.OnCameraListener,
@@ -59,9 +59,9 @@ public class UICamera extends UIView
 
 
     public interface OnUICameraListener {
-        public void CameraDidRegisterFace(UIView ui, Bitmap bmp);
-        public void CameraDidDetect(String name, float score , Bitmap bmp);
-        public void CameraDetectFail(Bitmap bmp);
+        public void CameraDidRegisterFace(UIView ui,FaceInfo info);
+        public void CameraDidDetect(FaceInfo info);
+        public void CameraDetectFail(FaceInfo info);
     }
 
     public UICamera(int layoutId, UIView parent) {
@@ -239,30 +239,28 @@ public class UICamera extends UIView
     }
 
     @Override
-    public void FaceDidDetect(String name, float score, Bitmap bmp) {
+    public void FaceDidDetect(FaceInfo info) {
         if (mListener != null) {
-            mListener.CameraDidDetect(name,score,bmp);
+            mListener.CameraDidDetect(info);
         }
     }
 
     @Override
-    public void FaceDidFail(Bitmap bmp) {
+    public void FaceDidFail(FaceInfo info) {
         if (mListener != null) {
-            mListener.CameraDetectFail(bmp);
+            mListener.CameraDetectFail(info);
         }
     }
 
     @Override
-    public void FaceDidRegister(Bitmap bmp,boolean isRedo) {
-        final Bitmap bmp_show = bmp;
+    public void FaceDidRegister(FaceInfo info,boolean isRedo) {
         final UICamera ui = this;
+        final FaceInfo info_show = info;
         Common.getMainActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-
-                // doRegister(bmp_show);
                 if (mListener != null) {
-                    mListener.CameraDidRegisterFace(ui, bmp_show);
+                    mListener.CameraDidRegisterFace(ui,info_show);
                 }
             }
         });

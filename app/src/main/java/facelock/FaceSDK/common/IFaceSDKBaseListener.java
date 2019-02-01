@@ -1,9 +1,10 @@
 package com.moonma.FaceSDK;
 
 import android.graphics.Bitmap;
+import com.moonma.FaceSDK.FaceInfo;
 
 public interface IFaceSDKBaseListener {
-    public void FaceDidDetect(String name, float score , Bitmap bmp);
-    public void FaceDidFail(Bitmap bmp);
-    public void FaceDidRegister(Bitmap bmp,boolean isRedo);
+    public void FaceDidDetect(FaceInfo info);
+    public void FaceDidFail(FaceInfo info);
+    public void FaceDidRegister(FaceInfo info,boolean isRedo);
 }

@@ -4,9 +4,12 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.Bitmap;
 import android.util.Log;
 
 import com.moonma.FaceSDK.FaceInfo;
+
+import java.nio.ByteBuffer;
 
 
 class DBHelper extends SQLiteOpenHelper {
@@ -15,10 +18,10 @@ class DBHelper extends SQLiteOpenHelper {
     private static final String TABLE_FACE = "table_face";
 
     private static final int DATABASE_VERSION = 1;//数据库版本号
-    private static final String SQL_CREATE_TABLE_FACE = "create table "+TABLE_FACE+" ("
+    private static final String SQL_CREATE_TABLE_FACE = "create table " + TABLE_FACE + " ("
             + "id text primary key autoincrement,"
             + "name text, "
-            + "price real)";//数据库里的表
+            + "data blob )";//数据库里的表
 
     SQLiteDatabase dbOpen;
 
@@ -43,17 +46,41 @@ class DBHelper extends SQLiteOpenHelper {
 
     }
 
+    public byte[] GetRGBDataOfBmp(Bitmap bmp) {
+        try {
+            int bytes = bmp.getByteCount();
+            int size = bmp.getWidth() * bmp.getHeight();
+            int bit = bytes / size;
+            ByteBuffer buf = ByteBuffer.allocate(bytes);
+            bmp.copyPixelsToBuffer(buf);
+
+            byte[] data = buf.array();
+            return data;
+        } catch (Exception e) {
+            return null;
+        }
+
+    }
+
     public void AddItem(FaceInfo info) {
-        String strSql="insert into "+TABLE_FACE+" values(1,'TT','一起去旅游','10月1号')";
+        //    db.execSQL("insert into test (id,photo) values(?,?)",new Object[]{photo.getId(),photoByte});
+        // String strSql="insert into "+TABLE_FACE+" values(1,'TT','一起去旅游','10月1号')";
         if (dbOpen != null) {
-            dbOpen.execSQL(strSql);
+            if(info.bmp!=null)
+            {
+                byte[] data = GetRGBDataOfBmp(info.bmp);
+                dbOpen.execSQL("insert into " + TABLE_FACE + "  (id,name,data) values(?,?)", new Object[]{info.id, info.name, data});
+            }else {
+                dbOpen.execSQL("insert into " + TABLE_FACE + "  (id,name) values(?,?)", new Object[]{info.id, info.name});
+            }
+
         }
     }
 
     public boolean isEmpty() {
         int number = 0;
         if (dbOpen != null) {
-            Cursor c = dbOpen.rawQuery("select * from "+TABLE_FACE, null);
+            Cursor c = dbOpen.rawQuery("select * from " + TABLE_FACE, null);
             number = c.getCount();
         }
         return true;

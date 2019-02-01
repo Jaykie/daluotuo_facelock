@@ -41,7 +41,7 @@ import com.daluotuo.facelock.UICameraOpenAiLab;
 
 
 import com.moonma.common.PopViewController;
-
+import com.moonma.FaceSDK.FaceInfo;
 /**
  * TODO: document your custom view class.
  */
@@ -81,7 +81,7 @@ public class UIRegister extends UIView implements View.OnClickListener, UICamera
         uiCamera.setMode(FaceSDKBase.MODE_REGISTR);
     }
 
-    public void doRegister(Bitmap bmp) {
+    public void doRegister(final Bitmap bmp) {
         Activity ac = Common.getMainActivity();
         if (ac == null) {
             return;
@@ -136,7 +136,11 @@ public class UIRegister extends UIView implements View.OnClickListener, UICamera
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //
-                        FaceDBCommon.main().registerFace(mEditText.getText().toString(), bmpFace);
+                        FaceInfo info = new FaceInfo();
+                        info.name = mEditText.getText().toString();
+                        info.id = info.name;
+                        info.bmp = bmpFace;
+                        FaceDBCommon.main().AddFace(info);
                         dialog.dismiss();
                     }
                 })
@@ -150,18 +154,18 @@ public class UIRegister extends UIView implements View.OnClickListener, UICamera
     }
 
     @Override
-    public void CameraDidRegisterFace(UIView ui, Bitmap bmp) {
-        doRegister(bmp);
+    public void CameraDidRegisterFace(UIView ui, FaceInfo info) {
+        doRegister(info.bmp);
     }
 
     @Override
-    public void CameraDidDetect(String name, float score, Bitmap bmp) {
+    public void CameraDidDetect(FaceInfo info) {
 
 
     }
 
     @Override
-    public void CameraDetectFail(Bitmap bmp) {
+    public void CameraDetectFail(FaceInfo info) {
 
     }
 
@@ -180,7 +184,7 @@ public class UIRegister extends UIView implements View.OnClickListener, UICamera
         }
 
         if (view.getId() == R.id.BtnDelAll) {
-            FaceDBCommon.main().deleteAllFace();
+            FaceDBCommon.main().DeleteAllFace();
         }
 
         if (view.getId() == R.id.BtnOpenImageLib) {

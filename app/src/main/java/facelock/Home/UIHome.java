@@ -44,7 +44,7 @@ import com.daluotuo.facelock.UICameraOpenAiLab;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
+import com.moonma.FaceSDK.FaceInfo;
 /**
  * TODO: document your custom view class.
  */
@@ -109,12 +109,12 @@ public class UIHome extends UIView implements View.OnClickListener, UICamera.OnU
     }
 
     @Override
-    public void CameraDidRegisterFace(UIView ui, Bitmap bmp) {
-        doRegister(bmp);
+    public void CameraDidRegisterFace(UIView ui, FaceInfo info) {
+        doRegister(info.bmp);
     }
 
     @Override
-    public void CameraDidDetect(String name, float score, Bitmap bmp) {
+    public void CameraDidDetect(FaceInfo info) {
 //        if (uiFaceTips != null) {
 //            if (!uiFaceTips.isVisibility()) {
 //                uiFaceTips.Show(true);
@@ -124,7 +124,7 @@ public class UIHome extends UIView implements View.OnClickListener, UICamera.OnU
     }
 
     @Override
-    public void CameraDetectFail(Bitmap bmp) {
+    public void CameraDetectFail(FaceInfo info) {
 //        if (uiFaceTips != null) {
 //            uiFaceTips.Show(false);
 //        }

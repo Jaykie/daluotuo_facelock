@@ -184,18 +184,28 @@ public class UICameraOpenAiLab extends UIView
                 case SHOWTOAST: {
                     //    Log.d("zheng", "注册");
                     Activity ac = Common.getMainActivity();
+                    com.moonma.FaceSDK.FaceInfo info = new com.moonma.FaceSDK.FaceInfo();
                     //if (tv_time != null)
                     {
 
                         if (msg.arg1 == 1) {
                             // tv_time.setText("注册成功");
                             //  Toast.makeText(ac, "注册成功", Toast.LENGTH_SHORT).show();
-                            FaceDidRegister(null,false);
+                            info.name = editTextString;
+                            info.id = info.name;
+                            info.bmp = null;
+                            info.score = 1f;
+                            FaceDidRegister(info,false);
 
                         } else if (msg.arg1 == 0) {
                             //   tv_time.setText("你是:" + showName);
                             Log.d("zheng", "toast:\"你是:\" + showName" + showName);
-                            FaceDidDetect(showName, 1f, null);
+
+                            info.name = showName;
+                            info.id = info.name;
+                            info.bmp = null;
+                            info.score = 1f;
+                            FaceDidDetect(info);
 
                             // Toast.makeText(ac, "你是:" + showName, Toast.LENGTH_SHORT).show();
                             showName = "点击人脸注册";
@@ -213,7 +223,11 @@ public class UICameraOpenAiLab extends UIView
                             // Toast.makeText(ac, "注册请输入名称", Toast.LENGTH_SHORT).show();
                         } else if (msg.arg1 == 6) {
                             //  tv_time.setText(msg.obj + "已注册过了");
-                            FaceDidRegister(null,true);
+                            info.name = editTextString;
+                            info.id = info.name;
+                            info.bmp = null;
+                            info.score = 1f;
+                            FaceDidRegister(info,true);
                             // Toast.makeText(ac, msg.obj + "已注册过了", Toast.LENGTH_SHORT).show();
                         }
 
@@ -763,23 +777,21 @@ public class UICameraOpenAiLab extends UIView
     }
 
     @Override
-    public void FaceDidDetect(String name, float score, Bitmap bmp) {
-        final Bitmap bmp_show = bmp;
-        final String strName = name;
-        final float f_score = score;
+    public void FaceDidDetect(com.moonma.FaceSDK.FaceInfo info ) {
+       final  com.moonma.FaceSDK.FaceInfo info_show = info;
         Common.getMainActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
 
                 if (faceSDKCommon.getMode() == FaceSDKBase.MODE_DETECT) {
                     if (mListener != null) {
-                        mListener.CameraDidDetect(strName, f_score, bmp_show);
+                        mListener.CameraDidDetect(info_show);
                     }
 
                     if (uiFaceTips != null) {
                         if (!uiFaceTips.isVisibility()) {
                             uiFaceTips.Show(true);
-                            uiFaceTips.UpdateType(UIFaceTips.Type.DETECT_SUCCESS, strName);
+                            uiFaceTips.UpdateType(UIFaceTips.Type.DETECT_SUCCESS, info_show.name);
                         }
                     }
                 }
@@ -788,14 +800,14 @@ public class UICameraOpenAiLab extends UIView
     }
 
     @Override
-    public void FaceDidFail(Bitmap bmp) {
-        final Bitmap bmp_show = bmp;
+    public void FaceDidFail(com.moonma.FaceSDK.FaceInfo info) {
+        final com.moonma.FaceSDK.FaceInfo info_show = info ;
         Common.getMainActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 if (faceSDKCommon.getMode() == FaceSDKBase.MODE_DETECT) {
                     if (mListener != null) {
-                        mListener.CameraDetectFail(bmp_show);
+                        mListener.CameraDetectFail(info_show);
                     }
                     if (uiFaceTips != null) {
                         uiFaceTips.Show(false);
@@ -806,8 +818,8 @@ public class UICameraOpenAiLab extends UIView
     }
 
     @Override
-    public void FaceDidRegister(Bitmap bmp, final boolean isRedo) {
-        final Bitmap bmp_show = bmp;
+    public void FaceDidRegister(com.moonma.FaceSDK.FaceInfo info, final boolean isRedo) {
+        final com.moonma.FaceSDK.FaceInfo info_show = info ;
         final UIView ui = this;
         Common.getMainActivity().runOnUiThread(new Runnable() {
             @Override
@@ -815,7 +827,7 @@ public class UICameraOpenAiLab extends UIView
                 if (faceSDKCommon.getMode() == FaceSDKBase.MODE_REGISTR) {
                     // doRegister(bmp_show);
                     if (mListener != null) {
-                        mListener.CameraDidRegisterFace(ui, bmp_show);
+                        mListener.CameraDidRegisterFace(ui, info_show);
                     }
 
                     if (uiFaceTips != null) {
@@ -825,10 +837,8 @@ public class UICameraOpenAiLab extends UIView
                             uiFaceTips.UpdateType(isRedo?UIFaceTips.Type.REGISTER_REDO:UIFaceTips.Type.REGISTER_SUCCESS, null);
                         }
                     }
-                    com.moonma.FaceSDK.FaceInfo info = new com.moonma.FaceSDK.FaceInfo();
-                    info.name = editTextString;
-                    info.bmp = bmp_show;
-                    FaceDBCommon.main().AddFace(info);
+
+                    FaceDBCommon.main().AddFace(info_show);
                 }
             }
         });

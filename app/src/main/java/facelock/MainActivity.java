@@ -32,7 +32,6 @@ import com.moonma.common.Source;
 import com.moonma.common.TabBarItemInfo;
 import com.moonma.common.TabBarViewController;
 import com.daluotuo.facelock.RegisterViewController;
-import com.daluotuo.facelock.DetectViewController;
 import com.daluotuo.facelock.SettingViewController;
 import com.daluotuo.facelock.HomeViewController;
 

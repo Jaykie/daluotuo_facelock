@@ -12,6 +12,8 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.util.Log;
 import android.hardware.Camera;
+import com.moonma.FaceSDK.FaceInfo;
+
 
 public class FaceSDKCommon implements IFaceSDKBaseListener {
 
@@ -95,23 +97,23 @@ public class FaceSDKCommon implements IFaceSDKBaseListener {
     }
 
     @Override
-    public void FaceDidDetect(String name, float score, Bitmap bmp) {
+    public void FaceDidDetect(FaceInfo info) {
         if (iListener != null) {
-            iListener.FaceDidDetect(name, score, bmp);
+            iListener.FaceDidDetect(info);
         }
     }
 
     @Override
-    public void FaceDidFail(Bitmap bmp) {
+    public void FaceDidFail(FaceInfo info) {
         if (iListener != null) {
-            iListener.FaceDidFail(bmp);
+            iListener.FaceDidFail(info);
         }
     }
 
     @Override
-    public void FaceDidRegister(Bitmap bmp,boolean isRedo) {
+    public void FaceDidRegister(FaceInfo info,boolean isRedo) {
         if (iListener != null) {
-            iListener.FaceDidRegister(bmp, isRedo);
+            iListener.FaceDidRegister(info, isRedo);
         }
     }
 }
