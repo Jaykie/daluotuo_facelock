@@ -49,8 +49,8 @@ import com.moonma.FaceSDK.FaceInfo;
  * TODO: document your custom view class.
  */
 public class UIHome extends UIView implements View.OnClickListener, UICamera.OnUICameraListener {
-    // public UICamera uiCamera;
-    public UICameraOpenAiLab uiCamera;
+     public UICamera uiCamera;
+    //public UICameraOpenAiLab uiCamera;
 
     ;
     private ImageButton btnSetting;

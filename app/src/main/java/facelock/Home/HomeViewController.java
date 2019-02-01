@@ -8,7 +8,7 @@ public class HomeViewController extends UIViewController {
     UIHome ui;
 
     // UICamera  uiCamera;
-    UICameraOpenAiLab uiCamera;
+    UICamera uiCamera;//UICameraOpenAiLab
     static private HomeViewController _main;
 
     public static HomeViewController main() {

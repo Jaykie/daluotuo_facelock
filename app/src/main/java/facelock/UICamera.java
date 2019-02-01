@@ -30,17 +30,20 @@ import com.moonma.FaceSDK.IFaceDBBaseListener;
 
 import java.util.List;
 import com.moonma.FaceSDK.FaceInfo;
+
+
+import com.daluotuo.facelock.UIFaceTips;
+
 public class UICamera extends UIView
         implements
 //        CameraSurfaceView.OnCameraListener,
 //        View.OnTouchListener,
 //        Camera.AutoFocusCallback,
-        View.OnClickListener,
         IFaceSDKBaseListener {
 
     private final String TAG = this.getClass().getSimpleName();
 
-    private int mWidth, mHeight, mFormat;
+    public int mWidth, mHeight, mFormat;
 //    private CameraSurfaceView mSurfaceView;
 //    private CameraGLSurfaceView mGLSurfaceView;
     private Camera mCamera;
@@ -55,7 +58,7 @@ public class UICamera extends UIView
     //FACESDK
     public FaceSDKCommon faceSDKCommon;
     public OnUICameraListener mListener;
-
+    public UIFaceTips uiFaceTips;
 
 
     public interface OnUICameraListener {
@@ -64,44 +67,16 @@ public class UICamera extends UIView
         public void CameraDetectFail(FaceInfo info);
     }
 
+    public UICamera() {
+
+    }
+
     public UICamera(int layoutId, UIView parent) {
         super(layoutId, parent);
+    }
 
-        Activity ac = Common.getMainActivity();
-
-        mCameraID = Camera.CameraInfo.CAMERA_FACING_BACK;//ac.getIntent().getIntExtra("Camera", 0) == 0 ? Camera.CameraInfo.CAMERA_FACING_BACK : Camera.CameraInfo.CAMERA_FACING_FRONT;
-        //ac.getIntent().getIntExtra("Camera", 0) == 0 ? 90 : 270;
-
-        mWidth = 1280;
-        mHeight = 960;
-
-       // updateCameraSize();
-
-       // mCameraMirror = GLES2Render.MIRROR_NONE;//ac.getIntent().getIntExtra("Camera", 0) == 0 ? GLES2Render.MIRROR_NONE : GLES2Render.MIRROR_X;
-
-        mFormat = ImageFormat.NV21;
-
-//        mGLSurfaceView = (CameraGLSurfaceView) content.findViewById(R.id.glsurfaceView);
-//        mGLSurfaceView.setOnTouchListener(this);
-//        mSurfaceView = (CameraSurfaceView) content.findViewById(R.id.surfaceView);
-//        mSurfaceView.setOnCameraListener(this);
-//        mSurfaceView.setupGLSurafceView(mGLSurfaceView, true, mCameraMirror, mCameraRotate);
-//        mSurfaceView.debug_print_fps(true, false);
-
-        if(!Device.isEmulator()){
-            faceSDKCommon = new FaceSDKCommon();
-            faceSDKCommon.SetSize(mWidth,mHeight);
-            faceSDKCommon.setMode(FaceSDKBase.MODE_PREVIEW);
-            faceSDKCommon.createSDK(Source.FACE_OPENAILAB);
-            faceSDKCommon.setListener(this);
-        }
-
-
-
-
-//        btnCamSelect = (ImageButton) findViewById(R.id.BtnCameraSelect);
-//        btnCamSelect.setOnClickListener(this);
-
+    public void CreateUI(int layoutId, UIView parent) {
+        LoadLayoutRes(layoutId, parent);
     }
 
     public void setUICameraListener(OnUICameraListener listener) {
@@ -221,46 +196,68 @@ public class UICamera extends UIView
 //    }
 
     @Override
-    public void onClick(View view) {
-//        if (view.getId() == R.id.BtnCameraSelect) {
-//            if (mCameraID == Camera.CameraInfo.CAMERA_FACING_BACK) {
-//                mCameraID = Camera.CameraInfo.CAMERA_FACING_FRONT;
-//            } else {
-//                mCameraID = Camera.CameraInfo.CAMERA_FACING_BACK;
-//            }
-//
-//            updateCameraSize();
-//            mSurfaceView.resetCamera();
-//            mGLSurfaceView.setRenderConfig(mCameraRotate, mCameraMirror);
-//            mGLSurfaceView.getGLES2Render().setViewDisplay(mCameraMirror, mCameraRotate);
-//        }
-
-
-    }
-
-    @Override
-    public void FaceDidDetect(FaceInfo info) {
-        if (mListener != null) {
-            mListener.CameraDidDetect(info);
-        }
-    }
-
-    @Override
-    public void FaceDidFail(FaceInfo info) {
-        if (mListener != null) {
-            mListener.CameraDetectFail(info);
-        }
-    }
-
-    @Override
-    public void FaceDidRegister(FaceInfo info,boolean isRedo) {
-        final UICamera ui = this;
-        final FaceInfo info_show = info;
+    public void FaceDidDetect(com.moonma.FaceSDK.FaceInfo info ) {
+        final  com.moonma.FaceSDK.FaceInfo info_show = info;
         Common.getMainActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if (mListener != null) {
-                    mListener.CameraDidRegisterFace(ui,info_show);
+
+                if (faceSDKCommon.getMode() == FaceSDKBase.MODE_DETECT) {
+                    if (mListener != null) {
+                        mListener.CameraDidDetect(info_show);
+                    }
+
+                    if (uiFaceTips != null) {
+                        if (!uiFaceTips.isVisibility()) {
+                            uiFaceTips.Show(true);
+                            uiFaceTips.UpdateType(UIFaceTips.Type.DETECT_SUCCESS, info_show.name);
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    @Override
+    public void FaceDidFail(com.moonma.FaceSDK.FaceInfo info) {
+        final com.moonma.FaceSDK.FaceInfo info_show = info ;
+        Common.getMainActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (faceSDKCommon.getMode() == FaceSDKBase.MODE_DETECT) {
+                    if (mListener != null) {
+                        mListener.CameraDetectFail(info_show);
+                    }
+                    if (uiFaceTips != null) {
+                        uiFaceTips.Show(false);
+                    }
+                }
+            }
+        });
+    }
+
+    @Override
+    public void FaceDidRegister(com.moonma.FaceSDK.FaceInfo info, final boolean isRedo) {
+        final com.moonma.FaceSDK.FaceInfo info_show = info ;
+        final UIView ui = this;
+        Common.getMainActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (faceSDKCommon.getMode() == FaceSDKBase.MODE_REGISTR) {
+                    // doRegister(bmp_show);
+                    if (mListener != null) {
+                        mListener.CameraDidRegisterFace(ui, info_show);
+                    }
+
+                    if (uiFaceTips != null) {
+                        //   if (!uiFaceTips.isVisibility())
+                        {
+                            uiFaceTips.Show(true);
+                            uiFaceTips.UpdateType(isRedo?UIFaceTips.Type.REGISTER_REDO:UIFaceTips.Type.REGISTER_SUCCESS, null);
+                        }
+                    }
+
+                    FaceDBCommon.main().AddFace(info_show);
                 }
             }
         });

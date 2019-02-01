@@ -65,16 +65,12 @@ import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-import com.daluotuo.facelock.UIFaceTips;
+import com.daluotuo.facelock.UICamera;
 
-public class UICameraOpenAiLab extends UIView
-        implements View.OnClickListener,
-        IFaceSDKBaseListener {
+public class UICameraOpenAiLab extends UICamera
+        implements View.OnClickListener
+{
 
-    private final String TAG = this.getClass().getSimpleName();
-
-
-    private int mWidth, mHeight, mFormat;
 
 
     private myDrawRectView drawRectView;
@@ -89,10 +85,7 @@ public class UICameraOpenAiLab extends UIView
 
     //ui
     ImageButton btnCamSelect;
-    UIFaceTips uiFaceTips;
-    //FACESDK
-    public FaceSDKCommon faceSDKCommon;
-    public UICamera.OnUICameraListener mListener;
+
 
     private final int CALIBRATE = 1;
     private final int SHOWTOAST = 4;
@@ -238,8 +231,8 @@ public class UICameraOpenAiLab extends UIView
         }
     }
 
-    public UICameraOpenAiLab() {
-    }
+//    public UICameraOpenAiLab() {
+//    }
 
 
     public void CreateUI(int layoutId, UIView parent) {
@@ -776,74 +769,6 @@ public class UICameraOpenAiLab extends UIView
 
     }
 
-    @Override
-    public void FaceDidDetect(com.moonma.FaceSDK.FaceInfo info ) {
-       final  com.moonma.FaceSDK.FaceInfo info_show = info;
-        Common.getMainActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-
-                if (faceSDKCommon.getMode() == FaceSDKBase.MODE_DETECT) {
-                    if (mListener != null) {
-                        mListener.CameraDidDetect(info_show);
-                    }
-
-                    if (uiFaceTips != null) {
-                        if (!uiFaceTips.isVisibility()) {
-                            uiFaceTips.Show(true);
-                            uiFaceTips.UpdateType(UIFaceTips.Type.DETECT_SUCCESS, info_show.name);
-                        }
-                    }
-                }
-            }
-        });
-    }
-
-    @Override
-    public void FaceDidFail(com.moonma.FaceSDK.FaceInfo info) {
-        final com.moonma.FaceSDK.FaceInfo info_show = info ;
-        Common.getMainActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (faceSDKCommon.getMode() == FaceSDKBase.MODE_DETECT) {
-                    if (mListener != null) {
-                        mListener.CameraDetectFail(info_show);
-                    }
-                    if (uiFaceTips != null) {
-                        uiFaceTips.Show(false);
-                    }
-                }
-            }
-        });
-    }
-
-    @Override
-    public void FaceDidRegister(com.moonma.FaceSDK.FaceInfo info, final boolean isRedo) {
-        final com.moonma.FaceSDK.FaceInfo info_show = info ;
-        final UIView ui = this;
-        Common.getMainActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (faceSDKCommon.getMode() == FaceSDKBase.MODE_REGISTR) {
-                    // doRegister(bmp_show);
-                    if (mListener != null) {
-                        mListener.CameraDidRegisterFace(ui, info_show);
-                    }
-
-                    if (uiFaceTips != null) {
-                        //   if (!uiFaceTips.isVisibility())
-                        {
-                            uiFaceTips.Show(true);
-                            uiFaceTips.UpdateType(isRedo?UIFaceTips.Type.REGISTER_REDO:UIFaceTips.Type.REGISTER_SUCCESS, null);
-                        }
-                    }
-
-                    FaceDBCommon.main().AddFace(info_show);
-                }
-            }
-        });
-
-    }
 
 
 }
