@@ -30,6 +30,9 @@ public class UIView {
     }
 
     public void LoadLayoutRes(int layoutId, UIView parent) {
+        LoadLayoutRes(layoutId,parent.content);
+    }
+    public void LoadLayoutRes(int layoutId, ViewGroup parent) {
         //  super(context);
         // Context context = Common.appContext();
         //必须用MainActivity，用appContext的话ui layout 显示会出问题
@@ -38,7 +41,7 @@ public class UIView {
 
         ViewGroup rootview = ac.findViewById(android.R.id.content);
         if (parent != null) {
-            rootview = parent.content;
+            rootview = parent;
         }
         content = (ViewGroup) inflater.inflate(layoutId, rootview, false);
         // this.addView(v);

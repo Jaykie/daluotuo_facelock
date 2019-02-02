@@ -33,6 +33,8 @@ import com.moonma.FaceSDK.FaceSDKCommon;
 import com.moonma.FaceSDK.FaceDBCommon;
 import com.moonma.FaceSDK.IFaceDBBaseListener;
 import com.daluotuo.facelock.RegisterViewController;
+import com.daluotuo.facelock.UISettingCellItem;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,7 +71,7 @@ public class UISetting extends UIView implements View.OnClickListener {
             listItem.add(info);
         }
 
-
+        final UISetting pthis = this;
         adapter = new BaseAdapter() {
             @Override
             public int getCount() {
@@ -85,7 +87,12 @@ public class UISetting extends UIView implements View.OnClickListener {
 
                 if (convertView==null) {
                     //因为getView()返回的对象，adapter会自动赋给ListView
-                    view = inflater.inflate(R.layout.item, null);
+
+                    UISettingCellItem ui = new UISettingCellItem();
+                    ui.LoadLayoutRes(R.layout.uisettingcellitem, parent);
+                    ui.SetController(pthis.controller);
+                    view = ui.content;
+                 //   view = inflater.inflate(R.layout.uisettingcellitem, null);
                 }else{
                     view=convertView;
                     Log.i("info","有缓存，不需要重新生成"+position);
