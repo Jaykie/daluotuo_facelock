@@ -65,18 +65,18 @@ public class UISetting extends UIView implements View.OnClickListener, UISetting
 
                 if (convertView == null) {
                     //因为getView()返回的对象，adapter会自动赋给ListView
-                    UISettingCellItem ui = new UISettingCellItem();
-                    ui.LoadLayoutRes(R.layout.uisettingcellitem, parent);
+                    UISettingCellItem ui = new UISettingCellItem(R.layout.uisettingcellitem, parent);
                     ui.SetController(pthis.controller);
-                    ui.iDelegate = this;
+                    ui.iDelegate = pthis;
                     view = ui.content;
+                    ui.index = position;
                     //   view = inflater.inflate(R.layout.uisettingcellitem, null);
                 } else {
                     view = convertView;
                     Log.i("info", "有缓存，不需要重新生成" + position);
                 }
-                ///  TextView tv1 = (TextView) view.findViewById(R.id.Textviewname);//找到Textviewname
-                //  tv1.setText(listItem.get(position).title);//设置参数
+               TextView tv = (TextView) view.findViewById(R.id.setting_item_title);//找到Textviewname
+                tv.setText(listItem.get(position).title);//设置参数
 
                 return view;
             }
@@ -116,13 +116,14 @@ public class UISetting extends UIView implements View.OnClickListener, UISetting
     public void OnUISettingCellItemDidClick(UISettingCellItem ui) {
         switch (ui.index) {
             case 0:
+                OnClickBtnRegister();
                 break;
             case 1: {
-                OnClickBtnRegister();
+                OnClickBtnFaceManager();
             }
             break;
             case 2: {
-                OnClickBtnFaceManager();
+
             }
             break;
         }

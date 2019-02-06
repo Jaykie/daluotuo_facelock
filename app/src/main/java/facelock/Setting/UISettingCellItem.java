@@ -43,8 +43,12 @@ public class UISettingCellItem extends UICellItemBase implements View.OnClickLis
     public interface IUISettingCellItemDelegate {
         public void OnUISettingCellItemDidClick(UISettingCellItem ui);
     }
-    public UISettingCellItem() {
+
+    public UISettingCellItem(int layoutId, ViewGroup parent) {
+        LoadLayoutRes(layoutId, parent);
         this.content.setOnClickListener(this);
+        TextView tv = (TextView) findViewById(R.id.setting_item_title);//找到Textviewname
+        tv.setOnClickListener(this);
     }
 
     @Override
