@@ -90,56 +90,56 @@ public class UIRegister extends UIView implements View.OnClickListener, UICamera
 
 
 
-        listView = (ListView) findViewById(R.id.setting_list);
+       // listView = (ListView) findViewById(R.id.list_facemanager);
 
 
-        for (int i = 0; i < 5; i++) {
-            ItemInfo info = new ItemInfo();//给实体类赋值
-            info.title = "小米"+i;
-            listItem.add(info);
-        }
-
-        final UIRegister pthis = this;
-        adapter = new BaseAdapter() {
-            @Override
-            public int getCount() {
-                // TODO Auto-generated method stub
-                return listItem.size();//数目
-            }
-
-            @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
-                Activity ac = com.moonma.common.Common.getMainActivity();
-                LayoutInflater inflater = ac.getLayoutInflater();
-                View view;
-
-                if (convertView==null) {
-                    //因为getView()返回的对象，adapter会自动赋给ListView
-                    //view = inflater.inflate(R.layout.uiregistercellitem, null);
-
-                    UIRegisterCellItem ui = new UIRegisterCellItem();
-                    ui.CreateUI(R.layout.uiregistercellitem, parent);
-                    ui.SetController(pthis.controller);
-                    view = ui.content;
-
-                }else{
-                    view=convertView;
-                    Log.i("info","有缓存，不需要重新生成"+position);
-                }
-
-
-                return view;
-            }
-            @Override
-            public long getItemId(int position) {//取在列表中与指定索引对应的行id
-                return 0;
-            }
-            @Override
-            public Object getItem(int position) {//获取数据集中与指定索引对应的数据项
-                return null;
-            }
-        };
-        listView.setAdapter(adapter);
+//        for (int i = 0; i < 5; i++) {
+//            ItemInfo info = new ItemInfo();//给实体类赋值
+//            info.title = "小米"+i;
+//            listItem.add(info);
+//        }
+//
+//        final UIRegister pthis = this;
+//        adapter = new BaseAdapter() {
+//            @Override
+//            public int getCount() {
+//                // TODO Auto-generated method stub
+//                return listItem.size();//数目
+//            }
+//
+//            @Override
+//            public View getView(int position, View convertView, ViewGroup parent) {
+//                Activity ac = com.moonma.common.Common.getMainActivity();
+//                LayoutInflater inflater = ac.getLayoutInflater();
+//                View view;
+//
+//                if (convertView==null) {
+//                    //因为getView()返回的对象，adapter会自动赋给ListView
+//                    //view = inflater.inflate(R.layout.uiregistercellitem, null);
+//
+//                    UIRegisterCellItem ui = new UIRegisterCellItem();
+//                    ui.CreateUI(R.layout.uiregistercellitem, parent);
+//                    ui.SetController(pthis.controller);
+//                    view = ui.content;
+//
+//                }else{
+//                    view=convertView;
+//                    Log.i("info","有缓存，不需要重新生成"+position);
+//                }
+//
+//
+//                return view;
+//            }
+//            @Override
+//            public long getItemId(int position) {//取在列表中与指定索引对应的行id
+//                return 0;
+//            }
+//            @Override
+//            public Object getItem(int position) {//获取数据集中与指定索引对应的数据项
+//                return null;
+//            }
+//        };
+//        listView.setAdapter(adapter);
 
     }
 

@@ -43,7 +43,7 @@ public class UIFaceManager extends UIView implements View.OnClickListener {
         btnRegister = (ImageButton) findViewById(R.id.btn_setting_register);
         btnRegister.setOnClickListener(this);
 
-        listView = (ListView) findViewById(R.id.setting_list);
+        listView = (ListView) findViewById(R.id.list_facemanager);
 
 
         for (int i = 0; i < 5; i++) {
