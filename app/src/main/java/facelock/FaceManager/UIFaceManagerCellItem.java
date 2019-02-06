@@ -29,29 +29,24 @@ import com.moonma.FaceSDK.FaceSDKCommon;
 import com.moonma.FaceSDK.FaceDBCommon;
 import com.moonma.FaceSDK.IFaceDBBaseListener;
 import com.daluotuo.facelock.RegisterViewController;
-import com.moonma.common.UICellItemBase;
 
 /**
  * TODO: document your custom view class.
- * <p>
+ *
  * android tableview https://www.jianshu.com/p/8669c3ebd10b
  */
-public class UISettingCellItem extends UICellItemBase implements View.OnClickListener {
+public class UIFaceManagerCellItem extends UIView implements View.OnClickListener{
     ImageButton btnClose;
-    IUISettingCellItemDelegate iDelegate;
 
-    public interface IUISettingCellItemDelegate {
-        public void OnUISettingCellItemDidClick(UISettingCellItem ui);
-    }
-    public UISettingCellItem() {
-        this.content.setOnClickListener(this);
+    void OnClickBtnClose() {
+
     }
 
     @Override
     public void onClick(View view) {
 
-        if (iDelegate != null) {
-            iDelegate.OnUISettingCellItemDidClick(this);
+        if (view.getId() == R.id.btn_setting_close) {
+            OnClickBtnClose();
         }
 
     }
