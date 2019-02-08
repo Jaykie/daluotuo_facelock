@@ -19,7 +19,7 @@ class DBHelper extends SQLiteOpenHelper {
 
     private static final int DATABASE_VERSION = 1;//数据库版本号
     private static final String SQL_CREATE_TABLE_FACE = "create table " + TABLE_FACE + " ("
-            + "id text primary key autoincrement,"
+            + "id text primary key,"//autoincrement
             + "name text, "
             + "data blob )";//数据库里的表
 

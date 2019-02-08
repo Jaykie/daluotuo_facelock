@@ -98,6 +98,13 @@ public class UIHome extends UIView implements View.OnClickListener, UICamera.OnU
 
         uiCamera.setUICameraListener(this);
         uiCamera.setMode(FaceSDKBase.MODE_DETECT);
+
+        if(FaceDBCommon.main().isEmpty())
+        {
+            uiCamera.uiFaceTips.UpdateType(UIFaceTips.Type.UNREGISTER, null);
+            uiCamera.uiFaceTips.Show(true);
+        }
+
     }
 
     void OnClickBtnSetting() {

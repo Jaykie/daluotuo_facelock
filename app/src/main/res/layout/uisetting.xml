@@ -23,7 +23,7 @@
 
     </RelativeLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="0dp"
@@ -37,12 +37,12 @@
             android:contentDescription="setting"
             app:srcCompat="@android:drawable/btn_dialog" />
 
-    </LinearLayout>
+        <ListView
+            android:id="@+id/setting_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/btn_setting_close" />
+    </RelativeLayout>
 
-
-    <ListView
-        android:id="@+id/setting_list"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
 
 </android.support.constraint.ConstraintLayout>

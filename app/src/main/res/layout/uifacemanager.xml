@@ -23,7 +23,7 @@
 
     </RelativeLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="0dp"
@@ -43,12 +43,13 @@
             android:layout_height="wrap_content"
             android:contentDescription="setting"
             app:srcCompat="@android:drawable/ic_menu_add" />
-    </LinearLayout>
 
+        <ListView
+            android:id="@+id/list_facemanager"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/btn_setting_close" />
+    </RelativeLayout>
 
-    <ListView
-        android:id="@+id/list_facemanager"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
 
 </android.support.constraint.ConstraintLayout>

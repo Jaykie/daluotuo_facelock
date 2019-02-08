@@ -271,11 +271,7 @@ public class UICameraOpenAiLab extends UICamera
         InitCamera();
 
 
-        if(FaceDBCommon.main().isEmpty())
-        {
-            uiFaceTips.UpdateType(UIFaceTips.Type.UNREGISTER, null);
-            uiFaceTips.Show(true);
-        }
+
     }
 
     void InitCamera() {

@@ -140,8 +140,9 @@ public class UIFaceTips extends UIView implements View.OnClickListener {
     }
 
     void OnClickBtnRegister() {
-        RegisterViewController.main().Show(null, null);
         this.Show(false);
+        RegisterViewController.main().Show(null, null);
+
     }
 
 
