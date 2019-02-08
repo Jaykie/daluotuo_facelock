@@ -1,24 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="match_parent"
     android:orientation="horizontal">
 
     <ImageView
         android:id="@+id/setting_bg"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:contentDescription="bg"
-        android:scaleType="fitXY"
         app:srcCompat="@drawable/bg_detect_success" />
     <!-- 下面两个是用来给  activity_main.xml里的ListView赋值,-->
     <TextView
         android:id="@+id/setting_item_title"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="1" />
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:text="1"
+        android:textAlignment="center"
+        android:textColor="@android:color/holo_orange_dark"
+        android:textSize="24sp" />
 </RelativeLayout>

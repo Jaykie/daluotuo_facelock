@@ -3,6 +3,7 @@ package com.daluotuo.facelock;
 
 import android.app.Activity;
 import android.util.Log;
+import android.util.Size;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,14 +12,16 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
-
+import com.moonma.common.Common;
 import com.moonma.common.UIView;
 import com.moonma.common.PopViewController;
 import com.moonma.common.ItemInfo;
+import com.moonma.common.UICellBase;
 
 
 import java.util.ArrayList;
 import java.util.List;
+
 
 /**
  * TODO: document your custom view class.
@@ -33,6 +36,7 @@ public class UIFaceManager extends UIView implements View.OnClickListener {
     ListView listView;
     BaseAdapter adapter;
     List<ItemInfo> listItem = new ArrayList<ItemInfo>();//实体类
+    int oneCellNum = 4;
 
     public UIFaceManager(int layoutId, UIView parent) {
         super(layoutId, parent);
@@ -46,7 +50,7 @@ public class UIFaceManager extends UIView implements View.OnClickListener {
         listView = (ListView) findViewById(R.id.list_facemanager);
 
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 50; i++) {
             ItemInfo info = new ItemInfo();//给实体类赋值
             info.title = "小米"+i;
             listItem.add(info);
@@ -68,11 +72,21 @@ public class UIFaceManager extends UIView implements View.OnClickListener {
 
                 if (convertView==null) {
                     //因为getView()返回的对象，adapter会自动赋给ListView
+                   UICellBase uiCell = new UICellBase(-1);
+                    for(int i=0;i<pthis.oneCellNum;i++){
+                        UIFaceManagerCellItem ui = new UIFaceManagerCellItem();
+                       // Size dp = com.moonma.common.Common.GetScreenDP();
+                        Size pixel = Common.GetScreenPixel();
+                        ui.LoadLayoutRes(R.layout.uifacemanagercellitem, uiCell);
+                        ViewGroup.LayoutParams lp = ui.content.getLayoutParams();
+                        lp.width = pixel.getWidth()/oneCellNum;
+                        lp.height = lp.width;
 
-                    UIFaceManagerCellItem ui = new UIFaceManagerCellItem();
-                    ui.LoadLayoutRes(R.layout.uifacemanagercellitem, parent);
-                    ui.SetController(pthis.controller);
-                    view = ui.content;
+                        ui.SetController(pthis.controller);
+                        ui.SetParent(uiCell);
+                    }
+                    uiCell.SetController(pthis.controller);
+                    view = uiCell.content;
                  //   view = inflater.inflate(R.layout.uisettingcellitem, null);
                 }else{
                     view=convertView;

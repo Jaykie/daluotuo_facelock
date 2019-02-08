@@ -61,7 +61,18 @@ public class UIView {
         }
     }
 
-
+    public void SetParent(ViewGroup parent) {
+        if(parent!=null)
+        {
+            parent.addView(content);
+        }
+    }
+    public void SetParent(UIView parent) {
+        if(parent!=null)
+        {
+            parent.addView(this);
+        }
+    }
     public void addView(UIView child) {
 
         content.addView(child.content);
