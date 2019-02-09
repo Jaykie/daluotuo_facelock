@@ -17,7 +17,7 @@ import com.moonma.common.UIView;
 import com.moonma.common.PopViewController;
 import com.moonma.common.ItemInfo;
 import com.moonma.common.UICellBase;
-
+import com.daluotuo.facelock.UIFaceManagerCellItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +31,7 @@ import java.util.List;
 public class UIFaceManager extends UIView implements View.OnClickListener {
     ImageButton btnClose;
     ImageButton btnRegister;
-
+    public static String TAG = "UIFaceManager";
 
     ListView listView;
     BaseAdapter adapter;
@@ -61,12 +61,20 @@ public class UIFaceManager extends UIView implements View.OnClickListener {
             @Override
             public int getCount() {
                 // TODO Auto-generated method stub
-                return listItem.size();//数目
+
+                int total = listItem.size();
+               // totalItem = total;
+                int numRows = total / oneCellNum;
+                if (total % oneCellNum != 0)
+                {
+                    numRows++;
+                }
+                return numRows;//数目
             }
 
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
-                Activity ac = com.moonma.common.Common.getMainActivity();
+                Activity ac = Common.getMainActivity();
                 LayoutInflater inflater = ac.getLayoutInflater();
                 View view;
 
@@ -74,26 +82,56 @@ public class UIFaceManager extends UIView implements View.OnClickListener {
                     //因为getView()返回的对象，adapter会自动赋给ListView
                    UICellBase uiCell = new UICellBase(-1);
                     for(int i=0;i<pthis.oneCellNum;i++){
-                        UIFaceManagerCellItem ui = new UIFaceManagerCellItem();
+                        UIFaceManagerCellItem item = new UIFaceManagerCellItem();
                        // Size dp = com.moonma.common.Common.GetScreenDP();
                         Size pixel = Common.GetScreenPixel();
-                        ui.LoadLayoutRes(R.layout.uifacemanagercellitem, uiCell);
-                        ViewGroup.LayoutParams lp = ui.content.getLayoutParams();
+                        item.LoadLayoutRes(R.layout.uifacemanagercellitem, uiCell);
+                        ViewGroup.LayoutParams lp = item.content.getLayoutParams();
                         lp.width = pixel.getWidth()/oneCellNum;
                         lp.height = lp.width;
 
-                        ui.SetController(pthis.controller);
-                        ui.SetParent(uiCell);
+                        item.SetController(pthis.controller);
+                        item.SetParent(uiCell);
+                        item.index = pthis.oneCellNum*position+i;
+                        item.Init();
+                        uiCell.AddItem(item);
+                        if(item.index<listItem.size())
+                        {
+                            item.Show(true);
+                            item.UpdateItem();
+                        }else {
+                            item.Show(false);
+                        }
                     }
                     uiCell.SetController(pthis.controller);
                     view = uiCell.content;
+                    view.setTag(uiCell);
                  //   view = inflater.inflate(R.layout.uisettingcellitem, null);
                 }else{
                     view=convertView;
+                    Object objTag = view.getTag();
+                    if(objTag instanceof UICellBase)
+                    {
+                        UICellBase uiCell = (UICellBase)objTag;
+                        for(int i=0;i<uiCell.GetItemCount();i++)
+                        {
+
+                            UIFaceManagerCellItem item = (UIFaceManagerCellItem)uiCell.GetItem(i);
+                            item.index = pthis.oneCellNum*position+i;
+                            Log.d(TAG,"i="+i+" position="+position+" item.index="+item.index );
+                            if(item.index<listItem.size())
+                            {
+                                item.Show(true);
+                                item.UpdateItem();
+                            }else {
+                                Log.d(TAG,"Hide i="+i+" position="+position+" item.index="+item.index );
+                               item.Show(false);
+                            }
+                        }
+                    }
+
                     Log.i("info","有缓存，不需要重新生成"+position);
                 }
-               // TextView tv1 = (TextView) view.findViewById(R.id.Textviewname);//找到Textviewname
-               // tv1.setText(listItem.get(position).title);//设置参数
 
                 return view;
             }

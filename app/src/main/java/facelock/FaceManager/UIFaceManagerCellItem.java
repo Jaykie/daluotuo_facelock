@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 import com.moonma.common.UIView;
 import com.moonma.common.PopViewController;
+import com.moonma.common.UICellItemBase;
 
 import com.moonma.FaceSDK.FaceSDKBase;
 import com.moonma.FaceSDK.IFaceSDKBaseListener;
@@ -32,22 +33,26 @@ import com.daluotuo.facelock.RegisterViewController;
 
 /**
  * TODO: document your custom view class.
- *
+ * <p>
  * android tableview https://www.jianshu.com/p/8669c3ebd10b
  */
-public class UIFaceManagerCellItem extends UIView implements View.OnClickListener{
-    ImageButton btnClose;
+public class UIFaceManagerCellItem extends UICellItemBase implements View.OnClickListener {
+    ImageView imageBg;
+    TextView textTitle;
 
-    void OnClickBtnClose() {
+    public void Init() {
+        imageBg = (ImageView)findViewById(R.id.uifacemanagercellitem_bg);
+        textTitle = (TextView)findViewById(R.id.uifacemanagercellitem_title);
+    }
 
+    public void UpdateItem() {
+        //CharSequence
+        textTitle.setText(String.valueOf(index));
     }
 
     @Override
     public void onClick(View view) {
 
-        if (view.getId() == R.id.btn_setting_close) {
-            OnClickBtnClose();
-        }
 
     }
 }

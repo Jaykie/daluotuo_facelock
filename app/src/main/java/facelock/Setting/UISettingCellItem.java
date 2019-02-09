@@ -39,16 +39,23 @@ import com.moonma.common.UICellItemBase;
 public class UISettingCellItem extends UICellItemBase implements View.OnClickListener {
     ImageButton btnClose;
     IUISettingCellItemDelegate iDelegate;
-
+    ImageView imageBg;
+    TextView textTitle;
     public interface IUISettingCellItemDelegate {
         public void OnUISettingCellItemDidClick(UISettingCellItem ui);
     }
 
-    public UISettingCellItem(int layoutId, ViewGroup parent) {
-        LoadLayoutRes(layoutId, parent);
+
+    public void Init() {
+       // imageBg = (ImageView)findViewById(R.id.uifacemanagercellitem_bg);
+        textTitle = (TextView)findViewById(R.id.setting_item_title);
         this.content.setOnClickListener(this);
-        TextView tv = (TextView) findViewById(R.id.setting_item_title);//找到Textviewname
-        tv.setOnClickListener(this);
+        textTitle.setOnClickListener(this);
+    }
+
+    public void UpdateItem() {
+        //CharSequence
+        textTitle.setText(String.valueOf(index));
     }
 
     @Override

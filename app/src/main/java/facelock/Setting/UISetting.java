@@ -3,6 +3,7 @@ package com.daluotuo.facelock;
 
 import android.app.Activity;
 import android.util.Log;
+import android.util.Size;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,10 +12,12 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
-
+import com.moonma.common.Common;
 import com.moonma.common.UIView;
 import com.moonma.common.PopViewController;
 import com.moonma.common.ItemInfo;
+import com.moonma.common.UICellBase;
+
 import com.daluotuo.facelock.UISettingCellItem;
 
 import java.util.ArrayList;
@@ -32,7 +35,7 @@ public class UISetting extends UIView implements View.OnClickListener, UISetting
     ListView listView;
     BaseAdapter adapter;
     List<ItemInfo> listItem = new ArrayList<ItemInfo>();//实体类
-
+    int oneCellNum = 1;
     public UISetting(int layoutId, UIView parent) {
         super(layoutId, parent);
 
@@ -54,29 +57,74 @@ public class UISetting extends UIView implements View.OnClickListener, UISetting
             @Override
             public int getCount() {
                 // TODO Auto-generated method stub
-                return listItem.size();//数目
+                int total = listItem.size();
+                // totalItem = total;
+                int numRows = total / oneCellNum;
+                if (total % oneCellNum != 0)
+                {
+                    numRows++;
+                }
+                return numRows;//数目
             }
-
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
-                Activity ac = com.moonma.common.Common.getMainActivity();
+                Activity ac = Common.getMainActivity();
                 LayoutInflater inflater = ac.getLayoutInflater();
                 View view;
 
-                if (convertView == null) {
+                if (convertView==null) {
                     //因为getView()返回的对象，adapter会自动赋给ListView
-                    UISettingCellItem ui = new UISettingCellItem(R.layout.uisettingcellitem, parent);
-                    ui.SetController(pthis.controller);
-                    ui.iDelegate = pthis;
-                    view = ui.content;
-                    ui.index = position;
+                    UICellBase uiCell = new UICellBase(-1);
+                    for(int i=0;i<pthis.oneCellNum;i++){
+                        UISettingCellItem item = new UISettingCellItem();
+                        // Size dp = com.moonma.common.Common.GetScreenDP();
+                        Size pixel = Common.GetScreenPixel();
+                        item.LoadLayoutRes(R.layout.uisettingcellitem, uiCell);
+                        ViewGroup.LayoutParams lp = item.content.getLayoutParams();
+                        lp.width = pixel.getWidth()/oneCellNum;
+                        lp.height = pixel.getHeight()/10;
+
+                        item.SetController(pthis.controller);
+                        item.SetParent(uiCell);
+                        item.index = pthis.oneCellNum*position+i;
+                        item.Init();
+                        item.iDelegate = pthis;
+                        uiCell.AddItem(item);
+
+                        if(item.index<listItem.size())
+                        {
+                            item.Show(true);
+                            item.UpdateItem();
+                        }else {
+                            item.Show(false);
+                        }
+                    }
+                    uiCell.SetController(pthis.controller);
+                    view = uiCell.content;
+                    view.setTag(uiCell);
                     //   view = inflater.inflate(R.layout.uisettingcellitem, null);
-                } else {
-                    view = convertView;
-                    Log.i("info", "有缓存，不需要重新生成" + position);
+                }else{
+                    view=convertView;
+                    Object objTag = view.getTag();
+                    if(objTag instanceof UICellBase)
+                    {
+                        UICellBase uiCell = (UICellBase)objTag;
+                        for(int i=0;i<uiCell.GetItemCount();i++)
+                        {
+                            UISettingCellItem item = (UISettingCellItem)uiCell.GetItem(i);
+                            item.index = pthis.oneCellNum*position+i;
+                            if(item.index<listItem.size())
+                            {
+                                item.Show(true);
+                                item.UpdateItem();
+                            }else {
+                                item.Show(false);
+                            }
+                        }
+                    }
+
+                    Log.i("info","有缓存，不需要重新生成"+position);
                 }
-               TextView tv = (TextView) view.findViewById(R.id.setting_item_title);//找到Textviewname
-                tv.setText(listItem.get(position).title);//设置参数
 
                 return view;
             }
