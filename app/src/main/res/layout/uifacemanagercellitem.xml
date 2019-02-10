@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
     android:orientation="horizontal">
@@ -13,7 +14,14 @@
         android:layout_centerVertical="true"
         android:contentDescription="bg"
         app:srcCompat="@drawable/bg_detect_success" />
-    <!-- 下面两个是用来给  activity_main.xml里的ListView赋值,-->
+    <ImageButton
+        android:id="@+id/uifacemanagercellitem_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="close"
+        app:srcCompat="@android:drawable/btn_dialog" />
+
+
     <TextView
         android:id="@+id/uifacemanagercellitem_title"
         android:layout_width="wrap_content"

@@ -27,6 +27,6 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
     //camera
-    compile(name: 'facelibrary-release', ext: 'aar')
-    compile(name: 'openCVLibrary331-release', ext: 'aar')
+   compile(name: 'facelibrary-release', ext: 'aar')
+   compile(name: 'openCVLibrary331-release', ext: 'aar')
 }
