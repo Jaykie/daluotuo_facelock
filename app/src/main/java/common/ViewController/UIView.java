@@ -30,8 +30,9 @@ public class UIView {
     }
 
     public void LoadLayoutRes(int layoutId, UIView parent) {
-        LoadLayoutRes(layoutId,parent.content);
+        LoadLayoutRes(layoutId, parent.content);
     }
+
     public void LoadLayoutRes(int layoutId, ViewGroup parent) {
         //  super(context);
         // Context context = Common.appContext();
@@ -62,20 +63,23 @@ public class UIView {
     }
 
     public void SetParent(ViewGroup parent) {
-        if(parent!=null)
-        {
+        if (parent != null) {
             parent.addView(content);
         }
     }
+
     public void SetParent(UIView parent) {
-        if(parent!=null)
-        {
-            parent.addView(this);
+        if (parent != null) {
+            parent.AddView(this);
         }
     }
-    public void addView(UIView child) {
 
-        content.addView(child.content);
+    public void AddView(UIView child) {
+        AddView(child.content);
+    }
+
+    public void AddView(View child) {
+        content.addView(child);
     }
 
     public final <T extends View> T findViewById(int id) {
@@ -90,11 +94,10 @@ public class UIView {
 
     public boolean isVisibility() {
         if (content != null) {
-            if(content.getVisibility()==View.VISIBLE)
-            {
+            if (content.getVisibility() == View.VISIBLE) {
                 return true;
             }
         }
-        return  false;
+        return false;
     }
 }

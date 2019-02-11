@@ -261,7 +261,7 @@ public class UICameraOpenAiLab extends UICamera
 
         uiFaceTips = new UIFaceTips();
         uiFaceTips.CreateUI(R.layout.uifacetips, this);
-        this.addView(uiFaceTips);
+        this.AddView(uiFaceTips);
         uiFaceTips.UpdateType(UIFaceTips.Type.DETECT_SUCCESS, null);
         uiFaceTips.Show(false);
 

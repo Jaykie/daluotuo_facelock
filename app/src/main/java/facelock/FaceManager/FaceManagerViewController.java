@@ -35,6 +35,6 @@ public class FaceManagerViewController extends PopViewController {
 //
         ui = new UIFaceManager(retId, view);
         ui.SetController(this);
-        view.addView(ui);
+        view.AddView(ui);
     }
 }

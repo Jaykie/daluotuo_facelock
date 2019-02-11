@@ -35,6 +35,6 @@ public class SettingViewController extends PopViewController {
 //
         ui = new UISetting(retId, view);
         ui.SetController(this);
-        view.addView(ui);
+        view.AddView(ui);
     }
 }

@@ -53,6 +53,12 @@ public class BitmapMesh {
         private float[] mInhalePt = new float[] {0, 0};
         private InhaleMesh mInhaleMesh = null;
 
+        IBitmapMeshDelegate iDelegate;
+
+        public interface IBitmapMeshDelegate {
+            public void OnBitmapMeshDidAnimationEnd(SampleView view);
+        }
+
         public SampleView(Context context) {
             super(context);
             setFocusable(true);
@@ -62,7 +68,8 @@ public class BitmapMesh {
 
             mInhaleMesh = new InhaleMesh(WIDTH, HEIGHT);
             mInhaleMesh.setBitmapSize(mBitmap.getWidth(), mBitmap.getHeight());
-            mInhaleMesh.setInhaleDir(InhaleDir.DOWN);
+            mInhaleMesh.setInhaleDir(InhaleDir.DOWN);//DOWN @moon
+
         }
 
         public void setIsDebug(boolean isDebug)
@@ -130,7 +137,13 @@ public class BitmapMesh {
             mPaint.setStrokeWidth(2);
             mPaint.setAntiAlias(true);
 
-            buildPaths(bmpW / 2, h - 20);
+
+            //@moon 右下角
+            //buildPaths(bmpW / 2, h - 20);
+
+            //@moon 右上角
+            buildPaths(bmpW / 2,  20);
+
             buildMesh(bmpW, bmpH);
         }
 
@@ -157,6 +170,30 @@ public class BitmapMesh {
             {
                 animation.setDuration(1000);
                 this.startAnimation(animation);
+
+                //@moon
+               final SampleView pthis = this;
+                animation.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        if(iDelegate!=null){
+                            iDelegate.OnBitmapMeshDidAnimationEnd(pthis);
+                        }
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+
+                    }
+
+                });
+
+                //@moon
             }
 
             return true;

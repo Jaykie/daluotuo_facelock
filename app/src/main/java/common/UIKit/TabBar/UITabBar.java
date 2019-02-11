@@ -32,7 +32,7 @@ public class UITabBar extends UIView implements UITabBarItem.OnClickTabBarItemLi
 
     public void CreateTabItem() {
         uiTabBarItem = new UITabBarItem(TabBarViewController.main().resIdLayoutTabItem,this);
-        addView(uiTabBarItem);
+        AddView(uiTabBarItem);
         uiTabBarItem.setOnClickListener(this);
 //        uiTabBarItem.transform.parent = objLayoutItem.transform;
 //        uiTabBarItem.callbackClick = OnUITabBarItemClick;

@@ -37,13 +37,13 @@ public class HomeViewController extends UIViewController {
         uiCamera = new UICameraOpenAiLab();
         uiCamera.SetController(this);
         uiCamera.CreateUI(R.layout.uicamera_openailab, this.view);
-        view.addView(uiCamera);
+        view.AddView(uiCamera);
 
         ui = new UIHome();
         ui.SetController(this);
         ui.uiCamera = uiCamera;
         ui.CreateUI(retId, this.view);
-        view.addView(ui);
+        view.AddView(ui);
 
 
     }

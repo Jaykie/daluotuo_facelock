@@ -47,7 +47,7 @@ public class TabBarViewController extends UIViewController implements UITabBarIt
 //        uiTabBarPrefab = obj.GetComponent<UITabBar>();
 //
         uiTabBar = new UITabBar(resIdLayoutTabBar,view);
-        view.addView(uiTabBar);
+        view.AddView(uiTabBar);
         uiTabBar.setOnClickListener(this);
 
 

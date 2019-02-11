@@ -40,6 +40,8 @@ import android.view.animation.RotateAnimation;
 import static android.view.FrameMetrics.ANIMATION_DURATION;
 
 
+import com.daluotuo.facelock.BitmapMesh;
+
 /**
  * TODO: document your custom view class.
  * <p>
@@ -50,31 +52,30 @@ import static android.view.FrameMetrics.ANIMATION_DURATION;
  * android 仿ios图标晃动动画：
  * https://www.cnblogs.com/lee0oo0/p/3583091.html
  * https://blog.csdn.net/mysimplelove/article/details/80230155
- *
+ * <p>
  * //iOS开发之各种动画各种页面切面效果
- *http://www.cocoachina.com/ios/20141226/10775.html
+ * http://www.cocoachina.com/ios/20141226/10775.html
  * typedef enum : NSUInteger {
-     Fade = 1,                   //淡入淡出
-     Push,                       //推挤
-     Reveal,                     //揭开
-     MoveIn,                     //覆盖
-     Cube,                       //立方体
-     SuckEffect,                 //吮吸
-     OglFlip,                    //翻转
-     RippleEffect,               //波纹
-     PageCurl,                   //翻页
-     PageUnCurl,                 //反翻页
-     CameraIrisHollowOpen,       //开镜头
-     CameraIrisHollowClose,      //关镜头
-     CurlDown,                   //下翻页
-     CurlUp,                     //上翻页
-     FlipFromLeft,               //左翻转
-     FlipFromRight,              //右翻转
-      
- } AnimationType;
-
+ *     Fade = 1,                   //淡入淡出
+ *     Push,                       //推挤
+ *     Reveal,                     //揭开
+ *     MoveIn,                     //覆盖
+ *     Cube,                       //立方体
+ *     SuckEffect,                 //吮吸
+ *     OglFlip,                    //翻转
+ *     RippleEffect,               //波纹
+ *     PageCurl,                   //翻页
+ *     PageUnCurl,                 //反翻页
+ *     CameraIrisHollowOpen,       //开镜头
+ *     CameraIrisHollowClose,      //关镜头
+ *     CurlDown,                   //下翻页
+ *     CurlUp,                     //上翻页
+ *     FlipFromLeft,               //左翻转
+ *     FlipFromRight,              //右翻转
+ *      
+ * } AnimationType;
  */
-public class UIFaceManagerCellItem extends UICellItemBase implements View.OnClickListener {
+public class UIFaceManagerCellItem extends UICellItemBase implements View.OnClickListener, BitmapMesh.SampleView.IBitmapMeshDelegate {
 
     private boolean mNeedShake = false;
 
@@ -94,6 +95,8 @@ public class UIFaceManagerCellItem extends UICellItemBase implements View.OnClic
     ImageView imageBg;
     TextView textTitle;
     ImageButton btnClose;
+
+    private BitmapMesh.SampleView mSampleView = null;
 
     IUIFaceManagerCellItemDelegate iDelegate;
 
@@ -123,11 +126,17 @@ public class UIFaceManagerCellItem extends UICellItemBase implements View.OnClic
             @Override
             public void onClick(View view) {
                 if (mNeedShake) {
-                   // StopShakeAnimation();
                     if (iDelegate != null) {
-                        iDelegate.OnUIFaceManagerCellItemDidDelete(pthis);
+                        // iDelegate.OnUIFaceManagerCellItemDidDelete(pthis);
                     }
                 }
+
+                boolean mReverse = false;
+
+                if (mSampleView.startAnimation(mReverse)) {
+                    mReverse = !mReverse;
+                }
+
             }
         });
 
@@ -147,6 +156,17 @@ public class UIFaceManagerCellItem extends UICellItemBase implements View.OnClic
                 return true;
             }
         });
+
+
+        mSampleView = new BitmapMesh.SampleView(ac);
+        mSampleView.setIsDebug(false);
+        mSampleView.setLayoutParams(new LinearLayout.LayoutParams(-1, -1));
+        this.AddView(mSampleView);
+        mSampleView.iDelegate = this;
+        mSampleView.setFocusable(false);
+
+        btnClose.bringToFront();
+        textTitle.bringToFront();
     }
 
     public void UpdateItem(boolean isEdit) {
@@ -240,4 +260,13 @@ public class UIFaceManagerCellItem extends UICellItemBase implements View.OnClic
         });
         v.startAnimation(mra);
     }
+
+    //BitmapMesh
+    @Override
+    public void OnBitmapMeshDidAnimationEnd(BitmapMesh.SampleView view) {
+        if (iDelegate != null) {
+            iDelegate.OnUIFaceManagerCellItemDidDelete(this);
+        }
+    }
+    //BitmapMesh
 }

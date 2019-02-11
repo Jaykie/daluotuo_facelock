@@ -39,6 +39,9 @@ public class UIFaceManager extends UIView implements View.OnClickListener,UIFace
     int oneCellNum = 4;
     boolean isEditDelete = false;
 
+    int widthItem = 256;
+    int heightItem = 341;
+
     public UIFaceManager(int layoutId, UIView parent) {
         super(layoutId, parent);
 
@@ -49,10 +52,14 @@ public class UIFaceManager extends UIView implements View.OnClickListener,UIFace
         btnRegister.setOnClickListener(this);
 
         listView = (ListView) findViewById(R.id.list_facemanager);
+
+        Size pixel = Common.GetScreenPixel();
+        oneCellNum = pixel.getWidth()/widthItem;
+
         //添加滚动出边界回弹效果
         //listView.setOverScrollMode(View.OVER_SCROLL_ALWAYS);
 
-        for (int i = 0; i < 50; i++) {
+        for (int i = 0; i < 15; i++) {
             ItemInfo info = new ItemInfo();//给实体类赋值
             info.title = "小米"+i;
             listItem.add(info);
@@ -90,8 +97,8 @@ public class UIFaceManager extends UIView implements View.OnClickListener,UIFace
                         Size pixel = Common.GetScreenPixel();
                         item.LoadLayoutRes(R.layout.uifacemanagercellitem, uiCell);
                         ViewGroup.LayoutParams lp = item.content.getLayoutParams();
-                        lp.width = pixel.getWidth()/oneCellNum;
-                        lp.height = lp.width;
+                        lp.width = widthItem;//pixel.getWidth()/oneCellNum;
+                        lp.height = heightItem;//lp.width;
 
                         item.SetController(pthis.controller);
                         item.SetParent(uiCell);
