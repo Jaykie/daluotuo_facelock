@@ -50,6 +50,29 @@ import static android.view.FrameMetrics.ANIMATION_DURATION;
  * android 仿ios图标晃动动画：
  * https://www.cnblogs.com/lee0oo0/p/3583091.html
  * https://blog.csdn.net/mysimplelove/article/details/80230155
+ *
+ * //iOS开发之各种动画各种页面切面效果
+ *http://www.cocoachina.com/ios/20141226/10775.html
+ * typedef enum : NSUInteger {
+     Fade = 1,                   //淡入淡出
+     Push,                       //推挤
+     Reveal,                     //揭开
+     MoveIn,                     //覆盖
+     Cube,                       //立方体
+     SuckEffect,                 //吮吸
+     OglFlip,                    //翻转
+     RippleEffect,               //波纹
+     PageCurl,                   //翻页
+     PageUnCurl,                 //反翻页
+     CameraIrisHollowOpen,       //开镜头
+     CameraIrisHollowClose,      //关镜头
+     CurlDown,                   //下翻页
+     CurlUp,                     //上翻页
+     FlipFromLeft,               //左翻转
+     FlipFromRight,              //右翻转
+      
+ } AnimationType;
+
  */
 public class UIFaceManagerCellItem extends UICellItemBase implements View.OnClickListener {
 
@@ -72,6 +95,14 @@ public class UIFaceManagerCellItem extends UICellItemBase implements View.OnClic
     TextView textTitle;
     ImageButton btnClose;
 
+    IUIFaceManagerCellItemDelegate iDelegate;
+
+    public interface IUIFaceManagerCellItemDelegate {
+        public void OnUIFaceManagerCellItemDidLongPress(UIFaceManagerCellItem ui);
+
+        public void OnUIFaceManagerCellItemDidDelete(UIFaceManagerCellItem ui);
+    }
+
     public void Init() {
         imageBg = (ImageView) findViewById(R.id.uifacemanagercellitem_bg);
         textTitle = (TextView) findViewById(R.id.uifacemanagercellitem_title);
@@ -87,12 +118,15 @@ public class UIFaceManagerCellItem extends UICellItemBase implements View.OnClic
         if (dm != null) {
             mDensity = dm.density;
         }
-
+        final UIFaceManagerCellItem pthis = this;
         btnClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (mNeedShake) {
-                    StopShakeAnimation();
+                   // StopShakeAnimation();
+                    if (iDelegate != null) {
+                        iDelegate.OnUIFaceManagerCellItemDidDelete(pthis);
+                    }
                 }
             }
         });
@@ -106,23 +140,34 @@ public class UIFaceManagerCellItem extends UICellItemBase implements View.OnClic
                   * 如果是true   不会触发后续事件
                   * 如果是false  会触发后续事件 比如说单击事件
                   */
-
-                mNeedShake = true;
-                ShakeAnimation(imageBg);
+                if (iDelegate != null) {
+                    iDelegate.OnUIFaceManagerCellItemDidLongPress(pthis);
+                }
 
                 return true;
             }
         });
     }
 
-    public void UpdateItem() {
+    public void UpdateItem(boolean isEdit) {
         //CharSequence
         textTitle.setText(String.valueOf(index));
+        if (isEdit) {
+            StartShakeAnimation();
+        } else {
+            StopShakeAnimation();
+        }
     }
 
     @Override
     public void onClick(View view) {
 
+
+    }
+
+    void StartShakeAnimation() {
+        mNeedShake = true;
+        ShakeAnimation(imageBg);
 
     }
 

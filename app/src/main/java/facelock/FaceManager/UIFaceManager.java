@@ -28,7 +28,7 @@ import java.util.List;
  * <p>
  * android tableview https://www.jianshu.com/p/8669c3ebd10b
  */
-public class UIFaceManager extends UIView implements View.OnClickListener {
+public class UIFaceManager extends UIView implements View.OnClickListener,UIFaceManagerCellItem.IUIFaceManagerCellItemDelegate{
     ImageButton btnClose;
     ImageButton btnRegister;
     public static String TAG = "UIFaceManager";
@@ -37,6 +37,7 @@ public class UIFaceManager extends UIView implements View.OnClickListener {
     BaseAdapter adapter;
     List<ItemInfo> listItem = new ArrayList<ItemInfo>();//实体类
     int oneCellNum = 4;
+    boolean isEditDelete = false;
 
     public UIFaceManager(int layoutId, UIView parent) {
         super(layoutId, parent);
@@ -48,7 +49,8 @@ public class UIFaceManager extends UIView implements View.OnClickListener {
         btnRegister.setOnClickListener(this);
 
         listView = (ListView) findViewById(R.id.list_facemanager);
-
+        //添加滚动出边界回弹效果
+        //listView.setOverScrollMode(View.OVER_SCROLL_ALWAYS);
 
         for (int i = 0; i < 50; i++) {
             ItemInfo info = new ItemInfo();//给实体类赋值
@@ -56,7 +58,7 @@ public class UIFaceManager extends UIView implements View.OnClickListener {
             listItem.add(info);
         }
 
-        final com.daluotuo.facelock.UIFaceManager pthis = this;
+        final UIFaceManager pthis = this;
         adapter = new BaseAdapter() {
             @Override
             public int getCount() {
@@ -83,6 +85,7 @@ public class UIFaceManager extends UIView implements View.OnClickListener {
                    UICellBase uiCell = new UICellBase(-1);
                     for(int i=0;i<pthis.oneCellNum;i++){
                         UIFaceManagerCellItem item = new UIFaceManagerCellItem();
+                        item.iDelegate = pthis;
                        // Size dp = com.moonma.common.Common.GetScreenDP();
                         Size pixel = Common.GetScreenPixel();
                         item.LoadLayoutRes(R.layout.uifacemanagercellitem, uiCell);
@@ -98,7 +101,7 @@ public class UIFaceManager extends UIView implements View.OnClickListener {
                         if(item.index<listItem.size())
                         {
                             item.Show(true);
-                            item.UpdateItem();
+                            item.UpdateItem(pthis.isEditDelete);
                         }else {
                             item.Show(false);
                         }
@@ -122,7 +125,7 @@ public class UIFaceManager extends UIView implements View.OnClickListener {
                             if(item.index<listItem.size())
                             {
                                 item.Show(true);
-                                item.UpdateItem();
+                                item.UpdateItem(pthis.isEditDelete);
                             }else {
                                 Log.d(TAG,"Hide i="+i+" position="+position+" item.index="+item.index );
                                item.Show(false);
@@ -143,6 +146,9 @@ public class UIFaceManager extends UIView implements View.OnClickListener {
             public Object getItem(int position) {//获取数据集中与指定索引对应的数据项
                 return null;
             }
+
+
+
         };
         listView.setAdapter(adapter);
     }
@@ -169,4 +175,20 @@ public class UIFaceManager extends UIView implements View.OnClickListener {
             OnClickBtnRegister();
         }
     }
+
+    //UIFaceManagerCellItem
+    @Override
+    public void OnUIFaceManagerCellItemDidLongPress(UIFaceManagerCellItem ui)
+    {
+        isEditDelete = !isEditDelete;
+        adapter.notifyDataSetChanged();
+    }
+    @Override
+    public void OnUIFaceManagerCellItemDidDelete(UIFaceManagerCellItem ui)
+    {
+        listItem.remove(ui.index);
+        adapter.notifyDataSetChanged();
+      //  listView.invalidate();
+    }
+    //UIFaceManagerCellItem
 }

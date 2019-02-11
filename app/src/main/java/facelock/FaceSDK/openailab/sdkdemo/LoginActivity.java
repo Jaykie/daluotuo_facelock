@@ -117,7 +117,7 @@ public class LoginActivity extends Activity {
                 e.printStackTrace();
             }
             Intent intent = new Intent(LoginActivity.this,
-                    MainActivity.class);
+                    InhaleAnimationActivity.class);//MainActivity InhaleAnimationActivity
             LoginActivity.this.startActivity(intent);
             LoginActivity.this.finish();
         }

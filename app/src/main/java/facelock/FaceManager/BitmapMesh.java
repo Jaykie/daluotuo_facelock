@@ -58,7 +58,7 @@ public class BitmapMesh {
             setFocusable(true);
 
             mBitmap = BitmapFactory.decodeResource(getResources(),
-                    R.drawable.bg);
+                    R.drawable.face_img_moon_small_png);
 
             mInhaleMesh = new InhaleMesh(WIDTH, HEIGHT);
             mInhaleMesh.setBitmapSize(mBitmap.getWidth(), mBitmap.getHeight());
