@@ -146,7 +146,14 @@ public class BitmapMesh {
 
             buildMesh(bmpW, bmpH);
         }
-
+        //恢复初始状态@moon
+        public void Reset()
+        {
+            float bmpW = mBitmap.getWidth();
+            float bmpH = mBitmap.getHeight();
+            buildMesh(bmpW, bmpH);
+            invalidate();
+        }
         public boolean startAnimation(boolean reverse)
         {
             Animation anim = this.getAnimation();
@@ -259,6 +266,7 @@ public class BitmapMesh {
 
             if (event.getAction() == MotionEvent.ACTION_UP)
             {
+
                 int x = (int)pt[0];
                 int y = (int)pt[1];
                 if (mLastWarpX != x || mLastWarpY != y) {

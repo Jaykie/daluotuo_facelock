@@ -9,9 +9,11 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
+import android.os.Handler;
 import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -177,6 +179,7 @@ public class UIFaceManagerCellItem extends UICellItemBase implements View.OnClic
         } else {
             StopShakeAnimation();
         }
+        mSampleView.Reset();
     }
 
     @Override
@@ -265,7 +268,21 @@ public class UIFaceManagerCellItem extends UICellItemBase implements View.OnClic
     @Override
     public void OnBitmapMeshDidAnimationEnd(BitmapMesh.SampleView view) {
         if (iDelegate != null) {
-            iDelegate.OnUIFaceManagerCellItemDidDelete(this);
+            //iDelegate.OnUIFaceManagerCellItemDidDelete(this);
+
+            final UIFaceManagerCellItem pthis = this;
+            //延时mSampleView.Reset()需要延时执行才能生效
+            Handler handler = new Handler();
+            Runnable r = new Runnable() {
+                @Override
+                public void run() {
+
+                    //   mSampleView.Reset();
+                    iDelegate.OnUIFaceManagerCellItemDidDelete(pthis);
+                }
+            };
+
+            handler.postDelayed(r, 10);//延时100毫秒
         }
     }
     //BitmapMesh

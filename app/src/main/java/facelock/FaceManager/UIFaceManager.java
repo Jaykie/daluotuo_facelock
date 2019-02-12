@@ -59,7 +59,7 @@ public class UIFaceManager extends UIView implements View.OnClickListener,UIFace
         //添加滚动出边界回弹效果
         //listView.setOverScrollMode(View.OVER_SCROLL_ALWAYS);
 
-        for (int i = 0; i < 15; i++) {
+        for (int i = 0; i < 50; i++) {
             ItemInfo info = new ItemInfo();//给实体类赋值
             info.title = "小米"+i;
             listItem.add(info);
@@ -193,9 +193,10 @@ public class UIFaceManager extends UIView implements View.OnClickListener,UIFace
     @Override
     public void OnUIFaceManagerCellItemDidDelete(UIFaceManagerCellItem ui)
     {
+        //adapter.notifyDataSetChanged();
         listItem.remove(ui.index);
         adapter.notifyDataSetChanged();
-      //  listView.invalidate();
+        //listView.invalidate();
     }
     //UIFaceManagerCellItem
 }
