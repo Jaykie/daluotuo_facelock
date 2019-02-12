@@ -6,7 +6,7 @@
  *
  */
 
-package com.daluotuo.facelock;
+package com.moonma.common;
 
 
 public abstract class Mesh

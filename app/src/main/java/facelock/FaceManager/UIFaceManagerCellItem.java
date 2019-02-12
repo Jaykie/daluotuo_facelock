@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -42,7 +43,7 @@ import android.view.animation.RotateAnimation;
 import static android.view.FrameMetrics.ANIMATION_DURATION;
 
 
-import com.daluotuo.facelock.BitmapMesh;
+import com.moonma.common.InhaleMeshView;
 
 /**
  * TODO: document your custom view class.
@@ -77,7 +78,7 @@ import com.daluotuo.facelock.BitmapMesh;
  *      
  * } AnimationType;
  */
-public class UIFaceManagerCellItem extends UICellItemBase implements View.OnClickListener, BitmapMesh.SampleView.IBitmapMeshDelegate {
+public class UIFaceManagerCellItem extends UICellItemBase implements View.OnClickListener, InhaleMeshView.IInhaleMeshViewDelegate {
 
     private boolean mNeedShake = false;
 
@@ -98,7 +99,7 @@ public class UIFaceManagerCellItem extends UICellItemBase implements View.OnClic
     TextView textTitle;
     ImageButton btnClose;
 
-    private BitmapMesh.SampleView mSampleView = null;
+    private InhaleMeshView meshView = null;
 
     IUIFaceManagerCellItemDelegate iDelegate;
 
@@ -135,14 +136,27 @@ public class UIFaceManagerCellItem extends UICellItemBase implements View.OnClic
 
                 boolean mReverse = false;
 
-                if (mSampleView.startAnimation(mReverse)) {
+                if (meshView.startAnimation(mReverse)) {
                     mReverse = !mReverse;
                 }
 
             }
         });
 
-        imageBg.setOnLongClickListener(new View.OnLongClickListener() {
+
+
+
+        meshView = new InhaleMeshView(ac);
+        meshView.setIsDebug(false);
+        meshView.setLayoutParams(new LinearLayout.LayoutParams(-1, -1));
+        this.AddView(meshView);
+        meshView.iDelegate = this;
+       // meshView.setFocusable(false);
+
+        meshView.setBitmap(BitmapFactory.decodeResource(ac.getResources(),R.drawable.face_img_moon_small_png));
+
+
+        meshView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
 
@@ -160,13 +174,6 @@ public class UIFaceManagerCellItem extends UICellItemBase implements View.OnClic
         });
 
 
-        mSampleView = new BitmapMesh.SampleView(ac);
-        mSampleView.setIsDebug(false);
-        mSampleView.setLayoutParams(new LinearLayout.LayoutParams(-1, -1));
-        this.AddView(mSampleView);
-        mSampleView.iDelegate = this;
-        mSampleView.setFocusable(false);
-
         btnClose.bringToFront();
         textTitle.bringToFront();
     }
@@ -179,7 +186,7 @@ public class UIFaceManagerCellItem extends UICellItemBase implements View.OnClic
         } else {
             StopShakeAnimation();
         }
-        mSampleView.Reset();
+        meshView.Reset();
     }
 
     @Override
@@ -266,7 +273,7 @@ public class UIFaceManagerCellItem extends UICellItemBase implements View.OnClic
 
     //BitmapMesh
     @Override
-    public void OnBitmapMeshDidAnimationEnd(BitmapMesh.SampleView view) {
+    public void OnInhaleMeshViewDidAnimationEnd(InhaleMeshView view) {
         if (iDelegate != null) {
             //iDelegate.OnUIFaceManagerCellItemDidDelete(this);
 
