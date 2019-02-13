@@ -30,6 +30,7 @@ import com.moonma.FaceSDK.FaceDBCommon;
 import com.moonma.FaceSDK.IFaceDBBaseListener;
 import com.daluotuo.facelock.RegisterViewController;
 import com.moonma.common.UICellItemBase;
+import com.moonma.common.ItemInfo;
 
 /**
  * TODO: document your custom view class.
@@ -53,9 +54,9 @@ public class UISettingCellItem extends UICellItemBase implements View.OnClickLis
         textTitle.setOnClickListener(this);
     }
 
-    public void UpdateItem() {
+    public void UpdateItem(ItemInfo info) {
         //CharSequence
-        textTitle.setText(String.valueOf(index));
+        textTitle.setText(info.title);
     }
 
     @Override

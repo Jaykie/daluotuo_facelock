@@ -36,6 +36,7 @@ public class UISetting extends UIView implements View.OnClickListener, UISetting
     BaseAdapter adapter;
     List<ItemInfo> listItem = new ArrayList<ItemInfo>();//实体类
     int oneCellNum = 1;
+
     public UISetting(int layoutId, UIView parent) {
         super(layoutId, parent);
 
@@ -45,10 +46,14 @@ public class UISetting extends UIView implements View.OnClickListener, UISetting
 
         listView = (ListView) findViewById(R.id.setting_list);
 
-
-        for (int i = 0; i < 2; i++) {
+        {
             ItemInfo info = new ItemInfo();//给实体类赋值
-            info.title = "小米" + i;
+            info.title = Common.stringFromResId(R.string.setting_register);
+            listItem.add(info);
+        }
+        {
+            ItemInfo info = new ItemInfo();//给实体类赋值
+            info.title = Common.stringFromResId(R.string.setting_facemanager);
             listItem.add(info);
         }
 
@@ -60,42 +65,42 @@ public class UISetting extends UIView implements View.OnClickListener, UISetting
                 int total = listItem.size();
                 // totalItem = total;
                 int numRows = total / oneCellNum;
-                if (total % oneCellNum != 0)
-                {
+                if (total % oneCellNum != 0) {
                     numRows++;
                 }
                 return numRows;//数目
             }
+
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 Activity ac = Common.getMainActivity();
                 LayoutInflater inflater = ac.getLayoutInflater();
                 View view;
 
-                if (convertView==null) {
+                if (convertView == null) {
                     //因为getView()返回的对象，adapter会自动赋给ListView
                     UICellBase uiCell = new UICellBase(-1);
-                    for(int i=0;i<pthis.oneCellNum;i++){
+                    for (int i = 0; i < pthis.oneCellNum; i++) {
                         UISettingCellItem item = new UISettingCellItem();
                         // Size dp = com.moonma.common.Common.GetScreenDP();
                         Size pixel = Common.GetScreenPixel();
                         item.LoadLayoutRes(R.layout.uisettingcellitem, uiCell);
                         ViewGroup.LayoutParams lp = item.content.getLayoutParams();
-                        lp.width = pixel.getWidth()/oneCellNum;
-                        lp.height = pixel.getHeight()/10;
+                        lp.width = pixel.getWidth() / oneCellNum;
+                        lp.height = pixel.getHeight() / 10;
 
                         item.SetController(pthis.controller);
                         item.SetParent(uiCell);
-                        item.index = pthis.oneCellNum*position+i;
+                        item.index = pthis.oneCellNum * position + i;
                         item.Init();
                         item.iDelegate = pthis;
                         uiCell.AddItem(item);
 
-                        if(item.index<listItem.size())
-                        {
+                        if (item.index < listItem.size()) {
                             item.Show(true);
-                            item.UpdateItem();
-                        }else {
+                            ItemInfo info = listItem.get(item.index);
+                            item.UpdateItem(info);
+                        } else {
                             item.Show(false);
                         }
                     }
@@ -103,27 +108,25 @@ public class UISetting extends UIView implements View.OnClickListener, UISetting
                     view = uiCell.content;
                     view.setTag(uiCell);
                     //   view = inflater.inflate(R.layout.uisettingcellitem, null);
-                }else{
-                    view=convertView;
+                } else {
+                    view = convertView;
                     Object objTag = view.getTag();
-                    if(objTag instanceof UICellBase)
-                    {
-                        UICellBase uiCell = (UICellBase)objTag;
-                        for(int i=0;i<uiCell.GetItemCount();i++)
-                        {
-                            UISettingCellItem item = (UISettingCellItem)uiCell.GetItem(i);
-                            item.index = pthis.oneCellNum*position+i;
-                            if(item.index<listItem.size())
-                            {
+                    if (objTag instanceof UICellBase) {
+                        UICellBase uiCell = (UICellBase) objTag;
+                        for (int i = 0; i < uiCell.GetItemCount(); i++) {
+                            UISettingCellItem item = (UISettingCellItem) uiCell.GetItem(i);
+                            item.index = pthis.oneCellNum * position + i;
+                            if (item.index < listItem.size()) {
                                 item.Show(true);
-                                item.UpdateItem();
-                            }else {
+                                ItemInfo info = listItem.get(item.index);
+                                item.UpdateItem(info);
+                            } else {
                                 item.Show(false);
                             }
                         }
                     }
 
-                    Log.i("info","有缓存，不需要重新生成"+position);
+                    Log.i("info", "有缓存，不需要重新生成" + position);
                 }
 
                 return view;

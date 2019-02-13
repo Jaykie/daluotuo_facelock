@@ -21,35 +21,45 @@
             android:scaleType="fitXY"
             app:srcCompat="@drawable/setting_bg" />
 
-    </RelativeLayout>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="0dp"
-        android:orientation="horizontal"
-        app:layout_constraintTop_toTopOf="parent">
+        <RelativeLayout
+            android:id="@+id/facemanager_topbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-        <ImageButton
-            android:id="@+id/btn_setting_close"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="setting"
-            app:srcCompat="@android:drawable/btn_dialog" />
+            <TextView
+                android:id="@+id/facemanager_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:text="@string/setting_facemanager"
+                android:textSize="24sp" />
 
-        <ImageButton
-            android:id="@+id/btn_setting_register"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="setting"
-            android:layout_toRightOf="@+id/btn_setting_close"
-            app:srcCompat="@android:drawable/ic_menu_add" />
+            <ImageButton
+                android:id="@+id/btn_facemanager_close"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="setting"
+                app:srcCompat="@android:drawable/btn_dialog" />
+
+            <ImageButton
+                android:id="@+id/btn_facemanager_register"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/btn_facemanager_close"
+                android:contentDescription="setting"
+                app:srcCompat="@android:drawable/ic_menu_add" />
+
+        </RelativeLayout>
+
 
         <ListView
             android:id="@+id/list_facemanager"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/btn_setting_close" />
+            android:layout_below="@+id/facemanager_topbar" />
+
     </RelativeLayout>
 
 

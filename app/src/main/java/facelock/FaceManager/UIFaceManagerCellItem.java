@@ -3,6 +3,7 @@ package com.daluotuo.facelock;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -15,6 +16,7 @@ import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,6 +46,7 @@ import static android.view.FrameMetrics.ANIMATION_DURATION;
 
 
 import com.moonma.common.InhaleMeshView;
+import com.moonma.common.ItemInfo;
 
 /**
  * TODO: document your custom view class.
@@ -109,6 +112,18 @@ public class UIFaceManagerCellItem extends UICellItemBase implements View.OnClic
         public void OnUIFaceManagerCellItemDidDelete(UIFaceManagerCellItem ui);
     }
 
+    /*
+    避免图片被缩放
+//https://www.cnblogs.com/LuoYer/archive/2011/01/06/1929098.html
+     */
+    private Bitmap decodeResource(Resources resources, int id) {
+        TypedValue value = new TypedValue();
+        resources.openRawResource(id, value);
+        BitmapFactory.Options opts = new BitmapFactory.Options();
+        opts.inTargetDensity = value.density;
+        return BitmapFactory.decodeResource(resources, id, opts);
+    }
+
     public void Init() {
         imageBg = (ImageView) findViewById(R.id.uifacemanagercellitem_bg);
         textTitle = (TextView) findViewById(R.id.uifacemanagercellitem_title);
@@ -132,18 +147,13 @@ public class UIFaceManagerCellItem extends UICellItemBase implements View.OnClic
                     if (iDelegate != null) {
                         // iDelegate.OnUIFaceManagerCellItemDidDelete(pthis);
                     }
+                    mNeedShake = false;
+                    meshView.startAnimation(false);
                 }
 
-                boolean mReverse = false;
-
-                if (meshView.startAnimation(mReverse)) {
-                    mReverse = !mReverse;
-                }
 
             }
         });
-
-
 
 
         meshView = new InhaleMeshView(ac);
@@ -151,10 +161,10 @@ public class UIFaceManagerCellItem extends UICellItemBase implements View.OnClic
         meshView.setLayoutParams(new LinearLayout.LayoutParams(-1, -1));
         this.AddView(meshView);
         meshView.iDelegate = this;
-       // meshView.setFocusable(false);
+        // meshView.setFocusable(false);
 
-        meshView.setBitmap(BitmapFactory.decodeResource(ac.getResources(),R.drawable.face_img_moon_small_png));
-
+        // meshView.setBitmap(BitmapFactory.decodeResource(ac.getResources(), R.drawable.face_img_moon_small_png));
+        meshView.setBitmap(decodeResource(ac.getResources(), R.drawable.face_img_moon_small_png));
 
         meshView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -174,11 +184,13 @@ public class UIFaceManagerCellItem extends UICellItemBase implements View.OnClic
         });
 
 
-        btnClose.bringToFront();
+
         textTitle.bringToFront();
+        btnClose.bringToFront();
+        btnClose.setVisibility(View.INVISIBLE);
     }
 
-    public void UpdateItem(boolean isEdit) {
+    public void UpdateItem(ItemInfo info,boolean isEdit) {
         //CharSequence
         textTitle.setText(String.valueOf(index));
         if (isEdit) {
@@ -197,14 +209,14 @@ public class UIFaceManagerCellItem extends UICellItemBase implements View.OnClic
 
     void StartShakeAnimation() {
         mNeedShake = true;
-        ShakeAnimation(imageBg);
-
+        ShakeAnimation(meshView);
+        btnClose.setVisibility(View.VISIBLE);
     }
 
     void StopShakeAnimation() {
         mNeedShake = false;
         mCount = 0;
-
+        btnClose.setVisibility(View.GONE);
     }
 
     private void ShakeAnimation(final View v) {

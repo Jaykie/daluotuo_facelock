@@ -21,38 +21,27 @@
             android:scaleType="fitXY"
             app:srcCompat="@drawable/setting_bg" />
 
+    </RelativeLayout>
 
-        <RelativeLayout
-            android:id="@+id/setting_topbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/setting_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:text="@string/setting"
-                android:textSize="24sp" />
-
-            <ImageButton
-                android:id="@+id/btn_setting_close"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="setting"
-                app:srcCompat="@android:drawable/btn_dialog" />
-
-        </RelativeLayout>
-
+        <ImageButton
+            android:id="@+id/btn_setting_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="setting"
+            app:srcCompat="@android:drawable/btn_dialog" />
 
         <ListView
             android:id="@+id/setting_list"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/setting_topbar" />
-
-
+            android:layout_below="@+id/btn_setting_close" />
     </RelativeLayout>
 
 

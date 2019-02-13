@@ -45,10 +45,10 @@ public class UIFaceManager extends UIView implements View.OnClickListener,UIFace
     public UIFaceManager(int layoutId, UIView parent) {
         super(layoutId, parent);
 
-        btnClose = (ImageButton) findViewById(R.id.btn_setting_close);
+        btnClose = (ImageButton) findViewById(R.id.btn_facemanager_close);
         btnClose.setOnClickListener(this);
 
-        btnRegister = (ImageButton) findViewById(R.id.btn_setting_register);
+        btnRegister = (ImageButton) findViewById(R.id.btn_facemanager_register);
         btnRegister.setOnClickListener(this);
 
         listView = (ListView) findViewById(R.id.list_facemanager);
@@ -108,7 +108,8 @@ public class UIFaceManager extends UIView implements View.OnClickListener,UIFace
                         if(item.index<listItem.size())
                         {
                             item.Show(true);
-                            item.UpdateItem(pthis.isEditDelete);
+                            ItemInfo info = listItem.get(item.index);
+                            item.UpdateItem(info,pthis.isEditDelete);
                         }else {
                             item.Show(false);
                         }
@@ -132,7 +133,8 @@ public class UIFaceManager extends UIView implements View.OnClickListener,UIFace
                             if(item.index<listItem.size())
                             {
                                 item.Show(true);
-                                item.UpdateItem(pthis.isEditDelete);
+                                ItemInfo info = listItem.get(item.index);
+                                item.UpdateItem(info,pthis.isEditDelete);
                             }else {
                                 Log.d(TAG,"Hide i="+i+" position="+position+" item.index="+item.index );
                                item.Show(false);
@@ -175,10 +177,10 @@ public class UIFaceManager extends UIView implements View.OnClickListener,UIFace
     @Override
     public void onClick(View view) {
 
-        if (view.getId() == R.id.btn_setting_close) {
+        if (view.getId() == R.id.btn_facemanager_close) {
             OnClickBtnClose();
         }
-        if (view.getId() == R.id.btn_setting_register) {
+        if (view.getId() == R.id.btn_facetips_register) {
             OnClickBtnRegister();
         }
     }

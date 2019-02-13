@@ -3,6 +3,8 @@
     <string name="pref_start_id">startID</string>
     <string name="home">首页</string>
     <string name="register">注册</string>
+    <string name="setting_register">注册人脸</string>
+    <string name="setting_facemanager">人脸管理</string>
     <string name="detect">识别</string>
     <string name="setting">设置</string>
     <string name="company">深圳市宁远电子科技有限公司</string>

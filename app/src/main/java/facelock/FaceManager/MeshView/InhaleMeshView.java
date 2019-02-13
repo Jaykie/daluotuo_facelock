@@ -155,7 +155,7 @@ public class InhaleMeshView extends View {
     public boolean startAnimation(boolean reverse) {
         Animation anim = this.getAnimation();
         if (null != anim && !anim.hasEnded()) {
-            return false;
+           // return false;
         }
 
         PathAnimation animation = new PathAnimation(0, HEIGHT + 1, reverse,
@@ -247,24 +247,24 @@ public class InhaleMeshView extends View {
     int mLastWarpX = 0;
     int mLastWarpY = 0;
 
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        float[] pt = {event.getX(), event.getY()};
-        mInverse.mapPoints(pt);
-
-        if (event.getAction() == MotionEvent.ACTION_UP) {
-
-            int x = (int) pt[0];
-            int y = (int) pt[1];
-            if (mLastWarpX != x || mLastWarpY != y) {
-                mLastWarpX = x;
-                mLastWarpY = y;
-                buildPaths(pt[0], pt[1]);
-                invalidate();
-            }
-        }
-        return true;
-    }
+  //  @Override
+//    public boolean onTouchEvent(MotionEvent event) {
+//        float[] pt = {event.getX(), event.getY()};
+//        mInverse.mapPoints(pt);
+//
+//        if (event.getAction() == MotionEvent.ACTION_UP) {
+//
+////            int x = (int) pt[0];
+////            int y = (int) pt[1];
+////            if (mLastWarpX != x || mLastWarpY != y) {
+////                mLastWarpX = x;
+////                mLastWarpY = y;
+////                buildPaths(pt[0], pt[1]);
+////                invalidate();
+////            }
+//        }
+//        return true;
+//    }
 }
 
 
