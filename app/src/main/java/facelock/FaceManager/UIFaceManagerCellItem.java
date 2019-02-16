@@ -36,6 +36,7 @@ import com.moonma.FaceSDK.IFaceSDKBaseListener;
 import com.moonma.FaceSDK.FaceSDKCommon;
 import com.moonma.FaceSDK.FaceDBCommon;
 import com.moonma.FaceSDK.IFaceDBBaseListener;
+import com.moonma.FaceSDK.FaceInfo;
 import com.daluotuo.facelock.RegisterViewController;
 
 import android.view.animation.Animation;
@@ -103,7 +104,7 @@ public class UIFaceManagerCellItem extends UICellItemBase implements View.OnClic
     TextView textTitle;
     ImageButton btnClose;
 
-    private InhaleMeshView meshView = null;
+    //private InhaleMeshView meshView = null;
 
     IUIFaceManagerCellItemDelegate iDelegate;
 
@@ -144,8 +145,7 @@ public class UIFaceManagerCellItem extends UICellItemBase implements View.OnClic
         if (dm != null) {
             mDensity = dm.density;
         }
-        // meshView.setBitmap(BitmapFactory.decodeResource(ac.getResources(), R.drawable.face_img_moon_small_png));
-        Bitmap bmp = decodeResource(ac.getResources(), R.drawable.face_img_moon_small_png);
+
 
         final UIFaceManagerCellItem pthis = this;
         btnClose.setOnClickListener(new View.OnClickListener() {
@@ -153,16 +153,16 @@ public class UIFaceManagerCellItem extends UICellItemBase implements View.OnClic
             public void onClick(View view) {
                 if (mNeedShake) {
                     if (iDelegate != null) {
-                        // iDelegate.OnUIFaceManagerCellItemDidDelete(pthis);
+                        iDelegate.OnUIFaceManagerCellItemDidDelete(pthis);
                     }
                     mNeedShake = false;
-                    meshView.startAnimation(false);
+                    // meshView.startAnimation(false);
                 }
 
             }
         });
 
-
+/*
         meshView = new InhaleMeshView(ac);
         meshView.setIsDebug(false);
         RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -177,8 +177,10 @@ public class UIFaceManagerCellItem extends UICellItemBase implements View.OnClic
 
         imageBg.setImageBitmap(bmp);
         //meshView.setVisibility(View.INVISIBLE);
+*/
 
-        meshView.setOnLongClickListener(new View.OnLongClickListener() {
+//meshView
+        imageBg.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
 
@@ -191,11 +193,11 @@ public class UIFaceManagerCellItem extends UICellItemBase implements View.OnClic
                     iDelegate.OnUIFaceManagerCellItemDidLongPress(pthis);
                 }
 
-                int w,h;
-                w = imageBg.getWidth();
-                h = imageBg.getHeight();
-                w = meshView.getWidth();
-                h = meshView.getHeight();
+                int w, h;
+//                w = imageBg.getWidth();
+//                h = imageBg.getHeight();
+//                w = meshView.getWidth();
+//                h = meshView.getHeight();
 
 
                 return true;
@@ -208,18 +210,28 @@ public class UIFaceManagerCellItem extends UICellItemBase implements View.OnClic
         btnClose.setVisibility(View.INVISIBLE);
 
 
-
     }
 
-    public void UpdateItem(ItemInfo info, boolean isEdit) {
+    public void UpdateItem(FaceInfo info, boolean isEdit) {
         //CharSequence
-        textTitle.setText(String.valueOf(index));
+        //String.valueOf(index)
+        textTitle.setText(info.name);
         if (isEdit) {
             StartShakeAnimation();
         } else {
             StopShakeAnimation();
         }
-        meshView.Reset();
+        // meshView.Reset();
+
+        // meshView.setBitmap(BitmapFactory.decodeResource(ac.getResources(), R.drawable.face_img_moon_small_png));
+        Activity ac = Common.getMainActivity();
+        Bitmap bmp = null;
+        if (info.bmp == null) {
+            bmp = decodeResource(ac.getResources(), R.drawable.face_img_moon_small_png);
+        } else {
+            bmp = info.bmp;
+        }
+        imageBg.setImageBitmap(bmp);
     }
 
     @Override
@@ -230,7 +242,7 @@ public class UIFaceManagerCellItem extends UICellItemBase implements View.OnClic
 
     void StartShakeAnimation() {
         mNeedShake = true;
-        ShakeAnimation(meshView);
+        ShakeAnimation(imageBg);//imageBg  meshView
         btnClose.setVisibility(View.VISIBLE);
     }
 

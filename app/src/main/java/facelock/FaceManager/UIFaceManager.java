@@ -17,6 +17,7 @@ import com.moonma.common.UIView;
 import com.moonma.common.PopViewController;
 import com.moonma.common.ItemInfo;
 import com.moonma.common.UICellBase;
+import com.moonma.FaceSDK.FaceInfo;
 import com.daluotuo.facelock.UIFaceManagerCellItem;
 
 import java.util.ArrayList;
@@ -35,7 +36,7 @@ public class UIFaceManager extends UIView implements View.OnClickListener,UIFace
 
     ListView listView;
     BaseAdapter adapter;
-    List<ItemInfo> listItem = new ArrayList<ItemInfo>();//实体类
+    List<FaceInfo> listItem = new ArrayList<FaceInfo>();//实体类
     int oneCellNum = 4;
     boolean isEditDelete = false;
 
@@ -54,14 +55,20 @@ public class UIFaceManager extends UIView implements View.OnClickListener,UIFace
         listView = (ListView) findViewById(R.id.list_facemanager);
 
         Size pixel = Common.GetScreenPixel();
-        oneCellNum = pixel.getWidth()/widthItem;
+        float v = pixel.getWidth()*1.0f/widthItem;
+        if((v-(int)v)>=0.5f)
+        {
+            oneCellNum++;
+        }
+
+        //oneCellNum = pixel.getWidth()/widthItem;
 
         //添加滚动出边界回弹效果
         //listView.setOverScrollMode(View.OVER_SCROLL_ALWAYS);
 
         for (int i = 0; i < 50; i++) {
-            ItemInfo info = new ItemInfo();//给实体类赋值
-            info.title = "小米"+i;
+            FaceInfo info = new FaceInfo();//给实体类赋值
+            info.name = "小米"+i;
             listItem.add(info);
         }
 
@@ -97,8 +104,9 @@ public class UIFaceManager extends UIView implements View.OnClickListener,UIFace
                         Size pixel = Common.GetScreenPixel();
                         item.LoadLayoutRes(R.layout.uifacemanagercellitem, uiCell);
                         ViewGroup.LayoutParams lp = item.content.getLayoutParams();
-                        lp.width = widthItem;//pixel.getWidth()/oneCellNum;
-                        lp.height = heightItem;//lp.width;
+                        lp.width = pixel.getWidth()/oneCellNum;//widthItem
+                        //保持比例
+                        lp.height =(int)(heightItem*1.0f*lp.width/widthItem);//lheightItem
 
                         item.SetController(pthis.controller);
                         item.SetParent(uiCell);
@@ -108,7 +116,7 @@ public class UIFaceManager extends UIView implements View.OnClickListener,UIFace
                         if(item.index<listItem.size())
                         {
                             item.Show(true);
-                            ItemInfo info = listItem.get(item.index);
+                            FaceInfo info = listItem.get(item.index);
                             item.UpdateItem(info,pthis.isEditDelete);
                         }else {
                             item.Show(false);
@@ -133,7 +141,7 @@ public class UIFaceManager extends UIView implements View.OnClickListener,UIFace
                             if(item.index<listItem.size())
                             {
                                 item.Show(true);
-                                ItemInfo info = listItem.get(item.index);
+                                FaceInfo info = listItem.get(item.index);
                                 item.UpdateItem(info,pthis.isEditDelete);
                             }else {
                                 Log.d(TAG,"Hide i="+i+" position="+position+" item.index="+item.index );
