@@ -21,6 +21,7 @@ class DBHelper extends SQLiteOpenHelper {
     private static final String SQL_CREATE_TABLE_FACE = "create table " + TABLE_FACE + " ("
             + "id text primary key,"//autoincrement
             + "name text, "
+            + "time text, "
             + "data blob )";//数据库里的表
 
     SQLiteDatabase dbOpen;
@@ -62,6 +63,15 @@ class DBHelper extends SQLiteOpenHelper {
 
     }
 
+    public void GetAllItem(FaceInfo info) {
+        //    db.execSQL("insert into test (id,photo) values(?,?)",new Object[]{photo.getId(),photoByte});
+        // String strSql="insert into "+TABLE_FACE+" values(1,'TT','一起去旅游','10月1号')";
+        if (dbOpen != null) {
+            //：select * from table1 order by field1，field2 [desc]
+            //SQL 语句中, asc是指定列按升序排列，desc则是指定列按降序排列。
+                dbOpen.execSQL("select * from " + TABLE_FACE + "order by time [desc]");
+        }
+    }
     public void AddItem(FaceInfo info) {
         //    db.execSQL("insert into test (id,photo) values(?,?)",new Object[]{photo.getId(),photoByte});
         // String strSql="insert into "+TABLE_FACE+" values(1,'TT','一起去旅游','10月1号')";
@@ -72,6 +82,16 @@ class DBHelper extends SQLiteOpenHelper {
                 dbOpen.execSQL("insert into " + TABLE_FACE + "  (id,name,data) values(?,?)", new Object[]{info.id, info.name, data});
             }else {
                 dbOpen.execSQL("insert into " + TABLE_FACE + "  (id,name) values(?,?)", new Object[]{info.id, info.name});
+            }
+
+        }
+    }
+//删除
+    public void DeleteItem(FaceInfo info) {
+        //    db.execSQL("insert into test (id,photo) values(?,?)",new Object[]{photo.getId(),photoByte});
+        // String strSql="insert into "+TABLE_FACE+" values(1,'TT','一起去旅游','10月1号')";
+        if (dbOpen != null) {
+                dbOpen.execSQL("delete  " + TABLE_FACE + "  (id,name) values(?,?)", new Object[]{info.id, info.name});
             }
 
         }
