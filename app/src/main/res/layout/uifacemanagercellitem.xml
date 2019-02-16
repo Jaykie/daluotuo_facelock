@@ -8,12 +8,21 @@
 
     <ImageView
         android:id="@+id/uifacemanagercellitem_bg"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:contentDescription="bg"
         app:srcCompat="@drawable/bg_detect_success" />
+
+    <!--<com.moonma.common.InhaleMeshView-->
+        <!--android:id="@+id/face_meshview"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:layout_centerVertical="true"-->
+        <!--android:contentDescription="mesh"  />-->
+
     <ImageButton
         android:id="@+id/uifacemanagercellitem_close"
         android:layout_width="wrap_content"

@@ -18,7 +18,7 @@
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:contentDescription="bg"
-            android:scaleType="fitXY"
+            android:scaleType="centerCrop"
             app:srcCompat="@drawable/setting_bg" />
 
 

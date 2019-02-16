@@ -202,7 +202,7 @@ public class InhaleMeshView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         Log.i("leehong2", "onDraw  =========== ");
-        canvas.drawColor(0xFFCCCCCC);
+        //canvas.drawColor(0xFFCCCCCC);
 
         canvas.concat(mMatrix);
 

@@ -36,7 +36,7 @@ public class UISetting extends UIView implements View.OnClickListener, UISetting
     BaseAdapter adapter;
     List<ItemInfo> listItem = new ArrayList<ItemInfo>();//实体类
     int oneCellNum = 1;
-
+//ImageView ScaleType:https://blog.csdn.net/qq_34902522/article/details/76682293
     public UISetting(int layoutId, UIView parent) {
         super(layoutId, parent);
 

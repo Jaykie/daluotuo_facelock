@@ -23,6 +23,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.moonma.common.Common;
@@ -128,6 +129,10 @@ public class UIFaceManagerCellItem extends UICellItemBase implements View.OnClic
         imageBg = (ImageView) findViewById(R.id.uifacemanagercellitem_bg);
         textTitle = (TextView) findViewById(R.id.uifacemanagercellitem_title);
         btnClose = (ImageButton) findViewById(R.id.uifacemanagercellitem_close);
+
+        //meshView = (InhaleMeshView)findViewById(R.id.face_meshview);
+
+
         //关闭触模事件
         textTitle.setFocusable(false);
         Activity ac = Common.getMainActivity();
@@ -139,6 +144,9 @@ public class UIFaceManagerCellItem extends UICellItemBase implements View.OnClic
         if (dm != null) {
             mDensity = dm.density;
         }
+        // meshView.setBitmap(BitmapFactory.decodeResource(ac.getResources(), R.drawable.face_img_moon_small_png));
+        Bitmap bmp = decodeResource(ac.getResources(), R.drawable.face_img_moon_small_png);
+
         final UIFaceManagerCellItem pthis = this;
         btnClose.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -151,20 +159,24 @@ public class UIFaceManagerCellItem extends UICellItemBase implements View.OnClic
                     meshView.startAnimation(false);
                 }
 
-
             }
         });
 
 
         meshView = new InhaleMeshView(ac);
         meshView.setIsDebug(false);
-        meshView.setLayoutParams(new LinearLayout.LayoutParams(-1, -1));
+        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        lp.addRule(RelativeLayout.CENTER_HORIZONTAL);
+        lp.addRule(RelativeLayout.CENTER_VERTICAL);
+        meshView.setLayoutParams(lp);
+        //meshView.setLayoutParams(new LinearLayout.LayoutParams(-1, -1));
         this.AddView(meshView);
         meshView.iDelegate = this;
         // meshView.setFocusable(false);
+        meshView.setBitmap(bmp);
 
-        // meshView.setBitmap(BitmapFactory.decodeResource(ac.getResources(), R.drawable.face_img_moon_small_png));
-        meshView.setBitmap(decodeResource(ac.getResources(), R.drawable.face_img_moon_small_png));
+        imageBg.setImageBitmap(bmp);
+        //meshView.setVisibility(View.INVISIBLE);
 
         meshView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -179,18 +191,27 @@ public class UIFaceManagerCellItem extends UICellItemBase implements View.OnClic
                     iDelegate.OnUIFaceManagerCellItemDidLongPress(pthis);
                 }
 
+                int w,h;
+                w = imageBg.getWidth();
+                h = imageBg.getHeight();
+                w = meshView.getWidth();
+                h = meshView.getHeight();
+
+
                 return true;
             }
         });
 
 
-
         textTitle.bringToFront();
         btnClose.bringToFront();
         btnClose.setVisibility(View.INVISIBLE);
+
+
+
     }
 
-    public void UpdateItem(ItemInfo info,boolean isEdit) {
+    public void UpdateItem(ItemInfo info, boolean isEdit) {
         //CharSequence
         textTitle.setText(String.valueOf(index));
         if (isEdit) {
