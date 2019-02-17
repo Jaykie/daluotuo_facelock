@@ -11,6 +11,8 @@ import com.moonma.FaceSDK.DBHelper;
 import com.moonma.common.Common;
 import com.moonma.FaceSDK.FaceInfo;
 
+import java.util.List;
+
 public class FaceDBOpenAiLab extends FaceDBBase {
     DBHelper dbHelper;
 
@@ -26,13 +28,26 @@ public class FaceDBOpenAiLab extends FaceDBBase {
         }
     }
 
+    public List<FaceInfo> GetAllFace() {
+        if (dbHelper != null) {
+            return dbHelper.GetAllItem();
+        }
+        return null;
+    }
+
     public void DeleteAllFace() {
 
     }
 
+    public void DeleteFace(FaceInfo info) {
+        if (dbHelper != null) {
+            dbHelper.DeleteItem(info);
+        }
+    }
+
     public boolean isEmpty() {
         if (dbHelper != null) {
-            return  dbHelper.isEmpty();
+            return dbHelper.isEmpty();
         }
         return true;
     }

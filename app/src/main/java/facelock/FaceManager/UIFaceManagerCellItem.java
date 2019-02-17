@@ -107,6 +107,7 @@ public class UIFaceManagerCellItem extends UICellItemBase implements View.OnClic
     //private InhaleMeshView meshView = null;
 
     IUIFaceManagerCellItemDelegate iDelegate;
+    public FaceInfo infoFace;
 
     public interface IUIFaceManagerCellItemDelegate {
         public void OnUIFaceManagerCellItemDidLongPress(UIFaceManagerCellItem ui);
@@ -215,6 +216,7 @@ public class UIFaceManagerCellItem extends UICellItemBase implements View.OnClic
     public void UpdateItem(FaceInfo info, boolean isEdit) {
         //CharSequence
         //String.valueOf(index)
+        infoFace = info;
         textTitle.setText(info.name);
         if (isEdit) {
             StartShakeAnimation();

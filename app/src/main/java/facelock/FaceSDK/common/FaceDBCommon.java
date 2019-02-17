@@ -14,6 +14,8 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.util.Log;
 
+import java.util.List;
+
 public class FaceDBCommon implements IFaceDBBaseListener {
 
     FaceDBBase faceDB;
@@ -46,12 +48,19 @@ public class FaceDBCommon implements IFaceDBBaseListener {
         }
     }
 
+    public List<FaceInfo> GetAllFace() {
+        if (faceDB != null) {
+            return faceDB.GetAllFace();
+        }
+        return null;
+    }
 
     public void AddFace(FaceInfo info) {
         if (faceDB != null) {
             faceDB.AddFace(info);
         }
     }
+
     public void DeleteFace(FaceInfo info) {
         if (faceDB != null) {
             faceDB.DeleteFace(info);

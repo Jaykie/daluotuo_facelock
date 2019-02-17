@@ -7,4 +7,6 @@ public class FaceInfo {
     public String id;
     public Bitmap bmp;
     public float score;
+    public long time;
+    public byte[] data;
 }
