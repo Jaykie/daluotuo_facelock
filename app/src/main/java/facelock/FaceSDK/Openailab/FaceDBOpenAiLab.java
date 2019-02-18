@@ -37,7 +37,9 @@ public class FaceDBOpenAiLab extends FaceDBBase {
     }
 
     public void DeleteAllFace() {
-
+        if (dbHelper != null) {
+            dbHelper.DeleteAll();
+        }
     }
 
     public void DeleteFace(FaceInfo info) {

@@ -69,6 +69,7 @@ public class FaceDBCommon implements IFaceDBBaseListener {
 
     public void DeleteAllFace() {
         if (faceDB != null) {
+            faceDB.DeleteFaceImageDir();
             faceDB.DeleteAllFace();
         }
     }

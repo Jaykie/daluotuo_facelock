@@ -7,6 +7,7 @@ import com.moonma.FaceSDK.IFaceDBBaseListener;
 import com.moonma.FaceSDK.FaceInfo;
 import com.moonma.common.ImageUtil;
 import com.moonma.common.CommonUtils;
+import com.moonma.common.DeleteFileUtil;
 
 import java.io.File;
 import java.util.List;
@@ -40,8 +41,12 @@ public class FaceDBBase {
 
     }
 
+    public void DeleteFaceImageDir() {
+        DeleteFileUtil.deleteDirectory(GetFaceImageDir());
+    }
+
     public String GetFaceImageDir() {
-        String dir = CommonUtils.getSDCardPath()+"/"+FACE_IMAGE_FILE_DIR;
+        String dir = CommonUtils.getSDCardPath() + "/" + FACE_IMAGE_FILE_DIR;
         return dir;
     }
 
@@ -62,7 +67,7 @@ public class FaceDBBase {
         String dir = GetFaceImageDir();
         CreateDir(dir);
         long currentTime = System.currentTimeMillis();
-        String filepath = dir+"/"+info.name+"_"+currentTime+".jpg";
+        String filepath = dir + "/" + info.name + "_" + currentTime + ".jpg";
         if (info.bmp != null) {
             ImageUtil.SaveBitmapToFile(info.bmp, filepath, true);
         }

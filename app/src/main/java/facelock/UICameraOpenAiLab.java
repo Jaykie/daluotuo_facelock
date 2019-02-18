@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.ImageFormat;
 import android.graphics.PixelFormat;
@@ -68,9 +69,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import com.daluotuo.facelock.UICamera;
 
 public class UICameraOpenAiLab extends UICamera
-        implements View.OnClickListener
-{
-
+        implements View.OnClickListener {
 
 
     private myDrawRectView drawRectView;
@@ -188,7 +187,7 @@ public class UICameraOpenAiLab extends UICamera
                             info.id = info.name;
                             info.bmp = null;
                             info.score = 1f;
-                            FaceDidRegister(info,false);
+                            FaceDidRegister(info, false);
 
                         } else if (msg.arg1 == 0) {
                             //   tv_time.setText("你是:" + showName);
@@ -220,7 +219,7 @@ public class UICameraOpenAiLab extends UICamera
                             info.id = info.name;
                             info.bmp = null;
                             info.score = 1f;
-                            FaceDidRegister(info,true);
+                            FaceDidRegister(info, true);
                             // Toast.makeText(ac, msg.obj + "已注册过了", Toast.LENGTH_SHORT).show();
                         }
 
@@ -269,7 +268,6 @@ public class UICameraOpenAiLab extends UICamera
 //        btnCamSelect.setOnClickListener(this);
 
         InitCamera();
-
 
 
     }
@@ -631,140 +629,172 @@ public class UICameraOpenAiLab extends UICamera
         return true;
     }
 
-    public void setUICameraListener(UICamera.OnUICameraListener listener) {
-        mListener = listener;
-    }
-
-    public void setMode(int mode) {
-        if (faceSDKCommon != null) {
-            faceSDKCommon.setMode(mode);
-        }
-    }
-
-    public void updateCameraSize() {
-        if (mCameraID == Camera.CameraInfo.CAMERA_FACING_FRONT) {
-            mCameraRotate = 270;
-            if (Device.isLandscape()) {
-                mCameraRotate = 180;
-            }
+    public Bitmap Bytes2Bimap(byte[] b) {
+        if (b.length != 0) {
+            return BitmapFactory.decodeByteArray(b, 0, b.length);
         } else {
-            mCameraRotate = 90;
-
-            if (Device.isLandscape()) {
-                mCameraRotate = 0;
-            } else {
-                mCameraRotate = 0;
-            }
+            return null;
         }
     }
 
-    public void OnClickViewCamera() {
-        final Activity ac = Common.getMainActivity();
-        if (isDialogShow) {
-            return;
-        } else {
-            isDialogShow = true;
+    Bitmap Mat2Bitmap(Mat mat) {
+        Bitmap bmp = null;
+        //  bmp = new Bitmap(mat.getNativeObjAddr(),)
+        int w = 0, h = 0;
+        int[] pixels = new int[w * h * 4];
+        for (int i = 0; i < h; ++i) {
+            for (int j = 0; j < w; j++) {
+// pixels[4 * offset] = r[i][j];
+//                pixels[4 * offset + 1] = g[i][j];
+//                pixels[4 * offset + 2] = b[i][j].byteValue();
+//                pixels[4 * offset + 3] = 0;
+            }
+            bmp = Bitmap.createBitmap(pixels, 0, w, w, h,
+                    Bitmap.Config.ARGB_8888);
+
+            //成功
+//        bmp = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+//        bmp.setPixels(pixels, 0, w, 0, 0, w, h);
+
+            //裁剪一张bitmap中自己想要的区域
+            // Bitmap.createBitmap(bmp,  0,  0, w, h);
+            return bmp;
+
         }
 
-        setMode(FaceSDKBase.MODE_REGISTR);
-
-        if (uiFaceTips != null) {
-            uiFaceTips.Show(false);
+        public void setUICameraListener (UICamera.OnUICameraListener listener){
+            mListener = listener;
         }
 
-        long currentTime = System.currentTimeMillis();
-        if (currentTime - lastClickTime > MIN_CLICK_DELAY_TIME) {
-            lastClickTime = currentTime;
-            //    drawMat = false;
-            //switch to sleep mode
-            mixController.setState(mixController.STATE_FACE_RECOGNIZE, mixController.STATE_FACE_REGISTER);
-            // Toast.makeText(MainActivity.this,"注册成功",Toast.LENGTH_LONG).show();
-            final View pwdEntryView = ac.getLayoutInflater().inflate(
-                    R.layout.dialog_exit_pwd, null);
+        public void setMode ( int mode){
+            if (faceSDKCommon != null) {
+                faceSDKCommon.setMode(mode);
+            }
+        }
 
-            //图片导入
-            Button file_browser = (Button) pwdEntryView.findViewById(R.id.file_browser);
-            file_browser.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent openFileBrowser = new Intent(ac, GetSDTreeActivity.class);
-                    videoUtilFront.stopPreview();
-                    videoUtilBack.stopPreview();
-                    ac.startActivity(openFileBrowser);
-                    //    MainActivity.this.finish();
+        public void updateCameraSize () {
+            if (mCameraID == Camera.CameraInfo.CAMERA_FACING_FRONT) {
+                mCameraRotate = 270;
+                if (Device.isLandscape()) {
+                    mCameraRotate = 180;
                 }
-            });
-
-            final EditText register_edittext = (EditText) pwdEntryView.findViewById(R.id.register_edittext);
-            register_edittext.setFilters(new InputFilter[]{new InputFilter.LengthFilter(10)});//10 char
-
-            TextView sdk_version_text = (TextView) pwdEntryView.findViewById(R.id.sdk_version_text);
-            sdk_version_text.setText("SDK Version: " + face.GetVersion() + "    " + "Lib Version: " + face.GetFacelibVersion());
-
-
-            new AlertDialog.Builder(ac).setTitle("确认注册吗？")
-                    .setIcon(android.R.drawable.ic_input_add)
-                    .setView(pwdEntryView)
-                    .setCancelable(false)
-                    .setPositiveButton("点此采集图片注册", new DialogInterface.OnClickListener() {
-
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            // 点击“确认”后的采集图片，用于注册
-                            //   drawMat = false;// 默认关闭true;
-                            isDialogShow = false;
-                            editTextString = register_edittext.getText().toString();
-                            editTextString = editTextString.replaceAll(" ", "");
-                            editTextString = editTextString.replaceAll("\r", "");
-                            editTextString = editTextString.replaceAll("\n", "");
-
-
-                            if (editTextString == null || "".equals(editTextString)) {
-                                Message tempMsg = mHandler.obtainMessage();
-                                tempMsg.arg1 = 5;
-                                tempMsg.what = SHOWTOAST;
-                                mHandler.sendMessage(tempMsg);
-
-                                //        drawMat = false;//true;
-                                mixController.setState(mixController.STATE_IDLE, mixController.STATE_FACE_RECOGNIZE);
-                                return;
-                            }
-                            mixController.setState(mixController.STATE_FACE_REGISTER, mixController.STATE_FACE_RECOGNIZE);
-                            Log.d("morrisdebug", "name is " + register_edittext.getText().toString());
-
-
-                        }
-                    })
-                    .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            //   drawMat = false;//true;
-                            mixController.setState(mixController.STATE_IDLE, mixController.STATE_FACE_RECOGNIZE);
-                            isDialogShow = false;
-                            // 点击“返回”后的操作,这里不设置没有任何操作
-                            //Toast.makeText(MainActivity.this, "你点击了返回键", Toast.LENGTH_LONG).show();
-                        }
-                    }).show();
-        }
-    }
-
-    @Override
-    public void onClick(View view) {
-        if (view.getId() == R.id.BtnCameraSelect) {
-            if (mCameraID == Camera.CameraInfo.CAMERA_FACING_BACK) {
-                mCameraID = Camera.CameraInfo.CAMERA_FACING_FRONT;
             } else {
-                mCameraID = Camera.CameraInfo.CAMERA_FACING_BACK;
+                mCameraRotate = 90;
+
+                if (Device.isLandscape()) {
+                    mCameraRotate = 0;
+                } else {
+                    mCameraRotate = 0;
+                }
+            }
+        }
+
+        public void OnClickViewCamera () {
+            final Activity ac = Common.getMainActivity();
+            if (isDialogShow) {
+                return;
+            } else {
+                isDialogShow = true;
             }
 
-            updateCameraSize();
+            setMode(FaceSDKBase.MODE_REGISTR);
+
+            if (uiFaceTips != null) {
+                uiFaceTips.Show(false);
+            }
+
+            long currentTime = System.currentTimeMillis();
+            if (currentTime - lastClickTime > MIN_CLICK_DELAY_TIME) {
+                lastClickTime = currentTime;
+                //    drawMat = false;
+                //switch to sleep mode
+                mixController.setState(mixController.STATE_FACE_RECOGNIZE, mixController.STATE_FACE_REGISTER);
+                // Toast.makeText(MainActivity.this,"注册成功",Toast.LENGTH_LONG).show();
+                final View pwdEntryView = ac.getLayoutInflater().inflate(
+                        R.layout.dialog_exit_pwd, null);
+
+                //图片导入
+                Button file_browser = (Button) pwdEntryView.findViewById(R.id.file_browser);
+                file_browser.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent openFileBrowser = new Intent(ac, GetSDTreeActivity.class);
+                        videoUtilFront.stopPreview();
+                        videoUtilBack.stopPreview();
+                        ac.startActivity(openFileBrowser);
+                        //    MainActivity.this.finish();
+                    }
+                });
+
+                final EditText register_edittext = (EditText) pwdEntryView.findViewById(R.id.register_edittext);
+                register_edittext.setFilters(new InputFilter[]{new InputFilter.LengthFilter(10)});//10 char
+
+                TextView sdk_version_text = (TextView) pwdEntryView.findViewById(R.id.sdk_version_text);
+                sdk_version_text.setText("SDK Version: " + face.GetVersion() + "    " + "Lib Version: " + face.GetFacelibVersion());
+
+
+                new AlertDialog.Builder(ac).setTitle("确认注册吗？")
+                        .setIcon(android.R.drawable.ic_input_add)
+                        .setView(pwdEntryView)
+                        .setCancelable(false)
+                        .setPositiveButton("点此采集图片注册", new DialogInterface.OnClickListener() {
+
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // 点击“确认”后的采集图片，用于注册
+                                //   drawMat = false;// 默认关闭true;
+                                isDialogShow = false;
+                                editTextString = register_edittext.getText().toString();
+                                editTextString = editTextString.replaceAll(" ", "");
+                                editTextString = editTextString.replaceAll("\r", "");
+                                editTextString = editTextString.replaceAll("\n", "");
+
+
+                                if (editTextString == null || "".equals(editTextString)) {
+                                    Message tempMsg = mHandler.obtainMessage();
+                                    tempMsg.arg1 = 5;
+                                    tempMsg.what = SHOWTOAST;
+                                    mHandler.sendMessage(tempMsg);
+
+                                    //        drawMat = false;//true;
+                                    mixController.setState(mixController.STATE_IDLE, mixController.STATE_FACE_RECOGNIZE);
+                                    return;
+                                }
+                                mixController.setState(mixController.STATE_FACE_REGISTER, mixController.STATE_FACE_RECOGNIZE);
+                                Log.d("morrisdebug", "name is " + register_edittext.getText().toString());
+
+
+                            }
+                        })
+                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                //   drawMat = false;//true;
+                                mixController.setState(mixController.STATE_IDLE, mixController.STATE_FACE_RECOGNIZE);
+                                isDialogShow = false;
+                                // 点击“返回”后的操作,这里不设置没有任何操作
+                                //Toast.makeText(MainActivity.this, "你点击了返回键", Toast.LENGTH_LONG).show();
+                            }
+                        }).show();
+            }
+        }
+
+        @Override
+        public void onClick (View view){
+            if (view.getId() == R.id.BtnCameraSelect) {
+                if (mCameraID == Camera.CameraInfo.CAMERA_FACING_BACK) {
+                    mCameraID = Camera.CameraInfo.CAMERA_FACING_FRONT;
+                } else {
+                    mCameraID = Camera.CameraInfo.CAMERA_FACING_BACK;
+                }
+
+                updateCameraSize();
+
+            }
+
 
         }
 
 
     }
-
-
-
-}

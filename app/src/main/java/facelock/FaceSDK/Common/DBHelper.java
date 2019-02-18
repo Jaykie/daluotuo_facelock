@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.util.Log;
 
 import com.moonma.FaceSDK.FaceInfo;
+import com.moonma.common.DeleteFileUtil;
 
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
@@ -107,10 +108,19 @@ class DBHelper extends SQLiteOpenHelper {
     public void DeleteItem(FaceInfo info) {
         //    db.execSQL("insert into test (id,photo) values(?,?)",new Object[]{photo.getId(),photoByte});
         // String strSql="insert into "+TABLE_FACE+" values(1,'TT','一起去旅游','10月1号')";
+        //
+        if (info.pic != null) {
+            DeleteFileUtil.deleteFile(info.pic);
+        }
         if (dbOpen != null) {
             dbOpen.execSQL("delete from " + TABLE_FACE + " where name=" + info.name);
         }
+    }
 
+    public void DeleteAll() {
+        if (dbOpen != null) {
+            dbOpen.execSQL("delete from " + TABLE_FACE);
+        }
 
     }
 
