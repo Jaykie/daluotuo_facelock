@@ -55,6 +55,7 @@ import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.Size;
+import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 
 import java.io.File;
@@ -421,7 +422,10 @@ public class UICameraOpenAiLab extends UICamera
 
 
                                 int res = face.AddDB(feature, editTextString);
-
+                                //@moon
+                                Imgcodecs.imwrite("/sdcard/openailab/all.jpg", mFrontFrame);
+                                Mat matFace = new Mat(mRgbaFrame, new org.opencv.core.Rect(calibrate_rect[0], calibrate_rect[1], calibrate_rect[2] - calibrate_rect[0], calibrate_rect[3] - calibrate_rect[1]));
+                                Imgcodecs.imwrite("/sdcard/openailab/face.jpg", matFace);
                                 Log.d("zheng", "register res:" + res);
                                 if (res == FaceAPP.SUCCESS) {
                                     tempMsg.arg1 = 1;
@@ -450,7 +454,7 @@ public class UICameraOpenAiLab extends UICamera
 
                             Imgproc.resize(mFrontFrame, mFrontFrame, new Size((int) (mFrontFrame.width() * calibrate_scale[0]), (int) (mFrontFrame.height() * calibrate_scale[0])));
                             frontimage.matAddrframe = mFrontFrame.getNativeObjAddr();
-                            //  Imgcodecs.imwrite("/sdcard/openailab/2.jpg", mFrontFrame);
+                            // Imgcodecs.imwrite("/sdcard/openailab/2.jpg", mFrontFrame);
 
                             Mat tmpMat = new Mat(mRgbaFrame, new org.opencv.core.Rect(calibrate_rect[0], calibrate_rect[1], calibrate_rect[2] - calibrate_rect[0], calibrate_rect[3] - calibrate_rect[1]));
                             image.matAddrframe = tmpMat.getNativeObjAddr();
