@@ -63,11 +63,17 @@ public class FaceDBBase {
         return true;
     }
 
-    public void SaveFaceBitmap(FaceInfo info) {
+
+    public String GetSaveFilePath(String name) {
         String dir = GetFaceImageDir();
         CreateDir(dir);
         long currentTime = System.currentTimeMillis();
-        String filepath = dir + "/" + info.name + "_" + currentTime + ".jpg";
+        String filepath = dir + "/" + name + "_" + currentTime + ".jpg";
+        return filepath;
+    }
+
+    public void SaveFaceBitmap(FaceInfo info) {
+        String filepath = GetSaveFilePath(info.name);
         if (info.bmp != null) {
             ImageUtil.SaveBitmapToFile(info.bmp, filepath, true);
         }
