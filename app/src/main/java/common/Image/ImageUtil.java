@@ -16,6 +16,9 @@ import android.util.Log;
 import android.util.Size;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 public class ImageUtil {
     static private final String TAG = "ImageUtil";
@@ -23,6 +26,7 @@ public class ImageUtil {
     public static final int REQUEST_CODE_CAMERA = 1;
     public static final int REQUEST_CODE_IMAGE = 2;
     public static final int REQUEST_CODE_OP = 3;
+
     /**
      * @param path
      * @return
@@ -62,6 +66,26 @@ public class ImageUtil {
         return null;
     }
 
+    public static void SaveBitmapToFile(Bitmap bitmap, String filepath, boolean isJpg) {
+        File file = new File(filepath);
+        try {
+            FileOutputStream out = new FileOutputStream(file);
+
+            Bitmap.CompressFormat format = Bitmap.CompressFormat.PNG;
+            if (isJpg) {
+                format = Bitmap.CompressFormat.JPEG;
+            }
+            if (bitmap.compress(format, 100, out)) {
+                out.flush();
+                out.close();
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     static public void OpenSystemImageLib() {
         Activity ac = Common.getMainActivity();
         Intent getImageByalbum = new Intent(Intent.ACTION_GET_CONTENT);
@@ -83,7 +107,7 @@ public class ImageUtil {
 
     //https://blog.csdn.net/ak4100/article/details/52933923
     //调用相机
-    public void takephoto(){
+    public void takephoto() {
         Activity ac = Common.getMainActivity();
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(Environment.getExternalStorageDirectory(), "temp.jpg")));

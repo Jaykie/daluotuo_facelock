@@ -49,7 +49,7 @@ import static android.view.FrameMetrics.ANIMATION_DURATION;
 
 import com.moonma.common.InhaleMeshView;
 import com.moonma.common.ItemInfo;
-
+import com.moonma.common.ImageUtil;
 /**
  * TODO: document your custom view class.
  * <p>
@@ -227,12 +227,12 @@ public class UIFaceManagerCellItem extends UICellItemBase implements View.OnClic
 
         // meshView.setBitmap(BitmapFactory.decodeResource(ac.getResources(), R.drawable.face_img_moon_small_png));
         Activity ac = Common.getMainActivity();
-        Bitmap bmp = null;
-        if (info.bmp == null) {
-            bmp = decodeResource(ac.getResources(), R.drawable.face_img_moon_small_png);
-        } else {
-            bmp = info.bmp;
-        }
+        Bitmap bmp = ImageUtil.DecodeImage(info.pic);
+//        if (info.bmp == null) {
+//            bmp = decodeResource(ac.getResources(), R.drawable.face_img_moon_small_png);
+//        } else {
+//            bmp = info.bmp;
+//        }
         imageBg.setImageBitmap(bmp);
     }
 

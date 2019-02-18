@@ -24,7 +24,7 @@ class DBHelper extends SQLiteOpenHelper {
             + "id text primary key,"//autoincrement
             + "name text, "
             + "time ong, "
-            + "data blob )";//数据库里的表
+            + "pic text )";//数据库里的表 data blob
 
     SQLiteDatabase dbOpen;
 
@@ -72,7 +72,7 @@ class DBHelper extends SQLiteOpenHelper {
         if (dbOpen != null) {
             //：select * from table1 order by field1，field2 [desc]
             //SQL 语句中, asc是指定列按升序排列，desc则是指定列按降序排列。
-           // dbOpen.execSQL("select * from " + TABLE_FACE + "order by time [desc]");
+            // dbOpen.execSQL("select * from " + TABLE_FACE + "order by time [desc]");
             Cursor cr;
             cr = dbOpen.rawQuery("select * from " + TABLE_FACE + "order by time desc", null);
             if (cr.moveToFirst()) {
@@ -83,7 +83,8 @@ class DBHelper extends SQLiteOpenHelper {
                     info.id = cr.getString(cr.getColumnIndex("id"));
                     info.name = cr.getString(cr.getColumnIndex("name"));
                     info.time = cr.getLong(cr.getColumnIndex("time"));
-                    info.data = cr.getBlob(cr.getColumnIndex("data"));
+                    info.pic = cr.getString(cr.getColumnIndex("pic"));
+                    //info.data = cr.getBlob(cr.getColumnIndex("data"));
                     listItem.add(info);
                     cr.moveToNext();
                 }
@@ -98,13 +99,7 @@ class DBHelper extends SQLiteOpenHelper {
 
         long currentTime = System.currentTimeMillis();
         if (dbOpen != null) {
-            if (info.bmp != null) {
-                byte[] data = GetRGBDataOfBmp(info.bmp);
-                dbOpen.execSQL("insert into " + TABLE_FACE + "  (id,name,data,time) values(?,?,?)", new Object[]{info.id, info.name, data, currentTime});
-            } else {
-                dbOpen.execSQL("insert into " + TABLE_FACE + "  (id,name,time) values(?,?,?)", new Object[]{info.id, info.name, currentTime});
-            }
-
+            dbOpen.execSQL("insert into " + TABLE_FACE + "  (id,name,pic,time) values(?,?,?)", new Object[]{info.id, info.name, info.pic, currentTime});
         }
     }
 
@@ -117,7 +112,7 @@ class DBHelper extends SQLiteOpenHelper {
         }
 
 
-}
+    }
 
     public boolean isEmpty() {
         int number = 0;
@@ -125,6 +120,9 @@ class DBHelper extends SQLiteOpenHelper {
             Cursor c = dbOpen.rawQuery("select * from " + TABLE_FACE, null);
             number = c.getCount();
         }
-        return true;
+        if (number == 0) {
+            return true;
+        }
+        return false;
     }
 }

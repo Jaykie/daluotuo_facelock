@@ -23,6 +23,7 @@ public class FaceDBOpenAiLab extends FaceDBBase {
     }
 
     public void AddFace(FaceInfo info) {
+        SaveFaceBitmap(info);
         if (dbHelper != null) {
             dbHelper.AddItem(info);
         }
