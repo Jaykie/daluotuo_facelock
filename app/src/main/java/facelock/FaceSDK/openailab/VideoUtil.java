@@ -9,6 +9,8 @@ import android.view.SurfaceHolder;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 
+import com.moonma.FaceSDK.CameraLightUtil;
+
 /**
  * created by LiGuang
  * on 2018/11/12
@@ -42,6 +44,9 @@ public class VideoUtil implements SurfaceHolder.Callback, Camera.PreviewCallback
                 //  mCamera.addCallbackBuffer(buffers);
                 mRgba.put(0, 0, data);
                 syncFlag = true;
+
+                //摄像头识别环境亮度
+                CameraLightUtil.main().OnProcessLight(camera, data);
             }
             camera.addCallbackBuffer(data);
         }

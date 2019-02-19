@@ -148,6 +148,9 @@ public class UICameraOpenAiLab extends UICamera
 
     FaceDBBase faceDBBase;
 
+    float faceScore = 0f;//相似度
+    Rect rectFace = new Rect(0, 0, 0, 0);
+
     /**
      * 声明一个静态的Handler内部类，并持有外部类的弱引用
      */
@@ -191,7 +194,7 @@ public class UICameraOpenAiLab extends UICamera
                             info.name = editTextString;
                             info.id = info.name;
                             info.bmp = null;
-                            info.score = 1f;
+                            info.score = faceScore;
                             FaceDidRegister(info, false);
 
                         } else if (msg.arg1 == 0) {
@@ -201,7 +204,7 @@ public class UICameraOpenAiLab extends UICamera
                             info.name = showName;
                             info.id = info.name;
                             info.bmp = null;
-                            info.score = 1f;
+                            info.score = faceScore;
                             FaceDidDetect(info);
 
                             // Toast.makeText(ac, "你是:" + showName, Toast.LENGTH_SHORT).show();
@@ -223,7 +226,7 @@ public class UICameraOpenAiLab extends UICamera
                             info.name = editTextString;
                             info.id = info.name;
                             info.bmp = null;
-                            info.score = 1f;
+                            info.score = faceScore;
                             FaceDidRegister(info, true);
                             // Toast.makeText(ac, msg.obj + "已注册过了", Toast.LENGTH_SHORT).show();
                         }
@@ -402,8 +405,11 @@ public class UICameraOpenAiLab extends UICamera
 //                                break;
 //                            }
                             image.matAddrframe = mRgbaFrame.getNativeObjAddr();
-                            // j = face.GetFeature(image, feature, i);
+                            //
                             j = face.GetFeature(image, feature, i);
+                            //@moon
+                            //j = face.GetFeature(image, frontimage, feature, FaceInfos, i);
+
                             if (j == face.SUCCESS) {
                                 Log.d("zheng", "register editTextString:" + editTextString);
 //                                String featureStr="";
@@ -429,7 +435,14 @@ public class UICameraOpenAiLab extends UICamera
                                 int res = face.AddDB(feature, editTextString);
                                 //@moon
                                 Imgcodecs.imwrite("/sdcard/openailab/all.jpg", mFrontFrame);
-                                Mat matFace = new Mat(mRgbaFrame, new org.opencv.core.Rect(calibrate_rect[0], calibrate_rect[1], calibrate_rect[2] - calibrate_rect[0], calibrate_rect[3] - calibrate_rect[1]));
+
+                                FaceInfo info = FaceInfos.get(0);
+                                int left = (info.mRect.left + calibrate_rect[0]);
+                                int top = (info.mRect.top + calibrate_rect[1]);
+                                int right = (info.mRect.right + calibrate_rect[0]);
+                                int bottom = (info.mRect.bottom + calibrate_rect[1]);
+                                Mat matFace = new Mat(mRgbaFrame, new org.opencv.core.Rect(left, top, (right - left), (bottom - top)));
+                                //Mat matFace = new Mat(mRgbaFrame, new org.opencv.core.Rect(calibrate_rect[0], calibrate_rect[1], calibrate_rect[2] - calibrate_rect[0], calibrate_rect[3] - calibrate_rect[1]));
                                 String pic = faceDBBase.GetSaveFilePath(editTextString);
                                 Imgcodecs.imwrite(pic, matFace);
                                 Log.d("zheng", "register res:" + res);
@@ -466,13 +479,17 @@ public class UICameraOpenAiLab extends UICamera
                             image.matAddrframe = tmpMat.getNativeObjAddr();
                             j = face.GetFeature(image, frontimage, feature, FaceInfos, i);
                             drawRect(FaceInfos, mRgbaFrame);
+                            faceScore = 0f;
                             if (j == face.SUCCESS) {
                                 float[] score = {0};
                                 showName = face.QueryDB(feature, score);
                                 Log.i("zheng", "name " + showName + " score " + score[0]);
                                 Message tempMsg = mHandler.obtainMessage();
                                 tempMsg.what = SHOWTOAST;
+                                //score 相似度
+                                faceScore = score[0];
                                 if (score[0] > VALUE[3]) {
+                                    //@moon 检测到人脸
                                     tempMsg.arg1 = 0;
                                 } else {
                                     tempMsg.arg1 = 3;
@@ -627,7 +644,12 @@ public class UICameraOpenAiLab extends UICamera
         }
         for (int icount = 0; icount < faceInfos.size(); icount++) {
             FaceInfo info = faceInfos.get(0);
-            drawRectView.updateRect((info.mRect.left + calibrate_rect[0]) * drawRectView.getWidth() / camWidth, (info.mRect.top + calibrate_rect[1]) * drawRectView.getHeight() / camHeight, (info.mRect.right + calibrate_rect[0]) * drawRectView.getWidth() / camWidth, (info.mRect.bottom + calibrate_rect[1]) * drawRectView.getHeight() / camHeight);
+            rectFace.left = (info.mRect.left + calibrate_rect[0]) * drawRectView.getWidth() / camWidth;
+            rectFace.top = (info.mRect.top + calibrate_rect[1]) * drawRectView.getHeight() / camHeight;
+            rectFace.right = (info.mRect.right + calibrate_rect[0]) * drawRectView.getWidth() / camWidth;
+            rectFace.bottom = (info.mRect.bottom + calibrate_rect[1]) * drawRectView.getHeight() / camHeight;
+
+            drawRectView.updateRect(rectFace.left, rectFace.top, rectFace.right, rectFace.bottom);
             //   drawRectView.updateRect((info.mRect.left) * drawRectView.getWidth() / camWidth, (info.mRect.top) * drawRectView.getHeight() / camHeight, (info.mRect.right) * drawRectView.getWidth() / camWidth, (info.mRect.bottom) * drawRectView.getHeight() / camHeight);
 
         }
@@ -637,6 +659,15 @@ public class UICameraOpenAiLab extends UICamera
 
 
         return true;
+    }
+
+    //face相似度阀值 0-1f
+    public void SetFaceSimilarityMin(float value) {
+        VALUE[3] = value;
+    }
+
+    public Rect GetFaceRect() {
+        return rectFace;
     }
 
     public Bitmap Bytes2Bimap(byte[] b) {
@@ -713,7 +744,7 @@ public class UICameraOpenAiLab extends UICamera
         if (uiFaceTips != null) {
             uiFaceTips.Show(false);
         }
-
+//进入注册模式
         long currentTime = System.currentTimeMillis();
         if (currentTime - lastClickTime > MIN_CLICK_DELAY_TIME) {
             lastClickTime = currentTime;

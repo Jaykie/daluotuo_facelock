@@ -7,7 +7,7 @@ public class FaceInfo {
     public String id;
     public String pic;
     public Bitmap bmp;
-    public float score;
+    public float score;//相似度 0-1
     public long time;
     //public byte[] data;
 }

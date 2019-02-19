@@ -40,6 +40,8 @@ public class FaceSDKBase {
         return 0;
     }
 
+    public void SetFaceSimilarityMin(float value) {
 
+    }
 }
 

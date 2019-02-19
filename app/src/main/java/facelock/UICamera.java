@@ -89,6 +89,16 @@ public class UICamera extends UIView
         }
     }
 
+    //face相似度阀值 0-1f
+    public void SetFaceSimilarityMin(float value) {
+
+    }
+
+    public Rect GetFaceRect()
+    {
+        return new Rect(0,0,0,0);
+    }
+
 //    public void updateCameraSize( ) {
 //        if (mCameraID == Camera.CameraInfo.CAMERA_FACING_FRONT) {
 //            mCameraRotate = 270;

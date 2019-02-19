@@ -12,6 +12,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.util.Log;
 import android.hardware.Camera;
+
 import com.moonma.FaceSDK.FaceInfo;
 
 
@@ -67,6 +68,13 @@ public class FaceSDKCommon implements IFaceSDKBaseListener {
         return FaceSDKBase.MODE_PREVIEW;
     }
 
+    //face相似度阀值 0-1f
+    public void SetFaceSimilarityMin(float value) {
+        if (faceSDK != null) {
+            faceSDK.SetFaceSimilarityMin(value);
+        }
+    }
+
     public void createSDK(String source) {
 
         if (source.equals(Source.FACE_ARC)) {
@@ -111,7 +119,7 @@ public class FaceSDKCommon implements IFaceSDKBaseListener {
     }
 
     @Override
-    public void FaceDidRegister(FaceInfo info,boolean isRedo) {
+    public void FaceDidRegister(FaceInfo info, boolean isRedo) {
         if (iListener != null) {
             iListener.FaceDidRegister(info, isRedo);
         }
