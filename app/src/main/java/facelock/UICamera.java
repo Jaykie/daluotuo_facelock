@@ -246,6 +246,7 @@ public class UICamera extends UIView
         });
     }
 
+    //isRedo true 已经注册
     @Override
     public void FaceDidRegister(com.moonma.FaceSDK.FaceInfo info, final boolean isRedo) {
         final com.moonma.FaceSDK.FaceInfo info_show = info ;

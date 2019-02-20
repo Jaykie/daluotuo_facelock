@@ -23,6 +23,8 @@ import com.daluotuo.facelock.UISettingCellItem;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.moonma.FaceSDK.FaceDBCommon;
+
 /**
  * TODO: document your custom view class.
  * <p>
@@ -36,7 +38,8 @@ public class UISetting extends UIView implements View.OnClickListener, UISetting
     BaseAdapter adapter;
     List<ItemInfo> listItem = new ArrayList<ItemInfo>();//实体类
     int oneCellNum = 1;
-//ImageView ScaleType:https://blog.csdn.net/qq_34902522/article/details/76682293
+
+    //ImageView ScaleType:https://blog.csdn.net/qq_34902522/article/details/76682293
     public UISetting(int layoutId, UIView parent) {
         super(layoutId, parent);
 
@@ -57,6 +60,11 @@ public class UISetting extends UIView implements View.OnClickListener, UISetting
             listItem.add(info);
         }
 
+        {
+            ItemInfo info = new ItemInfo();//给实体类赋值
+            info.title = "清空所有人脸数据";
+            listItem.add(info);
+        }
         final UISetting pthis = this;
         adapter = new BaseAdapter() {
             @Override
@@ -174,7 +182,7 @@ public class UISetting extends UIView implements View.OnClickListener, UISetting
             }
             break;
             case 2: {
-
+                FaceDBCommon.main().DeleteAllFace();
             }
             break;
         }

@@ -27,7 +27,7 @@ class DBHelper extends SQLiteOpenHelper {
             + "time ong, "
             + "pic text )";//数据库里的表 data blob
 
-    SQLiteDatabase dbOpen;
+    public SQLiteDatabase dbOpen;
 
     public DBHelper(Context context) {
         this(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -38,11 +38,23 @@ class DBHelper extends SQLiteOpenHelper {
         Log.d(TAG, "New CustomSQLiteOpenHelper");
     }
 
+    public void Open() {
+        if (dbOpen == null) {
+            dbOpen = this.getWritableDatabase();//创建数据库
+            //dbOpen.execSQL(SQL_CREATE_TABLE_FACE);
+        }
+    }
+
+    public void Close() {
+        this.close();
+    }
+
+    //在调getReadableDatabase或getWritableDatabase时，会判断指定的数据库是否存在，不存在则调SQLiteDatabase.create创建， onCreate只在数据库第一次创建时才执行
     @Override
     public void onCreate(SQLiteDatabase db) {
         Log.d(TAG, "onCreate");
         db.execSQL(SQL_CREATE_TABLE_FACE);
-        dbOpen = db;
+        //dbOpen = db;
     }
 
     @Override
@@ -75,7 +87,7 @@ class DBHelper extends SQLiteOpenHelper {
             //SQL 语句中, asc是指定列按升序排列，desc则是指定列按降序排列。
             // dbOpen.execSQL("select * from " + TABLE_FACE + "order by time [desc]");
             Cursor cr;
-            cr = dbOpen.rawQuery("select * from " + TABLE_FACE + "order by time desc", null);
+            cr = dbOpen.rawQuery("select * from " + TABLE_FACE + " order by time desc", null);
             if (cr.moveToFirst()) {
 
                 for (int i = 0; i < cr.getCount(); i++) {
@@ -100,7 +112,7 @@ class DBHelper extends SQLiteOpenHelper {
 
         long currentTime = System.currentTimeMillis();
         if (dbOpen != null) {
-            dbOpen.execSQL("insert into " + TABLE_FACE + "  (id,name,pic,time) values(?,?,?)", new Object[]{info.id, info.name, info.pic, currentTime});
+            dbOpen.execSQL("insert into " + TABLE_FACE + "  (id,name,pic,time) values(?,?,?,?)", new Object[]{info.id, info.name, info.pic, currentTime});
         }
     }
 

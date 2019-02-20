@@ -73,7 +73,7 @@ import com.moonma.FaceSDK.FaceDBBase;
 
 public class UICameraOpenAiLab extends UICamera
         implements View.OnClickListener {
-
+    private final String TAG = this.getClass().toString();
 
     private myDrawRectView drawRectView;
     private SurfaceView frontView, backView;
@@ -150,7 +150,7 @@ public class UICameraOpenAiLab extends UICamera
 
     float faceScore = 0f;//相似度
     Rect rectFace = new Rect(0, 0, 0, 0);
-
+    String filePathSaveFace;//保存人脸图片路径
     /**
      * 声明一个静态的Handler内部类，并持有外部类的弱引用
      */
@@ -195,6 +195,7 @@ public class UICameraOpenAiLab extends UICamera
                             info.id = info.name;
                             info.bmp = null;
                             info.score = faceScore;
+                            info.pic = filePathSaveFace;
                             FaceDidRegister(info, false);
 
                         } else if (msg.arg1 == 0) {
@@ -205,6 +206,7 @@ public class UICameraOpenAiLab extends UICamera
                             info.id = info.name;
                             info.bmp = null;
                             info.score = faceScore;
+                            //info.pic = filePathSaveFace;
                             FaceDidDetect(info);
 
                             // Toast.makeText(ac, "你是:" + showName, Toast.LENGTH_SHORT).show();
@@ -227,6 +229,7 @@ public class UICameraOpenAiLab extends UICamera
                             info.id = info.name;
                             info.bmp = null;
                             info.score = faceScore;
+                            info.pic = filePathSaveFace;
                             FaceDidRegister(info, true);
                             // Toast.makeText(ac, msg.obj + "已注册过了", Toast.LENGTH_SHORT).show();
                         }
@@ -434,17 +437,29 @@ public class UICameraOpenAiLab extends UICamera
 
                                 int res = face.AddDB(feature, editTextString);
                                 //@moon
-                                Imgcodecs.imwrite("/sdcard/openailab/all.jpg", mFrontFrame);
+                                //Imgcodecs.imwrite("/sdcard/openailab/all.jpg", mRgbaFrame);
+                                if (FaceInfos.size() != 0) {
+                                    FaceInfo info = FaceInfos.get(0);
+                                    int left = (info.mRect.left + calibrate_rect[0]);
+                                    int top = (info.mRect.top + calibrate_rect[1]);
+                                    int right = (info.mRect.right + calibrate_rect[0]);
+                                    int bottom = (info.mRect.bottom + calibrate_rect[1]);
+                                    rectFace.left = left;
+                                    rectFace.top = top;
+                                    rectFace.right = right;
+                                    rectFace.bottom = bottom;
+                                    int x = left;
+                                    int y = top;
+                                    int w = right - left;
+                                    int h = bottom - top;
+                                    //face rect x=216 y=97 w=271 h=367
+                                    Log.d(TAG,"face rect: x="+x+" y="+y+" w="+w+" h="+h+" mRgbaFrame w="+mRgbaFrame.width()+" h="+mRgbaFrame.height());
+                                    //Mat matFace = new Mat(mRgbaFrame, new org.opencv.core.Rect(x, y, w,h));
+                                    Mat matFace = mRgbaFrame;
+                                    filePathSaveFace = faceDBBase.GetSaveFilePath(editTextString);
+                                    Imgcodecs.imwrite(filePathSaveFace, matFace);
+                                }
 
-                                FaceInfo info = FaceInfos.get(0);
-                                int left = (info.mRect.left + calibrate_rect[0]);
-                                int top = (info.mRect.top + calibrate_rect[1]);
-                                int right = (info.mRect.right + calibrate_rect[0]);
-                                int bottom = (info.mRect.bottom + calibrate_rect[1]);
-                                Mat matFace = new Mat(mRgbaFrame, new org.opencv.core.Rect(left, top, (right - left), (bottom - top)));
-                                //Mat matFace = new Mat(mRgbaFrame, new org.opencv.core.Rect(calibrate_rect[0], calibrate_rect[1], calibrate_rect[2] - calibrate_rect[0], calibrate_rect[3] - calibrate_rect[1]));
-                                String pic = faceDBBase.GetSaveFilePath(editTextString);
-                                Imgcodecs.imwrite(pic, matFace);
                                 Log.d("zheng", "register res:" + res);
                                 if (res == FaceAPP.SUCCESS) {
                                     tempMsg.arg1 = 1;
@@ -459,7 +474,7 @@ public class UICameraOpenAiLab extends UICamera
                             } else if (j == face.ERROR_FAILURE) {
                                 mixController.setState(mixController.STATE_IDLE, mixController.STATE_FACE_REGISTER);
                             }
-                            editTextString = "";
+                            //editTextString = "";
 
                             break;
 
@@ -479,6 +494,17 @@ public class UICameraOpenAiLab extends UICamera
                             image.matAddrframe = tmpMat.getNativeObjAddr();
                             j = face.GetFeature(image, frontimage, feature, FaceInfos, i);
                             drawRect(FaceInfos, mRgbaFrame);
+                            if (FaceInfos.size() != 0) {
+                                FaceInfo info = FaceInfos.get(0);
+                                int left = (info.mRect.left + calibrate_rect[0]);
+                                int top = (info.mRect.top + calibrate_rect[1]);
+                                int right = (info.mRect.right + calibrate_rect[0]);
+                                int bottom = (info.mRect.bottom + calibrate_rect[1]);
+                                rectFace.left = left;
+                                rectFace.top = top;
+                                rectFace.right = right;
+                                rectFace.bottom = bottom;
+                            }
                             faceScore = 0f;
                             if (j == face.SUCCESS) {
                                 float[] score = {0};
@@ -644,12 +670,12 @@ public class UICameraOpenAiLab extends UICamera
         }
         for (int icount = 0; icount < faceInfos.size(); icount++) {
             FaceInfo info = faceInfos.get(0);
-            rectFace.left = (info.mRect.left + calibrate_rect[0]) * drawRectView.getWidth() / camWidth;
-            rectFace.top = (info.mRect.top + calibrate_rect[1]) * drawRectView.getHeight() / camHeight;
-            rectFace.right = (info.mRect.right + calibrate_rect[0]) * drawRectView.getWidth() / camWidth;
-            rectFace.bottom = (info.mRect.bottom + calibrate_rect[1]) * drawRectView.getHeight() / camHeight;
+            int left = (info.mRect.left + calibrate_rect[0]) * drawRectView.getWidth() / camWidth;
+            int top = (info.mRect.top + calibrate_rect[1]) * drawRectView.getHeight() / camHeight;
+            int right = (info.mRect.right + calibrate_rect[0]) * drawRectView.getWidth() / camWidth;
+            int bottom = (info.mRect.bottom + calibrate_rect[1]) * drawRectView.getHeight() / camHeight;
 
-            drawRectView.updateRect(rectFace.left, rectFace.top, rectFace.right, rectFace.bottom);
+            drawRectView.updateRect(left, top, right, bottom);
             //   drawRectView.updateRect((info.mRect.left) * drawRectView.getWidth() / camWidth, (info.mRect.top) * drawRectView.getHeight() / camHeight, (info.mRect.right) * drawRectView.getWidth() / camWidth, (info.mRect.bottom) * drawRectView.getHeight() / camHeight);
 
         }

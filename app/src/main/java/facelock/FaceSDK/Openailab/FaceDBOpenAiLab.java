@@ -12,19 +12,19 @@ import com.moonma.common.Common;
 import com.moonma.FaceSDK.FaceInfo;
 
 import java.util.List;
-
+import com.moonma.common.DeleteFileUtil;
 public class FaceDBOpenAiLab extends FaceDBBase {
     DBHelper dbHelper;
-
+    private final static String FACE_SDK_DB_FILE = "/sdcard/openailab/facesdb.dat";
     public void Init() {
         Activity ac = Common.getMainActivity();
         dbHelper = new DBHelper(ac);//
-        dbHelper.getWritableDatabase();//创建数据库
+        dbHelper.Open();
     }
 
     public void AddFace(FaceInfo info) {
        // SaveFaceBitmap(info);
-        info.pic = GetSaveFilePath(info.name);
+        //info.pic = GetSaveFilePath(info.name);
         if (dbHelper != null) {
             dbHelper.AddItem(info);
         }
@@ -38,6 +38,8 @@ public class FaceDBOpenAiLab extends FaceDBBase {
     }
 
     public void DeleteAllFace() {
+
+      DeleteFileUtil.deleteFile(FACE_SDK_DB_FILE);
         if (dbHelper != null) {
             dbHelper.DeleteAll();
         }

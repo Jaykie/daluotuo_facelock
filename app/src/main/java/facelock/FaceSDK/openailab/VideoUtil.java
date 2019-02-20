@@ -55,18 +55,23 @@ public class VideoUtil implements SurfaceHolder.Callback, Camera.PreviewCallback
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         startPreview();
+        int test =0;
+        test =0;
     }
 
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-
-
+        int test =0;
+        test =0;
     }
 
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
-
+        int test =0;
+        test =0;
+        //@moon 切换到后台等情况之类需要销毁相机
+        stopPreview();
     }
 
 

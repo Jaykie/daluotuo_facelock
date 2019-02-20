@@ -74,7 +74,7 @@ public class CameraLightUtil {
                 }
             }
             lightValue = cameraLight*1f/255;
-            Log.e(TAG, "摄像头环境亮度为 ： " + cameraLight);
+            Log.d(TAG, "摄像头环境亮度为 ： " + cameraLight);
 //            if (!isFinishing()) {
 //                //亮度过暗就提醒
 //                if (isDarkEnv) {

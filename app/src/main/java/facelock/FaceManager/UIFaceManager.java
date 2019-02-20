@@ -76,7 +76,7 @@ public class UIFaceManager extends UIView implements View.OnClickListener, UIFac
         }
 
         if (isEmpty) {
-            for (int i = 0; i < 50; i++) {
+            for (int i = 0; i < 5; i++) {
                 FaceInfo info = new FaceInfo();//给实体类赋值
                 info.name = "小米" + i;
                 listItem.add(info);
